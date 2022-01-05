@@ -1,0 +1,1822 @@
+<?xml version="1.0"?>
+<DataSubmissionSpecification xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <PatientFiles>
+    <File>
+      <Name>patient_abc.csv</Name>
+      <Fields>
+        <Field>
+          <Name>NHS Number</Name>
+          <DataItemCode>IBD01</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>PATIENT: Identifiers</Group>
+        </Field>
+        <Field>
+          <Name>Date of birth</Name>
+          <DataItemCode>IBD02</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>PATIENT: Identifiers</Group>
+        </Field>
+        <Field>
+          <Name>Gender
+</Name>
+          <DataItemCode>IBD03</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>PATIENT: Contact items</Group>
+        </Field>
+        <Field>
+          <Name>Postcode</Name>
+          <DataItemCode>IBD04</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>PATIENT: Identifiers</Group>
+        </Field>
+        <Field>
+          <Name>GP practice code</Name>
+          <DataItemCode>IBD05</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>PATIENT:
+Care</Group>
+        </Field>
+        <Field>
+          <Name>Date of death</Name>
+          <DataItemCode>IBD06</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>PATIENT:
+Demographics</Group>
+        </Field>
+        <Field>
+          <Name>IBD involvement in death</Name>
+          <DataItemCode>IBD07</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>PATIENT: Health related</Group>
+        </Field>
+        <Field>
+          <Name>Ethnicity</Name>
+          <DataItemCode>IBD07A</DataItemCode>
+          <Version>2019_J</Version>
+          <Group>PATIENT:
+Demographics</Group>
+        </Field>
+        <Field>
+          <Name>Sex at birth</Name>
+          <DataItemCode>IBD317</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>PATIENT:
+Demographics</Group>
+        </Field>
+        <Field>
+          <Name>Date of transition to adult care</Name>
+          <DataItemCode>IBD320</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>PATIENT:
+Care</Group>
+        </Field>
+        <Field>
+          <Name>Vaping status</Name>
+          <DataItemCode>IBD321</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>PATIENT: Health related</Group>
+        </Field>
+        <Field>
+          <Name>Comorbidities</Name>
+          <DataItemCode>IBD322</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>PATIENT: Health related</Group>
+        </Field>
+        <Field>
+          <Name>Family history IBD</Name>
+          <DataItemCode>IBD323</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>PATIENT: Health related</Group>
+        </Field>
+        <Field>
+          <Name>Family history Colorectal cancer</Name>
+          <DataItemCode>IBD324</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>PATIENT: Health related</Group>
+        </Field>
+        <Field>
+          <Name>Local unit code</Name>
+          <DataItemCode>IBD13</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>PATIENT: Site Identifiers</Group>
+        </Field>
+        <Field>
+          <Name>IBD Audit code</Name>
+          <DataItemCode>IBD14</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>PATIENT: Site Identifiers</Group>
+        </Field>
+      </Fields>
+    </File>
+    <File>
+      <Name>diagnosis_abc.csv</Name>
+      <Fields>
+        <Field>
+          <Name>NHS Number</Name>
+          <DataItemCode>IBD01</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>DISEASE: Identifiers</Group>
+        </Field>
+        <Field>
+          <Name>Date of birth</Name>
+          <DataItemCode>IBD02</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>DISEASE: Identifiers</Group>
+        </Field>
+        <Field>
+          <Name>Date of Current Diagnosis</Name>
+          <DataItemCode>IBD08</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>DISEASE: Diagnosis</Group>
+        </Field>
+        <Field>
+          <Name>Current diagnosis</Name>
+          <DataItemCode>IBD09</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>DISEASE: Diagnosis</Group>
+        </Field>
+        <Field>
+          <Name>Date of onset of symptoms</Name>
+          <DataItemCode>IBD10</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>DISEASE: Diagnosis</Group>
+        </Field>
+        <Field>
+          <Name>Earliest Diagnosis</Name>
+          <DataItemCode>IBD11</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>DISEASE: Diagnosis</Group>
+        </Field>
+        <Field>
+          <Name>Date of Earliest Diagnosis</Name>
+          <DataItemCode>IBD12</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>DISEASE: Diagnosis</Group>
+        </Field>
+        <Field>
+          <Name>Local unit code</Name>
+          <DataItemCode>IBD13</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>DISEASE: Site Identifiers</Group>
+        </Field>
+        <Field>
+          <Name>IBD Audit code</Name>
+          <DataItemCode>IBD14</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>DISEASE: Site Identifiers</Group>
+        </Field>
+        <Field>
+          <Name>Symptoms for diagnosis</Name>
+          <DataItemCode>IBD347</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>DISEASE: Diagnosis</Group>
+        </Field>
+        <Field>
+          <Name>Timestamp of diagnosis entry</Name>
+          <DataItemCode>IBD348</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>DISEASE: Diagnosis</Group>
+        </Field>
+        <Field>
+          <Name>Date of referral</Name>
+          <DataItemCode>IBD349</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>DISEASE: Diagnosis</Group>
+        </Field>
+        <Field>
+          <Name>Source of referral</Name>
+          <DataItemCode>IBD350</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>DISEASE: Diagnosis</Group>
+        </Field>
+        <Field>
+          <Name>Priority type of referral</Name>
+          <DataItemCode>IBD351</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>DISEASE: Diagnosis</Group>
+        </Field>
+        <Field>
+          <Name>Faecal calprotectin pre-diagnosis</Name>
+          <DataItemCode>IBD352</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>DISEASE: Diagnosis</Group>
+        </Field>
+        <Field>
+          <Name>Diagnostic method</Name>
+          <DataItemCode>IBD354</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>DISEASE: Diagnosis</Group>
+        </Field>
+        <Field>
+          <Name>Diagnostic healthcare professional</Name>
+          <DataItemCode>IBD355</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>DISEASE: Diagnosis</Group>
+        </Field>
+        <Field>
+          <Name>Diagnosis hospital</Name>
+          <DataItemCode>IBD356</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>DISEASE: Diagnosis</Group>
+        </Field>
+      </Fields>
+    </File>
+    <File>
+      <Name>consent_abc.csv</Name>
+      <Fields>
+        <Field>
+          <Name>NHS Number</Name>
+          <DataItemCode>IBD01</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>CONSENT: Identifiers</Group>
+        </Field>
+        <Field>
+          <Name>Date of birth</Name>
+          <DataItemCode>IBD02</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>CONSENT: Identifiers</Group>
+        </Field>
+        <Field>
+          <Name>Date consent last recorded/changed</Name>
+          <DataItemCode>IBD15</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>CONSENT</Group>
+        </Field>
+        <Field>
+          <Name>Informed consent for registry</Name>
+          <DataItemCode>IBD16</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>CONSENT</Group>
+        </Field>
+        <Field>
+          <Name>Informed consent for linkage</Name>
+          <DataItemCode>IBD17</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>CONSENT</Group>
+        </Field>
+        <Field>
+          <Name>Informed consent for research</Name>
+          <DataItemCode>IBD18</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>CONSENT</Group>
+        </Field>
+        <Field>
+          <Name>Consent to be contacted for future research</Name>
+          <DataItemCode>IBD19</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>CONSENT</Group>
+        </Field>
+        <Field>
+          <Name>*Consent for reporting to companies</Name>
+          <DataItemCode>IBD19A</DataItemCode>
+          <Version>2019_J</Version>
+          <Group>CONSENT</Group>
+        </Field>
+        <Field>
+          <Name>Local unit code</Name>
+          <DataItemCode>IBD13</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>CONSENT: Identifiers</Group>
+        </Field>
+        <Field>
+          <Name>IBD Audit code</Name>
+          <DataItemCode>IBD14</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>CONSENT: Identifiers</Group>
+        </Field>
+        <Field>
+          <Name>Version of consent/PIL</Name>
+          <DataItemCode>IBD338</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>CONSENT</Group>
+        </Field>
+        <Field>
+          <Name>Have read and understood PIL</Name>
+          <DataItemCode>IBD339</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>CONSENT</Group>
+        </Field>
+        <Field>
+          <Name>Timestamp of consent change</Name>
+          <DataItemCode>IBD325</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>CONSENT</Group>
+        </Field>
+        <Field>
+          <Name>Type consent action last recorded or changed</Name>
+          <DataItemCode>IBD329</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>CONSENT</Group>
+        </Field>
+        <Field>
+          <Name>Consent type</Name>
+          <DataItemCode>IBD333</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>CONSENT</Group>
+        </Field>
+        <Field>
+          <Name>Consent provided by person</Name>
+          <DataItemCode>IBD332</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>CONSENT</Group>
+        </Field>
+        <Field>
+          <Name>Capacity YP consent (Scotland)</Name>
+          <DataItemCode>IBD331</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>CONSENT</Group>
+        </Field>
+        <Field>
+          <Name>Parent/Guardian/Carer Given Name</Name>
+          <DataItemCode>IBD334</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>CONSENT</Group>
+        </Field>
+        <Field>
+          <Name>Parent/Guardian/Carer Family Name</Name>
+          <DataItemCode>IBD335</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>CONSENT</Group>
+        </Field>
+        <Field>
+          <Name>Parent/Guardian/Carer Signature</Name>
+          <DataItemCode>IBD336</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>CONSENT</Group>
+        </Field>
+        <Field>
+          <Name>Relationship to patient</Name>
+          <DataItemCode>IBD337</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>CONSENT</Group>
+        </Field>
+        <Field>
+          <Name>Signature (electronic)</Name>
+          <DataItemCode>IBD340</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>CONSENT</Group>
+        </Field>
+        <Field>
+          <Name>Consent capture tool</Name>
+          <DataItemCode>IBD328</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>CONSENT</Group>
+        </Field>
+        <Field>
+          <Name>Completed consent form</Name>
+          <DataItemCode>IBD341</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>CONSENT</Group>
+        </Field>
+      </Fields>
+    </File>
+    <File>
+      <Name>contact_abc.csv</Name>
+      <Fields>
+        <Field>
+          <Name>NHS Number</Name>
+          <DataItemCode>IBD01</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>CONTACT: Identifiers</Group>
+        </Field>
+        <Field>
+          <Name>Date of birth</Name>
+          <DataItemCode>IBD02</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>CONTACT: Identifiers</Group>
+        </Field>
+        <Field>
+          <Name>Date of Contact</Name>
+          <DataItemCode>IBD20</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>REVIEW</Group>
+        </Field>
+        <Field>
+          <Name>Contact type</Name>
+          <DataItemCode>IBD21</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>REVIEW</Group>
+        </Field>
+        <Field>
+          <Name>Adult or paediatric service patient</Name>
+          <DataItemCode>IBD22</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>PATIENT:
+Care</Group>
+        </Field>
+        <Field>
+          <Name>Postcode at time of contact</Name>
+          <DataItemCode>IBD23</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>REVIEW</Group>
+        </Field>
+        <Field>
+          <Name>AgeOfOnsetAdult(Montreal)</Name>
+          <DataItemCode>IBD24</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>DISEASE:
+Characteristics</Group>
+        </Field>
+        <Field>
+          <Name>Extent of UC Adult (Montreal)</Name>
+          <DataItemCode>IBD25</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>DISEASE:
+Characteristics</Group>
+        </Field>
+        <Field>
+          <Name>Behaviour Crohns Adult (Montreal)</Name>
+          <DataItemCode>IBD26</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>DISEASE:
+Characteristics</Group>
+        </Field>
+        <Field>
+          <Name>LocationCrohnsAdult (Montreal)</Name>
+          <DataItemCode>IBD27</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>DISEASE:
+Characteristics</Group>
+        </Field>
+        <Field>
+          <Name>Disease Proximal to terminal Ileum (Montreal L4)</Name>
+          <DataItemCode>IBD83</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>DISEASE:
+Characteristics</Group>
+        </Field>
+        <Field>
+          <Name>AgeOfOnsetPaediatric(Paris)</Name>
+          <DataItemCode>IBD28</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>DISEASE:
+Characteristics</Group>
+        </Field>
+        <Field>
+          <Name>Extent of UC Paediatric(Paris)</Name>
+          <DataItemCode>IBD29</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>DISEASE:
+Characteristics</Group>
+        </Field>
+        <Field>
+          <Name>Behaviour Crohns Paediatric(Paris)</Name>
+          <DataItemCode>IBD30</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>DISEASE:
+Characteristics</Group>
+        </Field>
+        <Field>
+          <Name>LocationCDPaediatric(Paris)</Name>
+          <DataItemCode>IBD31</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>DISEASE:
+Characteristics</Group>
+        </Field>
+        <Field>
+          <Name>Disease Proximal to terminal Ileum (Paris L4a L4b)</Name>
+          <DataItemCode>IBD84</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>DISEASE:
+Characteristics</Group>
+        </Field>
+        <Field>
+          <Name>Perianal Crohn's Disease</Name>
+          <DataItemCode>IBD32</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>DISEASE:
+Characteristics</Group>
+        </Field>
+        <Field>
+          <Name>HBI Total Score</Name>
+          <DataItemCode>IBD33</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>OUTCOME: 
+Disease activity</Group>
+        </Field>
+        <Field>
+          <Name>Modified UCDAI</Name>
+          <DataItemCode>IBD34</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>OUTCOME: 
+Disease activity</Group>
+        </Field>
+        <Field>
+          <Name>weightedPCDAI</Name>
+          <DataItemCode>IBD35</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>OUTCOME: 
+Disease activity</Group>
+        </Field>
+        <Field>
+          <Name>PUCDAI</Name>
+          <DataItemCode>IBD36</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>OUTCOME: 
+Disease activity</Group>
+        </Field>
+        <Field>
+          <Name>SCCAI</Name>
+          <DataItemCode>IBD37</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>OUTCOME: 
+Disease activity</Group>
+        </Field>
+        <Field>
+          <Name>Smoking status</Name>
+          <DataItemCode>IBD38</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>PATIENT: Health related</Group>
+        </Field>
+        <Field>
+          <Name>Local unit code</Name>
+          <DataItemCode>IBD13</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>CONTACT: Site Identifiers</Group>
+        </Field>
+        <Field>
+          <Name>IBD Audit code</Name>
+          <DataItemCode>IBD14</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>CONTACT: Site Identifiers</Group>
+        </Field>
+        <Field>
+          <Name>Date of Disease Characteristics</Name>
+          <DataItemCode>IBD357</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>DISEASE:
+Characteristics</Group>
+        </Field>
+        <Field>
+          <Name>Extra-intestinal manifestations</Name>
+          <DataItemCode>IBD358</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>DISEASE:
+Characteristics</Group>
+        </Field>
+        <Field>
+          <Name>Contact outcome (outcome of attendance)</Name>
+          <DataItemCode>IBD359</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>REVIEW</Group>
+        </Field>
+        <Field>
+          <Name>Date of Disease Activity Score</Name>
+          <DataItemCode>IBD388</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>OUTCOME: 
+Disease activity</Group>
+        </Field>
+        <Field>
+          <Name>Disease Activity Index</Name>
+          <DataItemCode>IBD389</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>OUTCOME: 
+Disease activity</Group>
+        </Field>
+        <Field>
+          <Name>Disease Activity Summary Score</Name>
+          <DataItemCode>IBD390</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>OUTCOME: 
+Disease activity</Group>
+        </Field>
+        <Field>
+          <Name>Immunity - CXR</Name>
+          <DataItemCode>IBD221</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>OUTCOME: 
+Pretreatment screening</Group>
+        </Field>
+        <Field>
+          <Name>Cdiff test</Name>
+          <DataItemCode>IBD222</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>OUTCOME: 
+Pretreatment screening</Group>
+        </Field>
+        <Field>
+          <Name>Immunity - HCV Serology</Name>
+          <DataItemCode>IBD223</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>OUTCOME: 
+Pretreatment screening</Group>
+        </Field>
+        <Field>
+          <Name>Immunity - HBV Serology</Name>
+          <DataItemCode>IBD224</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>OUTCOME: 
+Pretreatment screening</Group>
+        </Field>
+        <Field>
+          <Name>Immunity - HIV Serology</Name>
+          <DataItemCode>IBD225</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>OUTCOME: 
+Pretreatment screening</Group>
+        </Field>
+        <Field>
+          <Name>Immunity - VZV Serology</Name>
+          <DataItemCode>IBD228</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>OUTCOME: 
+Pretreatment screening</Group>
+        </Field>
+        <Field>
+          <Name>Immunity - CMV Serology</Name>
+          <DataItemCode>IBD381</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>OUTCOME: 
+Pretreatment screening</Group>
+        </Field>
+        <Field>
+          <Name>Immunity - EBV Serology</Name>
+          <DataItemCode>IBD382</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>OUTCOME: 
+Pretreatment screening</Group>
+        </Field>
+        <Field>
+          <Name>Immunity - TB Test</Name>
+          <DataItemCode>IBD226</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>OUTCOME: 
+Pretreatment screening</Group>
+        </Field>
+        <Field>
+          <Name>TB test type</Name>
+          <DataItemCode>IBD380</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>OUTCOME: 
+Pretreatment screening</Group>
+        </Field>
+        <Field>
+          <Name>Stool culture/test</Name>
+          <DataItemCode>IBD227</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>OUTCOME: 
+Pretreatment screening</Group>
+        </Field>
+        <Field>
+          <Name>Date of pretreatment screening 
+</Name>
+          <DataItemCode>IBD379</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>OUTCOME: 
+Pretreatment screening</Group>
+        </Field>
+        <Field>
+          <Name>Date of PGA</Name>
+          <DataItemCode>IBD391</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>OUTCOME: 
+Disease activity</Group>
+        </Field>
+        <Field>
+          <Name>Physicians Global Assessment</Name>
+          <DataItemCode>IBD236</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>OUTCOME: 
+Disease activity</Group>
+        </Field>
+        <Field>
+          <Name>Date of biomarker</Name>
+          <DataItemCode>IBD392</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>OUTCOME: 
+Disease activity</Group>
+        </Field>
+        <Field>
+          <Name>Type of biomarker</Name>
+          <DataItemCode>IBD393</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>OUTCOME: 
+Disease activity</Group>
+        </Field>
+        <Field>
+          <Name>Value of biomarker</Name>
+          <DataItemCode>IBD394</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>OUTCOME: 
+Disease activity</Group>
+        </Field>
+        <Field>
+          <Name>Date of colonoscopy</Name>
+          <DataItemCode>IBD395</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>OUTCOME:
+Colonoscopy</Group>
+        </Field>
+        <Field>
+          <Name>Colonoscopy findings</Name>
+          <DataItemCode>IBD396</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>OUTCOME:
+Colonoscopy</Group>
+        </Field>
+        <Field>
+          <Name>Dysplasia detected</Name>
+          <DataItemCode>IBD397</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>OUTCOME:
+Colonoscopy</Group>
+        </Field>
+        <Field>
+          <Name>Dysplasia location</Name>
+          <DataItemCode>IBD398</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>OUTCOME:
+Colonoscopy</Group>
+        </Field>
+      </Fields>
+    </File>
+    <File>
+      <Name>admission_abc.csv</Name>
+      <Fields>
+        <Field>
+          <Name>NHS Number</Name>
+          <DataItemCode>IBD01</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>ADMISSION: Identifiers</Group>
+        </Field>
+        <Field>
+          <Name>Date of birth</Name>
+          <DataItemCode>IBD02</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>ADMISSION: Identifiers</Group>
+        </Field>
+        <Field>
+          <Name>Date of hospital admission for IBD management</Name>
+          <DataItemCode>IBD39</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>INTERVENTION:
+Admission</Group>
+        </Field>
+        <Field>
+          <Name>Type of admission</Name>
+          <DataItemCode>IBD40</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>INTERVENTION:
+Admission</Group>
+        </Field>
+        <Field>
+          <Name>Reason for admission</Name>
+          <DataItemCode>IBD41</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>INTERVENTION:
+Admission</Group>
+        </Field>
+        <Field>
+          <Name>Date of discharge</Name>
+          <DataItemCode>IBD42</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>INTERVENTION:
+Admission</Group>
+        </Field>
+        <Field>
+          <Name>Local unit code</Name>
+          <DataItemCode>IBD13</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>ADMISSION: Site Identifiers</Group>
+        </Field>
+        <Field>
+          <Name>IBD Audit code</Name>
+          <DataItemCode>IBD14</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>ADMISSION: Site Identifiers</Group>
+        </Field>
+        <Field>
+          <Name>How many times admitted for IBD </Name>
+          <DataItemCode>IBD367</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>INTERVENTION:
+Admission</Group>
+        </Field>
+        <Field>
+          <Name>How much time in hospital past 12 months</Name>
+          <DataItemCode>IBD368</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>INTERVENTION:
+Admission</Group>
+        </Field>
+        <Field>
+          <Name>Outcome of admission</Name>
+          <DataItemCode>IBD369</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>INTERVENTION:
+Admission</Group>
+        </Field>
+      </Fields>
+    </File>
+    <File>
+      <Name>surgery_abc.csv</Name>
+      <Fields>
+        <Field>
+          <Name>NHS Number</Name>
+          <DataItemCode>IBD01</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>SURGERY: Identifiers</Group>
+        </Field>
+        <Field>
+          <Name>Date of birth</Name>
+          <DataItemCode>IBD02</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>SURGERY: Identifiers</Group>
+        </Field>
+        <Field>
+          <Name>Date of surgery</Name>
+          <DataItemCode>IBD43</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>INTERVENTION: Surgery</Group>
+        </Field>
+        <Field>
+          <Name>Hospital where surgery took place</Name>
+          <DataItemCode>IBD44</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>INTERVENTION: Surgery</Group>
+        </Field>
+        <Field>
+          <Name>Main Surgical Procedure</Name>
+          <DataItemCode>IBD45</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>INTERVENTION: Surgery</Group>
+        </Field>
+        <Field>
+          <Name>Other Surgical Procedure</Name>
+          <DataItemCode>IBD46</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>INTERVENTION: Surgery</Group>
+        </Field>
+        <Field>
+          <Name>Surgery performed laparoscopically</Name>
+          <DataItemCode>IBD47</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>INTERVENTION: Surgery</Group>
+        </Field>
+        <Field>
+          <Name>Local unit code</Name>
+          <DataItemCode>IBD13</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>SURGERY: Site Identifiers</Group>
+        </Field>
+        <Field>
+          <Name>IBD Audit code</Name>
+          <DataItemCode>IBD14</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>SURGERY: Site Identifiers</Group>
+        </Field>
+        <Field>
+          <Name>Time from referral to surgery</Name>
+          <DataItemCode>IBD370</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>INTERVENTION: Surgery</Group>
+        </Field>
+        <Field>
+          <Name>Elective/Emergency Surgery</Name>
+          <DataItemCode>IBD371</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>INTERVENTION: Surgery</Group>
+        </Field>
+        <Field>
+          <Name>Indication for surgery</Name>
+          <DataItemCode>IBD372</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>INTERVENTION: Surgery</Group>
+        </Field>
+        <Field>
+          <Name>IBD treatment pre-operation</Name>
+          <DataItemCode>IBD373</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>INTERVENTION: Surgery</Group>
+        </Field>
+        <Field>
+          <Name>Complications from surgery</Name>
+          <DataItemCode>IBD374</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>INTERVENTION: Surgery</Group>
+        </Field>
+        <Field>
+          <Name>Impact of complications from surgery</Name>
+          <DataItemCode>IBD375</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>INTERVENTION: Surgery</Group>
+        </Field>
+        <Field>
+          <Name>Stoma or ostomy created</Name>
+          <DataItemCode>IBD376</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>INTERVENTION: Surgery</Group>
+        </Field>
+        <Field>
+          <Name>Antithrombotic treatment given</Name>
+          <DataItemCode>IBD377</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>INTERVENTION: Surgery</Group>
+        </Field>
+      </Fields>
+    </File>
+    <File>
+      <Name>cancer_abc.csv</Name>
+      <Fields>
+        <Field>
+          <Name>NHS Number</Name>
+          <DataItemCode>IBD01</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>CANCER: Identifiers</Group>
+        </Field>
+        <Field>
+          <Name>Date of birth</Name>
+          <DataItemCode>IBD02</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>CANCER: Identifiers</Group>
+        </Field>
+        <Field>
+          <Name>Date of diagnosis of cancer</Name>
+          <DataItemCode>IBD48</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>OUTCOME: Cancer</Group>
+        </Field>
+        <Field>
+          <Name>Site of cancer</Name>
+          <DataItemCode>IBD49</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>OUTCOME: Cancer</Group>
+        </Field>
+        <Field>
+          <Name>Local unit code</Name>
+          <DataItemCode>IBD13</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>CANCER: Site Identifiers</Group>
+        </Field>
+        <Field>
+          <Name>IBD Audit code</Name>
+          <DataItemCode>IBD14</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>CANCER: Site Identifiers</Group>
+        </Field>
+        <Field>
+          <Name>Participation in colorectal cancer screening</Name>
+          <DataItemCode>IBD378</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>OUTCOME: Cancer</Group>
+        </Field>
+      </Fields>
+    </File>
+    <File>
+      <Name>growth_abc.csv</Name>
+      <Fields>
+        <Field>
+          <Name>NHS Number</Name>
+          <DataItemCode>IBD01</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>GROWTH: Identifiers</Group>
+        </Field>
+        <Field>
+          <Name>Date of birth</Name>
+          <DataItemCode>IBD02</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>GROWTH: Identifiers</Group>
+        </Field>
+        <Field>
+          <Name>Date of measurement</Name>
+          <DataItemCode>IBD50</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>OUTCOME:
+Health Outcome</Group>
+        </Field>
+        <Field>
+          <Name>Height (m)</Name>
+          <DataItemCode>IBD51</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>OUTCOME:
+Health Outcome</Group>
+        </Field>
+        <Field>
+          <Name>Weight (kg)</Name>
+          <DataItemCode>IBD52</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>OUTCOME:
+Health Outcome</Group>
+        </Field>
+        <Field>
+          <Name>Local unit code</Name>
+          <DataItemCode>IBD13</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>GROWTH: Site Identifiers</Group>
+        </Field>
+        <Field>
+          <Name>IBD Audit code</Name>
+          <DataItemCode>IBD14</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>GROWTH: Site Identifiers</Group>
+        </Field>
+      </Fields>
+    </File>
+    <File>
+      <Name>IbdImpact_abc.csv</Name>
+      <Fields>
+        <Field>
+          <Name>NHS Number</Name>
+          <DataItemCode>IBD01</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>IMPACT: Identifiers</Group>
+        </Field>
+        <Field>
+          <Name>Date of birth</Name>
+          <DataItemCode>IBD02</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>IMPACT: Identifiers</Group>
+        </Field>
+        <Field>
+          <Name>Date Occupation Status Recorded</Name>
+          <DataItemCode>IBD53</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>Outcome:
+IBDImpact</Group>
+        </Field>
+        <Field>
+          <Name>Primary Occupation Status</Name>
+          <DataItemCode>IBD54</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>Outcome:
+IBDImpact</Group>
+        </Field>
+        <Field>
+          <Name>Year Type</Name>
+          <DataItemCode>IBD55</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>Outcome:
+IBDImpact</Group>
+        </Field>
+        <Field>
+          <Name>Relevant Year</Name>
+          <DataItemCode>IBD56</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>Outcome:
+IBDImpact</Group>
+        </Field>
+        <Field>
+          <Name>Days lost - number</Name>
+          <DataItemCode>IBD57</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>Outcome:
+IBDImpact</Group>
+        </Field>
+        <Field>
+          <Name>Days lost - range</Name>
+          <DataItemCode>IBD58</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>Outcome:
+IBDImpact</Group>
+        </Field>
+        <Field>
+          <Name>Local unit code</Name>
+          <DataItemCode>IBD13</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>IMPACT: Site Identifiers</Group>
+        </Field>
+        <Field>
+          <Name>IBD Audit code</Name>
+          <DataItemCode>IBD14</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>IMPACT: Site Identifiers</Group>
+        </Field>
+        <Field>
+          <Name>Date of QoL measure</Name>
+          <DataItemCode>IBD383</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>OUTCOME:
+QoL</Group>
+        </Field>
+        <Field>
+          <Name>QoL instrument type</Name>
+          <DataItemCode>IBD384</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>OUTCOME:
+QoL</Group>
+        </Field>
+        <Field>
+          <Name>QoL measure (value)</Name>
+          <DataItemCode>IBD385</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>OUTCOME:
+QoL</Group>
+        </Field>
+      </Fields>
+    </File>
+    <File>
+      <Name>PromControl_abc.csv</Name>
+      <Fields>
+        <Field>
+          <Name>NHS Number</Name>
+          <DataItemCode>IBD01</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>PROMS: Identifiers</Group>
+        </Field>
+        <Field>
+          <Name>Date of birth</Name>
+          <DataItemCode>IBD02</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>PROMS: Identifiers</Group>
+        </Field>
+        <Field>
+          <Name>Date of Control PROM</Name>
+          <DataItemCode>IBD59</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>OUTCOME: PROM</Group>
+        </Field>
+        <Field>
+          <Name>Question1a</Name>
+          <DataItemCode>IBD60</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>OUTCOME:
+IBD Control-8</Group>
+        </Field>
+        <Field>
+          <Name>Question1b</Name>
+          <DataItemCode>IBD61</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>OUTCOME:
+IBD Control-8</Group>
+        </Field>
+        <Field>
+          <Name>Question2</Name>
+          <DataItemCode>IBD62</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>OUTCOME:
+IBD Control-8</Group>
+        </Field>
+        <Field>
+          <Name>Question3a</Name>
+          <DataItemCode>IBD63</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>OUTCOME:
+IBD Control-8</Group>
+        </Field>
+        <Field>
+          <Name>Question3b</Name>
+          <DataItemCode>IBD64</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>OUTCOME:
+IBD Control-8</Group>
+        </Field>
+        <Field>
+          <Name>Question3c</Name>
+          <DataItemCode>IBD65</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>OUTCOME:
+IBD Control-8</Group>
+        </Field>
+        <Field>
+          <Name>Question3d</Name>
+          <DataItemCode>IBD66</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>OUTCOME:
+IBD Control-8</Group>
+        </Field>
+        <Field>
+          <Name>Question3e</Name>
+          <DataItemCode>IBD67</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>OUTCOME:
+IBD Control-8</Group>
+        </Field>
+        <Field>
+          <Name>Question 3f</Name>
+          <DataItemCode>IBD68</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>OUTCOME:
+IBD Control-8</Group>
+        </Field>
+        <Field>
+          <Name>Question4a</Name>
+          <DataItemCode>IBD69</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>OUTCOME:
+IBD Control-8</Group>
+        </Field>
+        <Field>
+          <Name>Question4b</Name>
+          <DataItemCode>IBD70</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>OUTCOME:
+IBD Control-8</Group>
+        </Field>
+        <Field>
+          <Name>Question4c</Name>
+          <DataItemCode>IBD71</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>OUTCOME:
+IBD Control-8</Group>
+        </Field>
+        <Field>
+          <Name>Question4d</Name>
+          <DataItemCode>IBD72</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>OUTCOME:
+IBD Control-8</Group>
+        </Field>
+        <Field>
+          <Name>Question5Vas</Name>
+          <DataItemCode>IBD73</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>OUTCOME:
+IBD Control-8</Group>
+        </Field>
+        <Field>
+          <Name>IBDCTRL-8SCORE</Name>
+          <DataItemCode>IBD74</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>OUTCOME:
+IBD Control-8</Group>
+        </Field>
+        <Field>
+          <Name>Local unit code</Name>
+          <DataItemCode>IBD13</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>PROMS: Site Identifiers</Group>
+        </Field>
+        <Field>
+          <Name>IBD Audit code</Name>
+          <DataItemCode>IBD14</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>PROMS: Site Identifiers</Group>
+        </Field>
+        <Field>
+          <Name>Type of PROM</Name>
+          <DataItemCode>IBD386</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>OUTCOME: PROM</Group>
+        </Field>
+        <Field>
+          <Name>PROM Summary Score</Name>
+          <DataItemCode>IBD387</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>OUTCOME: PROM</Group>
+        </Field>
+      </Fields>
+    </File>
+    <File>
+      <Name>medication_abc.csv</Name>
+      <Fields>
+        <Field>
+          <Name>NHS Number</Name>
+          <DataItemCode>IBD01</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>MEDICATIONS: Identifiers</Group>
+        </Field>
+        <Field>
+          <Name>Date of birth</Name>
+          <DataItemCode>IBD02</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>MEDICATIONS: Identifiers</Group>
+        </Field>
+        <Field>
+          <Name>Drug Code</Name>
+          <DataItemCode>IBD75</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>INTERVENTION:
+Medication</Group>
+        </Field>
+        <Field>
+          <Name>Drug Start Date</Name>
+          <DataItemCode>IBD76</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>INTERVENTION:
+Medication</Group>
+        </Field>
+        <Field>
+          <Name>Drug End Date</Name>
+          <DataItemCode>IBD77</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>INTERVENTION:
+Medication</Group>
+        </Field>
+        <Field>
+          <Name>Dose</Name>
+          <DataItemCode>IBD78</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>INTERVENTION:
+Medication</Group>
+        </Field>
+        <Field>
+          <Name>Unit</Name>
+          <DataItemCode>IBD79</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>INTERVENTION:
+Medication</Group>
+        </Field>
+        <Field>
+          <Name>Frequency</Name>
+          <DataItemCode>IBD80</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>INTERVENTION:
+Medication</Group>
+        </Field>
+        <Field>
+          <Name>Route of Administration </Name>
+          <DataItemCode>IBD81</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>INTERVENTION:
+Medication</Group>
+        </Field>
+        <Field>
+          <Name>Drug End Reason</Name>
+          <DataItemCode>IBD82</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>INTERVENTION:
+Medication</Group>
+        </Field>
+        <Field>
+          <Name>Local unit code</Name>
+          <DataItemCode>IBD13</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>MEDICATIONS: Site Identifiers</Group>
+        </Field>
+        <Field>
+          <Name>IBD Audit code</Name>
+          <DataItemCode>IBD14</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>MEDICATIONS: Site Identifiers</Group>
+        </Field>
+        <Field>
+          <Name>IBD Biologics Audit site code</Name>
+          <DataItemCode>IBD200</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>INTERVENTION:
+Medication</Group>
+        </Field>
+        <Field>
+          <Name>Clinical indication (of drug)</Name>
+          <DataItemCode>IBD361</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>INTERVENTION:
+Medication</Group>
+        </Field>
+        <Field>
+          <Name>Induction regimen</Name>
+          <DataItemCode>IBD362</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>INTERVENTION:
+Medication</Group>
+        </Field>
+        <Field>
+          <Name>Induction regimen details</Name>
+          <DataItemCode>IBD363</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>INTERVENTION:
+Medication</Group>
+        </Field>
+        <Field>
+          <Name>Adverse event date</Name>
+          <DataItemCode>IBD364</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>INTERVENTION:
+Medication</Group>
+        </Field>
+        <Field>
+          <Name>Drug Change reason</Name>
+          <DataItemCode>IBD365</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>INTERVENTION:
+Medication</Group>
+        </Field>
+        <Field>
+          <Name>Drug Change Date</Name>
+          <DataItemCode>IBD366</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>INTERVENTION:
+Medication</Group>
+        </Field>
+        <Field>
+          <Name>Biologics - Date of Initiation or Review event</Name>
+          <DataItemCode>IBD201</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>INTERVENTION:
+Medication</Group>
+        </Field>
+        <Field>
+          <Name>If biologic, is the patient biologics naïve?</Name>
+          <DataItemCode>IBD208</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>INTERVENTION:
+Medication</Group>
+        </Field>
+        <Field>
+          <Name>Treatment plan</Name>
+          <DataItemCode>IBD231</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>INTERVENTION:
+Medication</Group>
+        </Field>
+        <Field>
+          <Name>Reason for treatment plan choice</Name>
+          <DataItemCode>IBD232</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>INTERVENTION:
+Medication</Group>
+        </Field>
+        <Field>
+          <Name>Adverse event Type IBD Audit </Name>
+          <DataItemCode>IBD234</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>INTERVENTION:
+Medication</Group>
+        </Field>
+        <Field>
+          <Name>Adverse event Type Registry</Name>
+          <DataItemCode>IBD235</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>INTERVENTION:
+Medication</Group>
+        </Field>
+      </Fields>
+    </File>
+    <File>
+      <Name>biologicsevent_abc.csv</Name>
+      <Fields>
+        <Field>
+          <Name>NHS Number</Name>
+          <DataItemCode>IBD01</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>BIOLOGICS: Identifiers</Group>
+        </Field>
+        <Field>
+          <Name>Date of birth</Name>
+          <DataItemCode>IBD02</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>BIOLOGICS: Identifiers</Group>
+        </Field>
+        <Field>
+          <Name>Biologics - Date of Initiation or Review event</Name>
+          <DataItemCode>IBD201</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>INTERVENTION:
+Medication</Group>
+        </Field>
+        <Field>
+          <Name>Biologics Event Type</Name>
+          <DataItemCode>IBD202</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>INTERVENTION:
+Medication</Group>
+        </Field>
+        <Field>
+          <Name>Biologic Treatment Type</Name>
+          <DataItemCode>IBD210</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>INTERVENTION:
+Medication</Group>
+        </Field>
+        <Field>
+          <Name>LocationCrohnsAdult (Montreal)</Name>
+          <DataItemCode>IBD203</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>INTERVENTION:
+Medication</Group>
+        </Field>
+        <Field>
+          <Name>Disease Proximal to terminal Ileum (Montreal L4)</Name>
+          <DataItemCode>IBD243</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>INTERVENTION:
+Medication</Group>
+        </Field>
+        <Field>
+          <Name>Extent of UC Adult (Montreal)</Name>
+          <DataItemCode>IBD204</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>INTERVENTION:
+Medication</Group>
+        </Field>
+        <Field>
+          <Name>LocationCrohnsPaediatric (Paris)</Name>
+          <DataItemCode>IBD205</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>INTERVENTION:
+Medication</Group>
+        </Field>
+        <Field>
+          <Name>Disease Proximal to terminal Ileum (Paris L4a L4b)</Name>
+          <DataItemCode>IBD255</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>INTERVENTION:
+Medication</Group>
+        </Field>
+        <Field>
+          <Name>If Crohns perianal involvement</Name>
+          <DataItemCode>IBD207</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>INTERVENTION:
+Medication</Group>
+        </Field>
+        <Field>
+          <Name>If biologic, is the patient biologics naïve?</Name>
+          <DataItemCode>IBD208</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>INTERVENTION:
+Medication</Group>
+        </Field>
+        <Field>
+          <Name>Reason for stopping previous biologic treatment</Name>
+          <DataItemCode>IBD209</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>INTERVENTION:
+Medication</Group>
+        </Field>
+        <Field>
+          <Name>Date of initial treatment (first loading dose)</Name>
+          <DataItemCode>IBD211</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>INTERVENTION:
+Medication</Group>
+        </Field>
+        <Field>
+          <Name>*Biologics - Clinical indication (UC)</Name>
+          <DataItemCode>IBD212</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>INTERVENTION:
+Medication</Group>
+        </Field>
+        <Field>
+          <Name>*Biologics - Clinical indication (IBDU)</Name>
+          <DataItemCode>IBD213</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>INTERVENTION:
+Medication</Group>
+        </Field>
+        <Field>
+          <Name>*Biologics - Clinical indication (CD)</Name>
+          <DataItemCode>IBD214</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>INTERVENTION:
+Medication</Group>
+        </Field>
+        <Field>
+          <Name>*Biologics - Clinical indication Other</Name>
+          <DataItemCode>IBD215</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>INTERVENTION:
+Medication</Group>
+        </Field>
+        <Field>
+          <Name>Biologics - Patient receiving concomitant immunosupression</Name>
+          <DataItemCode>IBD216</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>INTERVENTION:
+Medication</Group>
+        </Field>
+        <Field>
+          <Name>Concomitant immunosuppression therapies</Name>
+          <DataItemCode>IBD217</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>INTERVENTION:
+Medication</Group>
+        </Field>
+        <Field>
+          <Name>Biologics - Has the patient previously failed to respond or is intolerant to IMM drugs/steroids?</Name>
+          <DataItemCode>IBD218</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>INTERVENTION:
+Medication</Group>
+        </Field>
+        <Field>
+          <Name>Biologics - Specify drugs not tolerated/reacted to</Name>
+          <DataItemCode>IBD219</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>INTERVENTION:
+Medication</Group>
+        </Field>
+        <Field>
+          <Name>Biologics initiation - any acute reaction recorded?</Name>
+          <DataItemCode>IBD220</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>INTERVENTION:
+Medication</Group>
+        </Field>
+        <Field>
+          <Name>Immunity - CXR</Name>
+          <DataItemCode>IBD221</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>OUTCOME: 
+Pretreatment screening</Group>
+        </Field>
+        <Field>
+          <Name>Cdiff test</Name>
+          <DataItemCode>IBD222</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>OUTCOME: 
+Pretreatment screening</Group>
+        </Field>
+        <Field>
+          <Name>Immunity - HCV Serology</Name>
+          <DataItemCode>IBD223</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>OUTCOME: 
+Pretreatment screening</Group>
+        </Field>
+        <Field>
+          <Name>Immunity - HBV Serology</Name>
+          <DataItemCode>IBD224</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>OUTCOME: 
+Pretreatment screening</Group>
+        </Field>
+        <Field>
+          <Name>Immunity - HIV Serology</Name>
+          <DataItemCode>IBD225</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>OUTCOME: 
+Pretreatment screening</Group>
+        </Field>
+        <Field>
+          <Name>Immunity - TB Test</Name>
+          <DataItemCode>IBD226</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>OUTCOME: 
+Pretreatment screening</Group>
+        </Field>
+        <Field>
+          <Name>Stool culture/test</Name>
+          <DataItemCode>IBD227</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>OUTCOME: 
+Pretreatment screening</Group>
+        </Field>
+        <Field>
+          <Name>Immunity - VZV Serology</Name>
+          <DataItemCode>IBD228</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>OUTCOME: 
+Pretreatment screening</Group>
+        </Field>
+        <Field>
+          <Name>Biologics review - response to induction therapy</Name>
+          <DataItemCode>IBD229</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>INTERVENTION:
+Medication</Group>
+        </Field>
+        <Field>
+          <Name>Biologics review - Current status</Name>
+          <DataItemCode>IBD230</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>INTERVENTION:
+Medication</Group>
+        </Field>
+        <Field>
+          <Name>Treatment plan</Name>
+          <DataItemCode>IBD231</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>INTERVENTION:
+Medication</Group>
+        </Field>
+        <Field>
+          <Name>Reason for treatment plan choice</Name>
+          <DataItemCode>IBD232</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>INTERVENTION:
+Medication</Group>
+        </Field>
+        <Field>
+          <Name>Biologics Review - Adverse events recorded</Name>
+          <DataItemCode>IBD233</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>INTERVENTION:
+Medication</Group>
+        </Field>
+        <Field>
+          <Name>Adverse event Type IBD Audit </Name>
+          <DataItemCode>IBD234</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>INTERVENTION:
+Medication</Group>
+        </Field>
+        <Field>
+          <Name>Adverse event Type Registry</Name>
+          <DataItemCode>IBD235</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>INTERVENTION:
+Medication</Group>
+        </Field>
+        <Field>
+          <Name>Physicians Global Assessment</Name>
+          <DataItemCode>IBD236</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>OUTCOME: 
+Disease activity</Group>
+        </Field>
+        <Field>
+          <Name>*HBI Total Score</Name>
+          <DataItemCode>IBD237</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>INTERVENTION:
+Medication</Group>
+        </Field>
+        <Field>
+          <Name>*weightedPCDAI</Name>
+          <DataItemCode>IBD238</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>INTERVENTION:
+Medication</Group>
+        </Field>
+        <Field>
+          <Name>*SCCAI</Name>
+          <DataItemCode>IBD239</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>INTERVENTION:
+Medication</Group>
+        </Field>
+        <Field>
+          <Name>*Modified UCDAI</Name>
+          <DataItemCode>IBD240</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>INTERVENTION:
+Medication</Group>
+        </Field>
+        <Field>
+          <Name>*PUCAI </Name>
+          <DataItemCode>IBD241</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>INTERVENTION:
+Medication</Group>
+        </Field>
+        <Field>
+          <Name>Local unit code</Name>
+          <DataItemCode>IBD13</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>BIOLOGICS: Site Identifiers</Group>
+        </Field>
+        <Field>
+          <Name>IBD Audit code</Name>
+          <DataItemCode>IBD14</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>BIOLOGICS: Site Identifiers</Group>
+        </Field>
+        <Field>
+          <Name>IBD Biologics Audit site code</Name>
+          <DataItemCode>IBD200</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>INTERVENTION:
+Medication</Group>
+        </Field>
+      </Fields>
+    </File>
+  </PatientFiles>
+  <SubmissionFiles>
+    <File>
+      <Name>provenance_abc.csv</Name>
+      <Fields>
+        <Field>
+          <Name>Data capture tool</Name>
+          <DataItemCode>IBD300</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>PROVENANCE</Group>
+        </Field>
+        <Field>
+          <Name>Data capture tool version</Name>
+          <DataItemCode>IBD301</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>PROVENANCE</Group>
+        </Field>
+        <Field>
+          <Name>Datestamp submitted to Registry</Name>
+          <DataItemCode>IBD302</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>PROVENANCE</Group>
+        </Field>
+        <Field>
+          <Name>Submitting user</Name>
+          <DataItemCode>IBD304</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>PROVENANCE</Group>
+        </Field>
+        <Field>
+          <Name>Submitting Trust</Name>
+          <DataItemCode>IBD306</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>PROVENANCE</Group>
+        </Field>
+        <Field>
+          <Name>Dataset</Name>
+          <DataItemCode>IBD399</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>PROVENANCE</Group>
+        </Field>
+        <Field>
+          <Name>Local unit code</Name>
+          <DataItemCode>IBD13</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>PROVENANCE</Group>
+        </Field>
+        <Field>
+          <Name>IBD Audit code</Name>
+          <DataItemCode>IBD14</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>PROVENANCE</Group>
+        </Field>
+      </Fields>
+    </File>
+  </SubmissionFiles>
+</DataSubmissionSpecification>

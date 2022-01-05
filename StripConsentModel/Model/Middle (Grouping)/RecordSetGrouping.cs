@@ -6,7 +6,7 @@ namespace StripV3Consent.Model
     /// <summary>
     /// All of the recordsets from all of the files
     /// </summary>
-    class RecordSetGrouping
+    public class RecordSetGrouping
     {
         public List<RecordSet> RecordSets;
 

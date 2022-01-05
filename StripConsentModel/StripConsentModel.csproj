@@ -40,17 +40,39 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model\DataFile.cs" />
-    <Compile Include="Model\DataItemCodes.cs" />
-    <Compile Include="Model\Exceptions.cs" />
-    <Compile Include="Model\FileValidationState.cs" />
-    <Compile Include="Model\ImportFile.cs" />
-    <Compile Include="Model\LoadedFile.cs" />
-    <Compile Include="Model\Record.cs" />
-    <Compile Include="Model\RecordSet.cs" />
-    <Compile Include="Model\RecordSetGrouping.cs" />
-    <Compile Include="Model\Spec2021K.cs" />
+    <Compile Include="Model\Common\DataFile.cs" />
+    <Compile Include="Model\Common\DataItemCodes.cs" />
+    <Compile Include="Model\Common\Exceptions.cs" />
+    <Compile Include="Model\Import\FileValidationState.cs" />
+    <Compile Include="Model\Import\NationalOptOutFile.cs" />
+    <Compile Include="Model\Import\ImportFile.cs" />
+    <Compile Include="Model\Output\LoadedFile.cs" />
+    <Compile Include="Model\Middle %28Grouping%29\Record.cs" />
+    <Compile Include="Model\Middle %28Grouping%29\RecordSet.cs" />
+    <Compile Include="Model\Middle %28Grouping%29\RecordSetGrouping.cs" />
+    <Compile Include="Model\Import\RegistryImportFile.cs" />
+    <Compile Include="Model\Common\Spec2021K.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Encode2021KAsXML\XML 2021K Classes\XML 2021K Classes.csproj">
+      <Project>{aff69946-d8e3-4c11-80d1-ecc1f1004ccc}</Project>
+      <Name>XML 2021K Classes</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\2021_K IBD Registry Submission Dataset V01 %28Nov 2021%29.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -7,9 +7,10 @@ using System.Threading.Tasks;
 
 namespace StripV3Consent.Model
 {
-    public class ImportFile : DataFile
+    public class NationalOptOutFile : DataFile
     {
-        public ImportFile(string path) : base(path)
+
+        public NationalOptOutFile(string path) : base(path)
         {
         }
 
@@ -19,19 +20,12 @@ namespace StripV3Consent.Model
             {
                 FileValidationState ReturnValue = new FileValidationState();
 
-                if (File.Extension != ".csv") { return new FileValidationState() { IsValid = ValidState.Error, Message = "File not CSV type" }; };
+                if (File.Extension != ".dat") { return new FileValidationState() { IsValid = ValidState.Error, Message = "File not DAT type" }; };
 
-                string[] SpecificationFileNames = Spec2021K.Specification.PatientFiles.Select(SpecificationFile => SpecificationFile.SimplifiedName).ToArray();
-
-                //If any of the words from 2021K's filenames (patient, consent, contact, admission) are in the current filename
-                if (!SpecificationFileNames.Select(SpecificationFileName => File.Name.Contains(SpecificationFileName)).Contains(true))
-                {
-                    return new FileValidationState() { IsValid = ValidState.Warning, Message = "File name not in expected list of file names" };
-                }
 
                 if (IsCommaDelimited() != true)
                 {
-                    return new FileValidationState() { IsValid = ValidState.Error, Message = "CSV file not comma separated" };
+                    return new FileValidationState() { IsValid = ValidState.Error, Message = "DAT file not comma separated" };
                 }
 
 
@@ -39,34 +33,7 @@ namespace StripV3Consent.Model
             }
         }
 
-        public bool ContainsHeaders
-        {
-            get
-            {
-                String TopLeftValue = null;
-                using (StreamReader StreamReader = new StreamReader(this.Path))
-                {
-                    StringBuilder TopLeftValueBuilder = new StringBuilder();
-                    while ((char)StreamReader.Peek() != ',')
-                    {
-                        TopLeftValueBuilder.Append((char)StreamReader.Read());
-                    }
-                    TopLeftValue = TopLeftValueBuilder.ToString();
-                }
-
-                if (TopLeftValue.StartsWith("HEADER_"))
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-
-            }
-        }
-
-        public bool IsCommaDelimited()
+        private bool IsCommaDelimited()
         {
             //Crudely tries to find if the file is comma delimited by seeing what is the most common char out of common delimiters
             //Especially tab as excel loves to swap commas for tabs in csv files
@@ -90,7 +57,6 @@ namespace StripV3Consent.Model
 
         private File2DArray SplitIntoBoxed2DArrayWithHeaders(string File)
         {
-#warning deal with \r\n polluting stuff
             string RowSeparator = "\r\n";       
             char ColumnSeparator = ',';
 
@@ -108,20 +74,13 @@ namespace StripV3Consent.Model
             List<string[]> RowstoRemove = new List<string[]>();
             RowstoRemove.AddRange(EmptyRows);
 
-            if (ContainsHeaders)
-            {
-                RowstoRemove.Add(TwoDList[0]);  //Remove headers from content
-                Return2DArray.Headers = TwoDList[0];
-            }
             Return2DArray.Content = TwoDList.Except(RowstoRemove).ToArray();
 
 
             return Return2DArray;
         }
 
-
-
-        public File2DArray SplitInto2DArray()
+        public string[][] SplitInto2DArray()
         {
             string FileContent = null;
             using (StreamReader reader = new StreamReader(this.Path))
@@ -130,18 +89,6 @@ namespace StripV3Consent.Model
             }
 
             return SplitIntoBoxed2DArrayWithHeaders(FileContent);
-        }
-    }
-
-    public static class StringArrayExtension
-    {
-        public static bool IsEmpty(this string[] Array)
-        {
-            if (Array.Length == 1 & Array[0] == "") { return true; }
-
-            if (Array.All(element => element == Array[0])) { return true; }
-
-            return false;
         }
     }
 }

@@ -23,7 +23,7 @@ namespace StripV3Consent
 
         private void Execute()
         {
-            RecordSetGrouping RecordsGroupedByPatient = new RecordSetGrouping(DropFilesHerePanel.FileList.Files);
+            RecordSetGrouping RecordsGroupedByPatient = new Model.RecordSetGrouping(DropFilesHerePanel.FileList.Files);
 
             List<RecordSet> RemovedRecords = RecordsGroupedByPatient.RecordSets.Where(RecordSet => RecordSet.IsConsentValid == false).ToList<RecordSet>();
 
