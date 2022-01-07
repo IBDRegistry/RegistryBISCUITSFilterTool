@@ -116,9 +116,9 @@ namespace StripV3Consent
 
         private void ImportFilesChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            var SourceCollection = sender as ObservableCollection<ImportFile>;
+            ImportFile[] ValidFiles = (sender as ObservableCollection<ImportFile>).Where(file => file.IsValid.IsValid != ValidState.Error & file.IsValid.IsValid != ValidState.None).ToArray();
 
-            if (SourceCollection.Count > 0)
+            if (ValidFiles.Length > 0)
             {
                 ExecuteButton.Enabled = true;
             } else
@@ -129,9 +129,9 @@ namespace StripV3Consent
 
         private void OutputFilesChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            var OutputCollection = sender as ObservableCollection<OutputFile>;
+            var OutputFiles = sender as ObservableCollection<OutputFile>;
 
-            if (OutputCollection.Count > 0)
+            if (OutputFiles.Count > 0)
             {
                 SaveButton.Enabled = true;
             }

@@ -19,7 +19,7 @@ namespace StripV3Consent.View
             {
                 patient = value;
                 Draw();
-                //int HeightOfAllControls = Controls.Cast<Control>().Select(control => control.Height).Aggregate()
+                
             }
         }
 
@@ -28,7 +28,6 @@ namespace StripV3Consent.View
             BorderStyle = BorderStyle.FixedSingle;
             UseAnimation = false;
             IsExpanded = false;
-            UseAnimation = true;
             AutoSize = true;
             ForeColor = System.Drawing.Color.Black;
 
@@ -43,10 +42,19 @@ namespace StripV3Consent.View
                 Dock = DockStyle.Top,
             });
 
-
+            ExpandCollapse += RemovedPatient_ExpandCollapse;
             
 
             
+        }
+
+        private void RemovedPatient_ExpandCollapse(object sender, ExpandCollapseEventArgs e)
+        {
+            if (e.IsExpanded)
+            {   //AutoSize is screwy on ExpandCollapsePanel, this approximates it
+                int HeightOfAllControls = Controls.Cast<Control>().Select(control => control.Height).Sum();
+                Height = HeightOfAllControls;
+            }
         }
 
         private void Draw()
@@ -113,5 +121,7 @@ namespace StripV3Consent.View
                                                                     //elements have to be inserted at the beginning so that they are added last
             }
         }
+
+
     }
 }
