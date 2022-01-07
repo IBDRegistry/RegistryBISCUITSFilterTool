@@ -178,18 +178,6 @@ namespace StripV3Consent.Model
 
             return SplitIntoBoxed2DArrayWithHeaders(FileContent);
         }
-
-        public static ImportFile DecideWhichDerivation(string Path)
-        {
-            if (System.IO.Path.GetExtension(Path) == ".dat")
-            {
-                return new NationalOptOutFile(Path);
-            }
-            else
-            {
-                return new RegistryImportFile(Path);
-            }
-        }
     }
 
     public static class StringArrayExtension
