@@ -6,6 +6,7 @@ using System.Text;
 namespace StripV3Consent.Model
 {
     public enum ValidState {
+        None,
         Good,
         Warning,
         Error

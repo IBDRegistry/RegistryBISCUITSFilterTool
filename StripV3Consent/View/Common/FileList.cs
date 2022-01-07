@@ -39,9 +39,6 @@ namespace StripV3Consent.View
             }
         }
 
-
-        //public void Add(DataFileType item) => files.Add(item);
-
         public void AddRange(DataFileType[] items)
         {
             foreach (DataFileType item in items)

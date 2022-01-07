@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace StripV3Consent.Model
 {
-    public abstract class ImportFile : DataFile
+    public class ImportFile : DataFile
     {
         public ImportFile(string path) : base(path)
         {
@@ -50,6 +50,11 @@ namespace StripV3Consent.Model
                     ReturnValue.Organisation = FileOrganisation.NHS;
                     ReturnValue.IsValid = ValidState.Warning;
                     ReturnValue.Message = "National Opt-Out file";
+                } else
+                {
+                    ReturnValue.Organisation = FileOrganisation.Unknown;
+                    ReturnValue.IsValid = ValidState.None;
+                    ReturnValue.Message = "Unknown file type";
                 }
 
                 return ReturnValue;
@@ -133,7 +138,6 @@ namespace StripV3Consent.Model
 
         }
 
-
         private File2DArray SplitIntoBoxed2DArrayWithHeaders(string File)
         {
             string RowSeparator = LineEndingsInFile();       
@@ -198,6 +202,38 @@ namespace StripV3Consent.Model
 
             return false;
         }
+    }
+
+    public static class FileChecking
+    {
+        public enum RegistryFileCheckResult
+        {
+            IsRegistry,
+            IsNotRegistry,
+            IsNotCSV
+        }
+        public static RegistryFileCheckResult IsRegistryFile(string path)
+        {
+            if (Path.GetExtension(path) == ".csv")
+            {
+                string[] SpecificationFileNames = Spec2021K.Specification.PatientFiles.Select(SpecificationFile => SpecificationFile.SimplifiedName).ToArray();
+
+                //If any of the words from 2021K's filenames (patient, consent, contact, admission) are in the current filename
+                if (SpecificationFileNames.Select(SpecificationFileName => Path.GetFileNameWithoutExtension(path).Contains(SpecificationFileName)).Contains(true))
+                {
+                    return RegistryFileCheckResult.IsRegistry;
+                }
+                else
+                {
+                    return RegistryFileCheckResult.IsNotRegistry;
+                }
+            } else
+            {
+                return RegistryFileCheckResult.IsNotCSV;
+            }
+        }
+
+
     }
 
     

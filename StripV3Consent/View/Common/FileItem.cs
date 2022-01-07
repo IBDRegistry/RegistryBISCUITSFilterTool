@@ -55,7 +55,6 @@ namespace StripV3Consent.View
             FileIcon = new PictureBox()
             {
                 Image = Icon.ExtractAssociatedIcon(file.Path).ToBitmap(),
-                //SizeMode = PictureBoxSizeMode.AutoSize
                 Width = InteriorSize,
                 Height = InteriorSize
             };

@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace StripV3Consent.View
 {
-    public class OutputFileItem: AbstractFileItem<LoadedFile>
+    public class OutputFileItem: AbstractFileItem<OutputFile>
     {
-        public OutputFileItem(LoadedFile file) : base(file)
+        public OutputFileItem(OutputFile file) : base(file)
         {
 
         }

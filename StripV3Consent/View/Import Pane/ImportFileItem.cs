@@ -19,37 +19,12 @@ namespace StripV3Consent.View
         {
             base.DrawContents();
 
-            //Icon ValidationImage = null;
-            //FileValidationState FileValidation = base.File.IsValid;
-            //switch (FileValidation.IsValid)
-            //{
-            //    case ValidState.Good:
-            //        ValidationImage = Properties.Resources.good;
-            //        break;
-            //    case ValidState.Warning:
-            //        ValidationImage = Properties.Resources.warning;
-            //        break;
-            //    case ValidState.Error:
-            //        ValidationImage = Properties.Resources.error;
-            //        break;
-            //}
-
             PictureBox ValidationPictureBox = new IconWithSubIcon()
             {
                 Model = base.File.IsValid
             };
-            //{
-            //    Image = ValidationImage.ToBitmap(),
-            //    SizeMode = PictureBoxSizeMode.AutoSize
-            //};
 
             this.Controls.Add(ValidationPictureBox);
-
-
-            
-
-
-
         }
     }
 
@@ -118,7 +93,7 @@ namespace StripV3Consent.View
                     break;
             }
 
-            LittleIcon.Image = ValidImage.ToBitmap();
+            LittleIcon.Image = ValidImage?.ToBitmap();
 
 
 

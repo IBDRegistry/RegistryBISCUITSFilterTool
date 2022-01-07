@@ -6,6 +6,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel;
 using Microsoft.WindowsAPICodePack.Dialogs;
+using System.Collections.ObjectModel;
 
 namespace StripV3Consent
 {
@@ -15,6 +16,7 @@ namespace StripV3Consent
         {
             InitializeComponent();
             DropFilesHerePanel.FileList.Files.CollectionChanged += ImportFilesChanged;
+            LoadedFilesPanel.FileList.Files.CollectionChanged += OutputFilesChanged;
         }
 
         private void ExecuteButton_Click(object sender, EventArgs e)
@@ -30,7 +32,7 @@ namespace StripV3Consent
 
             RecordSetGrouping RecordSetsWithConsent = (RecordSetGrouping)RecordsGroupedByPatient.RecordSets.Where(RecordSet => RecordSet.IsConsentValid == true).ToList<RecordSet>();
 
-            LoadedFile[] OutputFiles = RecordSetsWithConsent.SplitBackUpIntoFiles();
+            OutputFile[] OutputFiles = RecordSetsWithConsent.SplitBackUpIntoFiles();
 
             RemovedPatientsPanel.RemovedRecords = new BindingList<RecordSet>(RemovedRecords);
 
@@ -90,7 +92,7 @@ namespace StripV3Consent
 
                 List<string> FilesToWrite = LoadedFilesPanel.FileList.Files.Select(OutputFile => OutputFile.RepackIntoString()).ToList<string>();
 
-                foreach(LoadedFile OutFile in LoadedFilesPanel.FileList.Files)
+                foreach(OutputFile OutFile in LoadedFilesPanel.FileList.Files)
                 {
                     string OutPath = OutputFolder + OutFile.Name;
 #warning add try catch for StreamWriter I/O
@@ -114,7 +116,29 @@ namespace StripV3Consent
 
         private void ImportFilesChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            e.
+            var SourceCollection = sender as ObservableCollection<ImportFile>;
+
+            if (SourceCollection.Count > 0)
+            {
+                ExecuteButton.Enabled = true;
+            } else
+            {
+                ExecuteButton.Enabled = false;
+            }
+        }
+
+        private void OutputFilesChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            var OutputCollection = sender as ObservableCollection<OutputFile>;
+
+            if (OutputCollection.Count > 0)
+            {
+                SaveButton.Enabled = true;
+            }
+            else
+            {
+                SaveButton.Enabled = false;
+            }
         }
 
     }

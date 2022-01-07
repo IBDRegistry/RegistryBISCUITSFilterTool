@@ -42,7 +42,7 @@ namespace StripV3Consent.Model
 
         }
 
-        public LoadedFile[] SplitBackUpIntoFiles()
+        public OutputFile[] SplitBackUpIntoFiles()
         {
             IEnumerable<Record> AllRecords = RecordSets.Select(rs => rs.Records).SelectMany<IEnumerable<Record>, Record>(x => x);
 
@@ -55,7 +55,7 @@ namespace StripV3Consent.Model
 
 
             var Files = RecordsGroupedByOriginalFiles.Select(
-                                                        RecordArray => new LoadedFile
+                                                        RecordArray => new OutputFile
                                                         (
                                                             content: RecordArray.Select(r => r.DataRecord).ToArray(),
                                                             file: RecordArray.First().OriginalFile.File
@@ -67,7 +67,7 @@ namespace StripV3Consent.Model
 
         }
 
-        public static explicit operator LoadedFile[](RecordSetGrouping RSG) => RSG.SplitBackUpIntoFiles();
+        public static explicit operator OutputFile[](RecordSetGrouping RSG) => RSG.SplitBackUpIntoFiles();
 
         public static explicit operator RecordSetGrouping(List<RecordSet> ListOfRecordSets) => new RecordSetGrouping(ListOfRecordSets);
 
