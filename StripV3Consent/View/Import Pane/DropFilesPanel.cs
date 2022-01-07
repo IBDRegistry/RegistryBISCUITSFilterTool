@@ -36,7 +36,7 @@ namespace StripV3Consent.View
             string[] FilePaths = (string[])e.Data.GetData(DataFormats.FileDrop);
             this.Controls.Clear();
             this.Controls.Add(FileList);
-            FileList.AddRange(FilePaths.Select(Path => new ImportFile(Path)).ToArray());
+            FileList.AddRange(FilePaths.Select<string, ImportFile>(Path => ImportFile.DecideWhichDerivation(Path)).ToArray());
         }
 
 

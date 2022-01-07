@@ -10,7 +10,10 @@ namespace StripV3Consent.View
 {
     class OutputFilesPanel : Panel
     {
-        public FileList<OutputFileItem, LoadedFile> FileList = new FileList<OutputFileItem, LoadedFile>();
+        public FileList<OutputFileItem, LoadedFile> FileList = new FileList<OutputFileItem, LoadedFile>()
+        {
+            RemoveButtons = false
+        };
 
         public OutputFilesPanel()
         {

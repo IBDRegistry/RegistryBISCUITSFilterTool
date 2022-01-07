@@ -19,34 +19,111 @@ namespace StripV3Consent.View
         {
             base.DrawContents();
 
-            Icon ValidationImage = null;
-            FileValidationState FileValidation = base.File.IsValid;
-            switch (FileValidation.IsValid)
-            {
-                case ValidState.Good:
-                    ValidationImage = Properties.Resources.good;
-                    break;
-                case ValidState.Warning:
-                    ValidationImage = Properties.Resources.warning;
-                    break;
-                case ValidState.Error:
-                    ValidationImage = Properties.Resources.error;
-                    break;
-            }
+            //Icon ValidationImage = null;
+            //FileValidationState FileValidation = base.File.IsValid;
+            //switch (FileValidation.IsValid)
+            //{
+            //    case ValidState.Good:
+            //        ValidationImage = Properties.Resources.good;
+            //        break;
+            //    case ValidState.Warning:
+            //        ValidationImage = Properties.Resources.warning;
+            //        break;
+            //    case ValidState.Error:
+            //        ValidationImage = Properties.Resources.error;
+            //        break;
+            //}
 
-            PictureBox ValidationPictureBox = new PictureBox()
+            PictureBox ValidationPictureBox = new IconWithSubIcon()
             {
-                Image = ValidationImage.ToBitmap(),
-                SizeMode = PictureBoxSizeMode.AutoSize
+                Model = base.File.IsValid
             };
+            //{
+            //    Image = ValidationImage.ToBitmap(),
+            //    SizeMode = PictureBoxSizeMode.AutoSize
+            //};
 
             this.Controls.Add(ValidationPictureBox);
 
 
-            new ToolTip() { ShowAlways = true }.SetToolTip(ValidationPictureBox, FileValidation.Message);
+            
 
 
 
         }
+    }
+
+    class IconWithSubIcon : PictureBox
+    {
+        private FileValidationState model;
+
+        public FileValidationState Model
+        {
+            get => model;
+            set
+            {
+                model = value;
+                Draw();
+            }
+        }
+
+        private const int width = 32;
+        private const int height = width;
+
+        private PictureBox LittleIcon = new PictureBox()
+        {
+            Width = width / 2,
+            Height = height /2,
+            Location = new Point(width / 2, height / 2),    //Anchoring to the bottom right just doesn't seem to work so in the meantime just position the top left to the middle
+            //Anchor = AnchorStyles.Bottom | AnchorStyles.Right,
+            SizeMode = PictureBoxSizeMode.StretchImage,
+            BackColor = Color.Transparent
+        };
+
+        public IconWithSubIcon()
+        {
+            Width = width;
+            Height = height;
+            SizeMode = PictureBoxSizeMode.StretchImage;
+
+            this.Controls.Add(LittleIcon);
+        }
+
+        private void Draw()
+        {
+            switch (Model.Organisation)
+            {
+                case FileOrganisation.NHS:
+                    Image = Properties.Resources.nhs_logo_square;
+                    break;
+                case FileOrganisation.Registry:
+                    Image = Properties.Resources.ibdregistry;
+                    break;
+                case FileOrganisation.Unknown:
+                    Image = Properties.Resources.help_question_mark.ToBitmap();
+                    break;
+            }
+
+            Icon ValidImage = null;
+            switch (Model.IsValid)
+            {
+                case ValidState.Good:
+                    ValidImage = Properties.Resources.good;
+                    break;
+                case ValidState.Warning:
+                    ValidImage = Properties.Resources.warning;
+                    break;
+                case ValidState.Error:
+                    ValidImage = Properties.Resources.error;
+                    break;
+            }
+
+            LittleIcon.Image = ValidImage.ToBitmap();
+
+
+
+            new ToolTip() { ShowAlways = true }.SetToolTip(this, Model.Message);
+        }
+        
     }
 }

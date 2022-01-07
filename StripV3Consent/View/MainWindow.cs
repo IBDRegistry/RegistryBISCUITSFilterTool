@@ -14,6 +14,7 @@ namespace StripV3Consent
         public MainWindow()
         {
             InitializeComponent();
+            DropFilesHerePanel.FileList.Files.CollectionChanged += ImportFilesChanged;
         }
 
         private void ExecuteButton_Click(object sender, EventArgs e)
@@ -23,7 +24,7 @@ namespace StripV3Consent
 
         private void Execute()
         {
-            RecordSetGrouping RecordsGroupedByPatient = new Model.RecordSetGrouping(DropFilesHerePanel.FileList.Files);
+            RecordSetGrouping RecordsGroupedByPatient = new Model.RecordSetGrouping(DropFilesHerePanel.FileList.Files.Where(File => File.IsValid.IsValid == ValidState.Good || File.IsValid.IsValid == ValidState.Warning).ToArray());
 
             List<RecordSet> RemovedRecords = RecordsGroupedByPatient.RecordSets.Where(RecordSet => RecordSet.IsConsentValid == false).ToList<RecordSet>();
 
@@ -33,7 +34,7 @@ namespace StripV3Consent
 
             RemovedPatientsPanel.RemovedRecords = new BindingList<RecordSet>(RemovedRecords);
 
-            LoadedFilesPanel.FileList.Files = OutputFiles;
+            LoadedFilesPanel.FileList.AddRange(OutputFiles);
 
             
         }
@@ -109,6 +110,11 @@ namespace StripV3Consent
                 System.Diagnostics.Process.Start(startInfo);
 
             }
+        }
+
+        private void ImportFilesChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            e.
         }
 
     }

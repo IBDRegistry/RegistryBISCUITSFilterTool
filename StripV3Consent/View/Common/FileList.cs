@@ -13,25 +13,19 @@ namespace StripV3Consent.View
                                                        where FileItemType : AbstractFileItem<DataFileType> 
                                                        where DataFileType : DataFile
     {
-        private ObservableCollection<DataFileType> files = new ObservableCollection<DataFileType>();
-        public DataFileType[] Files
+
+        #region files
+        public ObservableCollection<DataFileType> Files = new ObservableCollection<DataFileType>();
+
+        public FileList(DataFileType[] files) : this()
         {
-            get => files.ToArray();
-            set
-            {
-                files = new ObservableCollection<DataFileType>(value);
-                files.CollectionChanged += RedrawList;
-                RedrawList(files, new EventArgs());
-            }
+            AddRange(files);
         }
 
-        public FileList(DataFileType[] files)
-        {
-            Files = files;
-
-            CustomizeControl();
+        public FileList() {
+            Files.CollectionChanged += RedrawList;
+            CustomizeControl(); 
         }
-        public FileList() { CustomizeControl(); }
 
         public DataFileType this[int index]
         {
@@ -46,29 +40,27 @@ namespace StripV3Consent.View
         }
 
 
-        public void Add(DataFileType item) => files.Add(item);
+        //public void Add(DataFileType item) => files.Add(item);
 
         public void AddRange(DataFileType[] items)
         {
             foreach (DataFileType item in items)
             {
-                Add(item);
+                Files.Add(item);
             }
         }
 
-        public void Clear() => files.Clear();
 
-        public bool Remove(DataFileType item) => files.Remove(item);
+        public static explicit operator DataFileType[](FileList<FileItemType, DataFileType> me) => me.Files.ToArray();
+        public static explicit operator FileList<FileItemType, DataFileType>(DataFileType[] array) => new FileList<FileItemType, DataFileType>(array);
 
+        #endregion
 
-        public static implicit operator DataFileType[](FileList<FileItemType, DataFileType> me) => me.Files.ToArray();
-        public static implicit operator FileList<FileItemType, DataFileType>(DataFileType[] array) => new FileList<FileItemType, DataFileType>(array);
-
+        public bool RemoveButtons = true;
 
         private void CustomizeControl()
         {
             FlowDirection = FlowDirection.TopDown;
-            files.CollectionChanged += RedrawList;
             Dock = DockStyle.Fill;
             AutoScroll = true;
             WrapContents = false;
@@ -79,9 +71,14 @@ namespace StripV3Consent.View
             foreach(DataFile File in Files)
             {
                 FileItemType NewEntry = (FileItemType)Activator.CreateInstance(typeof(FileItemType), new object[] { File });
-                NewEntry.CloseButton.Click += ItemCloseButton_Click;
-                NewEntry.Controls.Add(NewEntry.CloseButton);
+
+                if (RemoveButtons)
+                {
+                    NewEntry.CloseButton.Click += ItemCloseButton_Click;
+                    NewEntry.Controls.Add(NewEntry.CloseButton);
+                }
                 this.Controls.Add(NewEntry);
+
 
             }
         }
@@ -90,7 +87,7 @@ namespace StripV3Consent.View
         {
             Button CloseButtonClicked = (Button)sender;
             FileItemType Entry = (FileItemType)CloseButtonClicked.Parent;
-            Remove(Entry.File);
+            Files.Remove(Entry.File);
         }
 
         public override string ToString()

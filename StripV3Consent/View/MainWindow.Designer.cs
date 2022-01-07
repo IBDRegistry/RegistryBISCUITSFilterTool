@@ -31,12 +31,12 @@ namespace StripV3Consent
         {
             this.TableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.DropFilesHerePanel = new StripV3Consent.View.DropFilesPanel();
+            this.autoResizingLabel2 = new StripV3Consent.View.AutoResizingLabel();
             this.LoadedFilesPanel = new StripV3Consent.View.OutputFilesPanel();
             this.ExecuteButton = new System.Windows.Forms.Button();
             this.RemovedPatientsPanel = new StripV3Consent.View.RemovedPatientsPanel();
-            this.autoResizingLabel1 = new StripV3Consent.View.AutoResizingLabel();
-            this.autoResizingLabel2 = new StripV3Consent.View.AutoResizingLabel();
             this.SaveButton = new System.Windows.Forms.Button();
+            this.autoResizingLabel1 = new StripV3Consent.View.AutoResizingLabel();
             this.TableLayoutPanel.SuspendLayout();
             this.DropFilesHerePanel.SuspendLayout();
             this.SuspendLayout();
@@ -72,6 +72,17 @@ namespace StripV3Consent
             this.DropFilesHerePanel.Size = new System.Drawing.Size(254, 354);
             this.DropFilesHerePanel.TabIndex = 0;
             // 
+            // autoResizingLabel2
+            // 
+            this.autoResizingLabel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.autoResizingLabel2.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.24F);
+            this.autoResizingLabel2.Location = new System.Drawing.Point(0, 0);
+            this.autoResizingLabel2.Name = "autoResizingLabel2";
+            this.autoResizingLabel2.Size = new System.Drawing.Size(254, 354);
+            this.autoResizingLabel2.TabIndex = 0;
+            this.autoResizingLabel2.Text = "Drop files here";
+            this.autoResizingLabel2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // LoadedFilesPanel
             // 
             this.LoadedFilesPanel.BackColor = System.Drawing.SystemColors.ControlLight;
@@ -84,6 +95,7 @@ namespace StripV3Consent
             // ExecuteButton
             // 
             this.ExecuteButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ExecuteButton.Enabled = false;
             this.ExecuteButton.Location = new System.Drawing.Point(3, 363);
             this.ExecuteButton.Name = "ExecuteButton";
             this.ExecuteButton.Size = new System.Drawing.Size(254, 84);
@@ -103,6 +115,18 @@ namespace StripV3Consent
             this.RemovedPatientsPanel.Size = new System.Drawing.Size(274, 354);
             this.RemovedPatientsPanel.TabIndex = 3;
             // 
+            // SaveButton
+            // 
+            this.SaveButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.SaveButton.Enabled = false;
+            this.SaveButton.Location = new System.Drawing.Point(543, 363);
+            this.SaveButton.Name = "SaveButton";
+            this.SaveButton.Size = new System.Drawing.Size(254, 84);
+            this.SaveButton.TabIndex = 4;
+            this.SaveButton.Text = "Save output";
+            this.SaveButton.UseVisualStyleBackColor = true;
+            this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
+            // 
             // autoResizingLabel1
             // 
             this.autoResizingLabel1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -114,28 +138,6 @@ namespace StripV3Consent
             this.autoResizingLabel1.TabIndex = 0;
             this.autoResizingLabel1.Text = "Drop files here";
             this.autoResizingLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // autoResizingLabel2
-            // 
-            this.autoResizingLabel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.autoResizingLabel2.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.24F);
-            this.autoResizingLabel2.Location = new System.Drawing.Point(0, 0);
-            this.autoResizingLabel2.Name = "autoResizingLabel2";
-            this.autoResizingLabel2.Size = new System.Drawing.Size(254, 354);
-            this.autoResizingLabel2.TabIndex = 0;
-            this.autoResizingLabel2.Text = "Drop files here";
-            this.autoResizingLabel2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // SaveButton
-            // 
-            this.SaveButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.SaveButton.Location = new System.Drawing.Point(543, 363);
-            this.SaveButton.Name = "SaveButton";
-            this.SaveButton.Size = new System.Drawing.Size(254, 84);
-            this.SaveButton.TabIndex = 4;
-            this.SaveButton.Text = "Save output";
-            this.SaveButton.UseVisualStyleBackColor = true;
-            this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
             // 
             // MainWindow
             // 

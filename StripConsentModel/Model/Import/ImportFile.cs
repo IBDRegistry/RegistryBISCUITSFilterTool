@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace StripV3Consent.Model
 {
-    public class ImportFile : DataFile
+    public abstract class ImportFile : DataFile
     {
         public ImportFile(string path) : base(path)
         {
@@ -19,54 +19,73 @@ namespace StripV3Consent.Model
             {
                 FileValidationState ReturnValue = new FileValidationState();
 
-                if (File.Extension != ".csv") { return new FileValidationState() { IsValid = ValidState.Error, Message = "File not CSV type" }; };
-
-                string[] SpecificationFileNames = Spec2021K.Specification.PatientFiles.Select(SpecificationFile => SpecificationFile.SimplifiedName).ToArray();
-
-                //If any of the words from 2021K's filenames (patient, consent, contact, admission) are in the current filename
-                if (!SpecificationFileNames.Select(SpecificationFileName => File.Name.Contains(SpecificationFileName)).Contains(true))
+                if (File.Extension == ".csv")
                 {
-                    return new FileValidationState() { IsValid = ValidState.Warning, Message = "File name not in expected list of file names" };
-                }
+                    string[] SpecificationFileNames = Spec2021K.Specification.PatientFiles.Select(SpecificationFile => SpecificationFile.SimplifiedName).ToArray();
 
-                if (IsCommaDelimited() != true)
-                {
-                    return new FileValidationState() { IsValid = ValidState.Error, Message = "CSV file not comma separated" };
-                }
-
-
-                return new FileValidationState() { IsValid = ValidState.Good, Message = "File passed validation checks" };
-            }
-        }
-
-        public bool ContainsHeaders
-        {
-            get
-            {
-                String TopLeftValue = null;
-                using (StreamReader StreamReader = new StreamReader(this.Path))
-                {
-                    StringBuilder TopLeftValueBuilder = new StringBuilder();
-                    while ((char)StreamReader.Peek() != ',')
+                    //If any of the words from 2021K's filenames (patient, consent, contact, admission) are in the current filename
+                    if (SpecificationFileNames.Select(SpecificationFileName => File.Name.Contains(SpecificationFileName)).Contains(true))
                     {
-                        TopLeftValueBuilder.Append((char)StreamReader.Read());
+                        ReturnValue.Organisation = FileOrganisation.Registry;
+
+                        if (IsCommaDelimited() == true)
+                        {
+                            ReturnValue.IsValid = ValidState.Good;
+                            ReturnValue.Message = "File passed validation checks";
+                        } else
+                        {
+                            ReturnValue.IsValid = ValidState.Error;
+                            ReturnValue.Message = "CSV file not comma separated";
+                            
+                        }
                     }
-                    TopLeftValue = TopLeftValueBuilder.ToString();
+                    else
+                    {
+                        ReturnValue.Organisation = FileOrganisation.Unknown;
+                        ReturnValue.IsValid = ValidState.Error;
+                        ReturnValue.Message = "CSV File not found in 2021K standard";
+                    }
+                } else if(File.Extension == ".dat")
+                {
+                    ReturnValue.Organisation = FileOrganisation.NHS;
+                    ReturnValue.IsValid = ValidState.Warning;
+                    ReturnValue.Message = "National Opt-Out file";
                 }
 
-                if (TopLeftValue.StartsWith("HEADER_"))
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-
+                return ReturnValue;
             }
         }
 
-        public bool IsCommaDelimited()
+        private bool ContainsHeaders()
+        {
+            String TopLeftValue = null;
+            const uint CutOffValue = 32;
+            using (StreamReader StreamReader = new StreamReader(this.Path))
+            {
+                StringBuilder TopLeftValueBuilder = new StringBuilder();
+                while ((char)StreamReader.Peek() != ',')
+                {
+                    TopLeftValueBuilder.Append((char)StreamReader.Read());
+                        
+                    if (TopLeftValueBuilder.Length >= CutOffValue)
+                    {
+                        break;
+                    }
+                }
+                TopLeftValue = TopLeftValueBuilder.ToString();
+            }
+
+            if (TopLeftValue.StartsWith("HEADER_"))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private bool IsCommaDelimited()
         {
             //Crudely tries to find if the file is comma delimited by seeing what is the most common char out of common delimiters
             //Especially tab as excel loves to swap commas for tabs in csv files
@@ -88,10 +107,36 @@ namespace StripV3Consent.Model
             }
         }
 
+        private string LineEndingsInFile()
+        {
+
+            using (StreamReader StreamReader = new StreamReader(this.Path))
+            {
+                while (StreamReader.EndOfStream == false)
+                {
+                    if ((char)StreamReader.Read() == '\r') //If carraige return is encountered followed by line feed then Windows
+                    {
+                        if ((char)StreamReader.Read() == '\n')
+                        {
+                            return "\r\n";
+                        }
+                    }
+                    else if ((char)StreamReader.Read() == '\n')   //If line feed is encountered first then Unix
+                    {
+                        return "\n";
+                    }
+                }
+
+                //Neither line ending found, doesn't really matter what we return but we'll return line feed
+                return "\n";
+            }
+
+        }
+
+
         private File2DArray SplitIntoBoxed2DArrayWithHeaders(string File)
         {
-#warning deal with \r\n polluting stuff
-            string RowSeparator = "\r\n";       
+            string RowSeparator = LineEndingsInFile();       
             char ColumnSeparator = ',';
 
             string[][] TwoDList;
@@ -108,7 +153,7 @@ namespace StripV3Consent.Model
             List<string[]> RowstoRemove = new List<string[]>();
             RowstoRemove.AddRange(EmptyRows);
 
-            if (ContainsHeaders)
+            if (ContainsHeaders())
             {
                 RowstoRemove.Add(TwoDList[0]);  //Remove headers from content
                 Return2DArray.Headers = TwoDList[0];
@@ -119,8 +164,6 @@ namespace StripV3Consent.Model
             return Return2DArray;
         }
 
-
-
         public File2DArray SplitInto2DArray()
         {
             string FileContent = null;
@@ -130,6 +173,18 @@ namespace StripV3Consent.Model
             }
 
             return SplitIntoBoxed2DArrayWithHeaders(FileContent);
+        }
+
+        public static ImportFile DecideWhichDerivation(string Path)
+        {
+            if (System.IO.Path.GetExtension(Path) == ".dat")
+            {
+                return new NationalOptOutFile(Path);
+            }
+            else
+            {
+                return new RegistryImportFile(Path);
+            }
         }
     }
 
@@ -144,4 +199,6 @@ namespace StripV3Consent.Model
             return false;
         }
     }
+
+    
 }

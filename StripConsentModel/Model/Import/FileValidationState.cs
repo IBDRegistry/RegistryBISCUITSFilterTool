@@ -11,9 +11,17 @@ namespace StripV3Consent.Model
         Error
     }
 
+    public enum FileOrganisation
+    {
+        Registry,
+        NHS,
+        Unknown
+    }
+
     public class FileValidationState
     {
         public ValidState IsValid;
+        public FileOrganisation Organisation;
         public string Message;
     }
 }
