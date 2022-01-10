@@ -11,15 +11,22 @@ namespace StripV3Consent.View
 {
     class ImportFileItem : AbstractFileItem<ImportFile>
     {
+        public IconWithSubIcon ValidationPictureBox;
+
         public ImportFileItem(ImportFile file) : base(file)
         {
+        }
+
+        public void ReCheckValidation()
+        {
+            ValidationPictureBox.Model = base.File.IsValid;
         }
 
         public override void DrawContents()
         {
             base.DrawContents();
 
-            PictureBox ValidationPictureBox = new IconWithSubIcon()
+            ValidationPictureBox = new IconWithSubIcon()
             {
                 Model = base.File.IsValid
             };
@@ -27,6 +34,7 @@ namespace StripV3Consent.View
             this.Controls.Add(ValidationPictureBox);
         }
     }
+
 
     class IconWithSubIcon : PictureBox
     {

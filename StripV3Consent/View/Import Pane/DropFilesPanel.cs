@@ -34,7 +34,6 @@ namespace StripV3Consent.View
         private  void DropFiles_DragDrop(object sender, DragEventArgs e)
         {
             string[] InputPaths = (string[])e.Data.GetData(DataFormats.FileDrop);
-            var test = File.GetAttributes(InputPaths[0]);
             string[] FilePaths = InputPaths.Where(path => !(File.GetAttributes(path) == FileAttributes.Directory | File.GetAttributes(path) == FileAttributes.Device)).ToArray(); //Prevent doctors from trying to drag and drop folders, devices and all sorts of nonsense
             this.Controls.Clear();
             this.Controls.Add(FileList);

@@ -38,6 +38,13 @@ namespace StripV3Consent.Model
                 }
 
 
+                if (IsSpecificationFileAlreadyImported(this) == true)
+                {
+                    ReturnValue.IsValid = ValidState.Error;
+                    ReturnValue.Message = "File already imported";
+                    return ReturnValue;
+                }
+
                 if (IsCommaDelimited() == true)
                 {
                     ReturnValue.IsValid = ValidState.Good;
@@ -49,7 +56,8 @@ namespace StripV3Consent.Model
                     ReturnValue.Message = "CSV file not comma separated";
 
                 }
-
+                
+                
                 return ReturnValue;
             }
         }
@@ -127,6 +135,11 @@ namespace StripV3Consent.Model
                 return false;
             }
         }
+
+        /// <summary>
+        /// Set by parent class, returns whether the specification file has already been dropped into the import pane
+        /// </summary>
+        public Predicate<ImportFile> IsSpecificationFileAlreadyImported;
 
         private string LineEndingsInFile()
         {

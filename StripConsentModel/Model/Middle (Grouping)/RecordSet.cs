@@ -60,15 +60,17 @@ namespace StripV3Consent.Model
                     };
                 }
 
-                Record NationalOptOutRecord = NationalOptOutRecords.First();
-                string IsOptedOut = NationalOptOutRecord.GetValueByDataItemCode(DataItemCodes.NationalOptOut);
-                if (IsOptedOut == "Yes")
-                {
-                    return new ConsentValidState()
+                if (NationalOptOutRecords.Count() != 0) {
+                    Record NationalOptOutRecord = NationalOptOutRecords.First();
+                    string IsOptedOut = NationalOptOutRecord.GetValueByDataItemCode(DataItemCodes.NationalOptOut);
+                    if (IsOptedOut == "Yes")
                     {
-                        IsValid = false,
-                        IsValidReason = "Patient participated in the national opt-out"
-                    };
+                        return new ConsentValidState()
+                        {
+                            IsValid = false,
+                            IsValidReason = "Patient participated in the national opt-out"
+                        };
+                    }
                 }
 
 
