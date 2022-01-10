@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 namespace StripV3Consent.Model
 {
@@ -26,16 +27,21 @@ namespace StripV3Consent.Model
 
         public Specification.File SpecificationFile { get
             {
-                IEnumerable<Specification.File> FilesWithMatchingNameScheme =  Spec2021K.Specification.PatientFiles.Where(File => Name.Contains(File.SimplifiedName));
+                IEnumerable<Specification.File> FilesWithMatchingPattern = Spec2021K.Specification.AllFiles.Where<Specification.File>(f => new Regex(f.Name).IsMatch(Name));
 
-                if (FilesWithMatchingNameScheme.Count() > 1)
+                if (FilesWithMatchingPattern.Count() > 1)
                 {
                     StringBuilder ErrorMessage = new StringBuilder($"Multiple specification files matched import file {Name}. Those files are: ");
-                    foreach (Specification.File MatchingFile in FilesWithMatchingNameScheme) { ErrorMessage.Append($"{MatchingFile.Name} "); }
+                    foreach (Specification.File MatchingFile in FilesWithMatchingPattern) { ErrorMessage.Append($"{MatchingFile.Name} "); }
                     throw new Exception(ErrorMessage.ToString());
                 }
 
-                return FilesWithMatchingNameScheme.First();
+                if (FilesWithMatchingPattern.Count() == 0)
+                {
+                    return null;
+                }
+
+                return FilesWithMatchingPattern.First();
             }
         }
 

@@ -59,7 +59,7 @@ namespace StripV3Consent.View
 
         private void Draw()
         {
-            Text = Patient.GetFieldValue(DataItemCodes.NHSNumber);
+            Text = $"Removed Patient: {Patient.GetFieldValue(DataItemCodes.NHSNumber)}";
 
             Label RejectionReason = new Label()
             {
@@ -70,7 +70,7 @@ namespace StripV3Consent.View
             Controls.Add(RejectionReason);
             Controls.SetChildIndex(RejectionReason, 0);//See later comment about docking order
 
-           Record[][] RecordsGroupedByOriginalFile = Patient.Records.GroupBy
+            Record[][] RecordsGroupedByOriginalFile = Patient.Records.GroupBy
                                                                             <Record, DataFile, Record[]>
                                                                             (r => r.OriginalFile,
                                                                             (OriginalFile, IEnumerableRecord) => IEnumerableRecord.ToArray()
@@ -81,11 +81,11 @@ namespace StripV3Consent.View
                 Label DataRecordsViewLabel = new Label()
                 {
                     Text = records.First().OriginalFile.Name,
-                    Dock = DockStyle.Top,
-                    Margin = new Padding()
-                    {
-                        Top = 20
-                    }
+                    Dock = DockStyle.Top
+                    //Padding = new Padding()   //Seems to make label invisible, will look at again later
+                    //{
+                    //    Top = 20
+                    //}
                 };
 
                 DataGridView DataRecordsView = new DataGridView()

@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <DataSubmissionSpecification xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <PatientFiles>
-    <File>
-      <Name>patient_abc.csv</Name>
+    <File xsi:type="RegistryFile">
+      <Name>patient.*\.csv</Name>
       <Fields>
         <Field>
           <Name>NHS Number</Name>
@@ -107,9 +107,10 @@ Care</Group>
           <Group>PATIENT: Site Identifiers</Group>
         </Field>
       </Fields>
+      <IsRegistryFile>true</IsRegistryFile>
     </File>
-    <File>
-      <Name>diagnosis_abc.csv</Name>
+    <File xsi:type="RegistryFile">
+      <Name>diagnosis.*\.csv</Name>
       <Fields>
         <Field>
           <Name>NHS Number</Name>
@@ -220,9 +221,10 @@ Care</Group>
           <Group>DISEASE: Diagnosis</Group>
         </Field>
       </Fields>
+      <IsRegistryFile>true</IsRegistryFile>
     </File>
-    <File>
-      <Name>consent_abc.csv</Name>
+    <File xsi:type="RegistryFile">
+      <Name>consent.*\.csv</Name>
       <Fields>
         <Field>
           <Name>NHS Number</Name>
@@ -369,9 +371,10 @@ Care</Group>
           <Group>CONSENT</Group>
         </Field>
       </Fields>
+      <IsRegistryFile>true</IsRegistryFile>
     </File>
-    <File>
-      <Name>contact_abc.csv</Name>
+    <File xsi:type="RegistryFile">
+      <Name>contact.*\.csv</Name>
       <Fields>
         <Field>
           <Name>NHS Number</Name>
@@ -730,9 +733,10 @@ Colonoscopy</Group>
 Colonoscopy</Group>
         </Field>
       </Fields>
+      <IsRegistryFile>true</IsRegistryFile>
     </File>
-    <File>
-      <Name>admission_abc.csv</Name>
+    <File xsi:type="RegistryFile">
+      <Name>admission.*\.csv</Name>
       <Fields>
         <Field>
           <Name>NHS Number</Name>
@@ -808,9 +812,10 @@ Admission</Group>
 Admission</Group>
         </Field>
       </Fields>
+      <IsRegistryFile>true</IsRegistryFile>
     </File>
-    <File>
-      <Name>surgery_abc.csv</Name>
+    <File xsi:type="RegistryFile">
+      <Name>surgery.*\.csv</Name>
       <Fields>
         <Field>
           <Name>NHS Number</Name>
@@ -915,9 +920,10 @@ Admission</Group>
           <Group>INTERVENTION: Surgery</Group>
         </Field>
       </Fields>
+      <IsRegistryFile>true</IsRegistryFile>
     </File>
-    <File>
-      <Name>cancer_abc.csv</Name>
+    <File xsi:type="RegistryFile">
+      <Name>cancer.*\.csv</Name>
       <Fields>
         <Field>
           <Name>NHS Number</Name>
@@ -962,9 +968,10 @@ Admission</Group>
           <Group>OUTCOME: Cancer</Group>
         </Field>
       </Fields>
+      <IsRegistryFile>true</IsRegistryFile>
     </File>
-    <File>
-      <Name>growth_abc.csv</Name>
+    <File xsi:type="RegistryFile">
+      <Name>growth.*\.csv</Name>
       <Fields>
         <Field>
           <Name>NHS Number</Name>
@@ -1012,9 +1019,10 @@ Health Outcome</Group>
           <Group>GROWTH: Site Identifiers</Group>
         </Field>
       </Fields>
+      <IsRegistryFile>true</IsRegistryFile>
     </File>
-    <File>
-      <Name>IbdImpact_abc.csv</Name>
+    <File xsi:type="RegistryFile">
+      <Name>IbdImpact.*\.csv</Name>
       <Fields>
         <Field>
           <Name>NHS Number</Name>
@@ -1104,9 +1112,10 @@ QoL</Group>
 QoL</Group>
         </Field>
       </Fields>
+      <IsRegistryFile>true</IsRegistryFile>
     </File>
-    <File>
-      <Name>PromControl_abc.csv</Name>
+    <File xsi:type="RegistryFile">
+      <Name>PromControl.*\.csv</Name>
       <Fields>
         <Field>
           <Name>NHS Number</Name>
@@ -1256,9 +1265,10 @@ IBD Control-8</Group>
           <Group>OUTCOME: PROM</Group>
         </Field>
       </Fields>
+      <IsRegistryFile>true</IsRegistryFile>
     </File>
-    <File>
-      <Name>medication_abc.csv</Name>
+    <File xsi:type="RegistryFile">
+      <Name>medication.*\.csv</Name>
       <Fields>
         <Field>
           <Name>NHS Number</Name>
@@ -1432,9 +1442,10 @@ Medication</Group>
 Medication</Group>
         </Field>
       </Fields>
+      <IsRegistryFile>true</IsRegistryFile>
     </File>
-    <File>
-      <Name>biologicsevent_abc.csv</Name>
+    <File xsi:type="RegistryFile">
+      <Name>biologicsevent.*\.csv</Name>
       <Fields>
         <Field>
           <Name>NHS Number</Name>
@@ -1762,11 +1773,26 @@ Medication</Group>
 Medication</Group>
         </Field>
       </Fields>
+      <IsRegistryFile>true</IsRegistryFile>
+    </File>
+    <File xsi:type="NationalOptOutFile">
+      <Name>.+\.dat</Name>
+      <Fields>
+        <Field>
+          <Name>NHS Number</Name>
+          <DataItemCode>IBD01</DataItemCode>
+        </Field>
+        <Field>
+          <Name>Is Opted-Out</Name>
+          <DataItemCode>NHS01</DataItemCode>
+        </Field>
+      </Fields>
+      <IsRegistryFile>false</IsRegistryFile>
     </File>
   </PatientFiles>
   <SubmissionFiles>
-    <File>
-      <Name>provenance_abc.csv</Name>
+    <File xsi:type="RegistryFile">
+      <Name>provenance.*\.csv</Name>
       <Fields>
         <Field>
           <Name>Data capture tool</Name>
@@ -1817,6 +1843,7 @@ Medication</Group>
           <Group>PROVENANCE</Group>
         </Field>
       </Fields>
+      <IsRegistryFile>true</IsRegistryFile>
     </File>
   </SubmissionFiles>
 </DataSubmissionSpecification>

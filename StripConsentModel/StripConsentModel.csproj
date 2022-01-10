@@ -73,11 +73,5 @@
   <ItemGroup>
     <None Include="Resources\2021_K IBD Registry Submission Dataset V01 %28Nov 2021%29.xml" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\ibdregistry.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\help_question_mark.ico" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

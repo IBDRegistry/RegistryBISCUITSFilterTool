@@ -46,8 +46,9 @@ namespace StripV3Consent.Model
         {
             IEnumerable<Record> AllRecords = RecordSets.Select(rs => rs.Records).SelectMany<IEnumerable<Record>, Record>(x => x);
 
+            IEnumerable<Record> OutputRecords = AllRecords.Where(r => r.OriginalFile.SpecificationFile.IsRegistryFile == true);
 
-            IEnumerable<Record[]> RecordsGroupedByOriginalFiles = AllRecords.GroupBy
+            IEnumerable<Record[]> RecordsGroupedByOriginalFiles = OutputRecords.GroupBy
                                                                                 <Record, DataFile, Record[]>(
                                                                                 r => r.OriginalFile,
                                                                                 (OriginalFile, RecordsIEnumerable) => RecordsIEnumerable.ToArray()

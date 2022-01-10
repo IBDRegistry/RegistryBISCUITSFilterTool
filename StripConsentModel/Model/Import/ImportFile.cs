@@ -19,46 +19,62 @@ namespace StripV3Consent.Model
             {
                 FileValidationState ReturnValue = new FileValidationState();
 
-                if (File.Extension == ".csv")
+                if (SpecificationFile is Specification.RegistryFile)
                 {
-                    string[] SpecificationFileNames = Spec2021K.Specification.PatientFiles.Select(SpecificationFile => SpecificationFile.SimplifiedName).ToArray();
+                    ReturnValue.Organisation = FileOrganisation.Registry;
 
-                    //If any of the words from 2021K's filenames (patient, consent, contact, admission) are in the current filename
-                    if (SpecificationFileNames.Select(SpecificationFileName => File.Name.Contains(SpecificationFileName)).Contains(true))
-                    {
-                        ReturnValue.Organisation = FileOrganisation.Registry;
-
-                        if (IsCommaDelimited() == true)
-                        {
-                            ReturnValue.IsValid = ValidState.Good;
-                            ReturnValue.Message = "File passed validation checks";
-                        } else
-                        {
-                            ReturnValue.IsValid = ValidState.Error;
-                            ReturnValue.Message = "CSV file not comma separated";
-                            
-                        }
-                    }
-                    else
-                    {
-                        ReturnValue.Organisation = FileOrganisation.Unknown;
-                        ReturnValue.IsValid = ValidState.Error;
-                        ReturnValue.Message = "CSV File not found in 2021K standard";
-                    }
-                } else if(File.Extension == ".dat")
+                } else if (SpecificationFile is Specification.NationalOptOutFile)
                 {
                     ReturnValue.Organisation = FileOrganisation.NHS;
-                    ReturnValue.IsValid = ValidState.Warning;
+                    ReturnValue.IsValid = ValidState.Good;
                     ReturnValue.Message = "National Opt-Out file";
                 } else
                 {
                     ReturnValue.Organisation = FileOrganisation.Unknown;
                     ReturnValue.IsValid = ValidState.None;
                     ReturnValue.Message = "Unknown file type";
+
+                    return ReturnValue;
+                }
+
+
+                if (IsCommaDelimited() == true)
+                {
+                    ReturnValue.IsValid = ValidState.Good;
+                    ReturnValue.Message = "File passed validation checks";
+                }
+                else
+                {
+                    ReturnValue.IsValid = ValidState.Error;
+                    ReturnValue.Message = "CSV file not comma separated";
+
                 }
 
                 return ReturnValue;
             }
+        }
+
+        private enum IsWellFormed
+        {
+            NotWellFormed,
+            JaggedRows,
+
+        }
+        /// <summary>
+        /// Returns whether the file has the correct number of columns and that each row contains all of those columns
+        /// </summary>
+        /// <param name="SuspectedFile">Specification.File object representing the file you think it is to get the correct column form for</param>
+        /// <returns></returns>
+        private bool IsFileWellFormed(Specification.File SuspectedFile)
+        {
+            File2DArray Contents = SplitInto2DArray();
+
+            if (Contents.Content.GroupBy<string[], int>(Row => Row.Count()).Count() > 1)
+            {
+                var test = Contents.Content.GroupBy<string[], int>(Row => Row.Count()).Count();
+                return false;
+            }
+            return true;
         }
 
         private bool ContainsHeaders()
@@ -190,38 +206,6 @@ namespace StripV3Consent.Model
 
             return false;
         }
-    }
-
-    public static class FileChecking
-    {
-        public enum RegistryFileCheckResult
-        {
-            IsRegistry,
-            IsNotRegistry,
-            IsNotCSV
-        }
-        public static RegistryFileCheckResult IsRegistryFile(string path)
-        {
-            if (Path.GetExtension(path) == ".csv")
-            {
-                string[] SpecificationFileNames = Spec2021K.Specification.PatientFiles.Select(SpecificationFile => SpecificationFile.SimplifiedName).ToArray();
-
-                //If any of the words from 2021K's filenames (patient, consent, contact, admission) are in the current filename
-                if (SpecificationFileNames.Select(SpecificationFileName => Path.GetFileNameWithoutExtension(path).Contains(SpecificationFileName)).Contains(true))
-                {
-                    return RegistryFileCheckResult.IsRegistry;
-                }
-                else
-                {
-                    return RegistryFileCheckResult.IsNotRegistry;
-                }
-            } else
-            {
-                return RegistryFileCheckResult.IsNotCSV;
-            }
-        }
-
-
     }
 
     

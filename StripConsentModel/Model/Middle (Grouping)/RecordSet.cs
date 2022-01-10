@@ -28,27 +28,53 @@ namespace StripV3Consent.Model
             return RecordWithValue[RecordWithValue.OriginalFile.SpecificationFile.Fields.FindIndex(f => f.DataItemCode == SpecifiedDataItemCode)];
         }
 
+
         public ConsentValidState IsConsentValid
         {
             get
             {
                 const string ConsentFileNameInSpec = "consent";
 
-                Record[] ConsentRecords = Records.Where(r => r.OriginalFile.SpecificationFile.SimplifiedName == ConsentFileNameInSpec).ToArray();
+                IEnumerable<Record> ConsentRecords = Records.Where(r => r.OriginalFile.SpecificationFile.Name.Contains(ConsentFileNameInSpec));
 
-                if (ConsentRecords.Length > 1)
+                if (ConsentRecords.Count() > 1)
                 {
-#warning ask SG
                     throw new OnlyOneRecordExpectedException()
                     {
                         NHSNumber = GetFieldValue(DataItemCodes.NHSNumber),
-                        MessageToAppend = $"There are {ConsentRecords.Length} records from the {String.Join(" & ", ConsentRecords.Select(r => r.OriginalFile.Name))} files when there is only supposed to be 1 "
+                        ProblematicRecordGroup = ConsentRecords
                     };
 
                 }
 
+
+
+                //National Opt-Out
+                IEnumerable<Record> NationalOptOutRecords = Records.Where(r => r.OriginalFile.SpecificationFile is Specification.NationalOptOutFile);
+                if (NationalOptOutRecords.Count() > 1)
+                {
+                    throw new OnlyOneRecordExpectedException()
+                    {
+                        NHSNumber = GetFieldValue(DataItemCodes.NHSNumber),
+                        ProblematicRecordGroup = NationalOptOutRecords
+                    };
+                }
+
+                Record NationalOptOutRecord = NationalOptOutRecords.First();
+                string IsOptedOut = NationalOptOutRecord.GetValueByDataItemCode(DataItemCodes.NationalOptOut);
+                if (IsOptedOut == "Yes")
+                {
+                    return new ConsentValidState()
+                    {
+                        IsValid = false,
+                        IsValidReason = "Patient participated in the national opt-out"
+                    };
+                }
+
+
+
                 // No consent record
-                if (ConsentRecords.Length == 0)
+                if (ConsentRecords.Count() == 0)
                 {
                     return new ConsentValidState()
                     {
