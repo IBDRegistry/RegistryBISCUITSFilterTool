@@ -29,6 +29,7 @@ namespace StripV3Consent
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
             this.TableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.DropFilesHerePanel = new StripV3Consent.View.DropFilesPanel();
             this.autoResizingLabel2 = new StripV3Consent.View.AutoResizingLabel();
@@ -109,6 +110,7 @@ namespace StripV3Consent
             // 
             this.ExecuteButton.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ExecuteButton.Enabled = false;
+            this.ExecuteButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ExecuteButton.Location = new System.Drawing.Point(3, 367);
             this.ExecuteButton.Name = "ExecuteButton";
             this.ExecuteButton.Size = new System.Drawing.Size(254, 80);
@@ -134,6 +136,7 @@ namespace StripV3Consent
             // 
             this.SaveButton.Dock = System.Windows.Forms.DockStyle.Fill;
             this.SaveButton.Enabled = false;
+            this.SaveButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SaveButton.Location = new System.Drawing.Point(543, 367);
             this.SaveButton.Name = "SaveButton";
             this.SaveButton.Size = new System.Drawing.Size(254, 80);
@@ -235,6 +238,7 @@ namespace StripV3Consent
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.TableLayoutPanel);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainWindow";
             this.Text = "Strip V3 Consent";
             this.TableLayoutPanel.ResumeLayout(false);
