@@ -136,7 +136,4 @@
   <data name="warning" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\warning.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="_2021_K_IBD_Registry_Submission_Dataset_V01__Nov_2021_" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\2021_K IBD Registry Submission Dataset V01 (Nov 2021).xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
-  </data>
 </root>

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace StripV3Consent.Model
@@ -42,7 +43,7 @@ namespace StripV3Consent.Model
 
         }
 
-        public OutputFile[] SplitBackUpIntoFiles()
+        private OutputFile[] SplitBackUpIntoFiles(List<RecordSet> RecordSets)
         {
             IEnumerable<Record> AllRecords = RecordSets.Select(rs => rs.Records).SelectMany<IEnumerable<Record>, Record>(x => x);
 
@@ -65,7 +66,16 @@ namespace StripV3Consent.Model
 
 
             return Files.ToArray();
+        }
+        public OutputFile[] SplitBackUpIntoFiles()
+        {
+            return SplitBackUpIntoFiles(this.RecordSets);
 
+        }
+
+        public OutputFile[] SplitBackUpIntoFiles(Func<RecordSet, bool> predicate)
+        {
+            return SplitBackUpIntoFiles(this.RecordSets.Where(predicate).ToList<RecordSet>());
         }
 
         public static explicit operator OutputFile[](RecordSetGrouping RSG) => RSG.SplitBackUpIntoFiles();

@@ -58,6 +58,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="View\ExecutionThread.cs" />
     <Compile Include="View\Output Pane\OutputFileItem.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -136,9 +137,6 @@
       <Project>{4340ef9c-27ae-4d0e-b2ff-b1b44feb2c26}</Project>
       <Name>StripConsentModel</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\2021_K IBD Registry Submission Dataset V01 %28Nov 2021%29.xml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\nhs-logo-square.jpg" />

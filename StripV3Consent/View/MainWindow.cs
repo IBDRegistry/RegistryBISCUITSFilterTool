@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using System.Collections.ObjectModel;
+using StripV3Consent.View;
 
 namespace StripV3Consent
 {
@@ -19,28 +20,7 @@ namespace StripV3Consent
             LoadedFilesPanel.FileList.Files.CollectionChanged += OutputFilesChanged;
         }
 
-        private void ExecuteButton_Click(object sender, EventArgs e)
-        {
-            Execute();
-        }
-
-        private void Execute()
-        {
-            RecordSetGrouping RecordsGroupedByPatient = new Model.RecordSetGrouping(DropFilesHerePanel.FileList.Files.Where(File => File.IsValid.IsValid == ValidState.Good || File.IsValid.IsValid == ValidState.Warning).ToArray());
-
-            List<RecordSet> RemovedRecords = RecordsGroupedByPatient.RecordSets.Where(RecordSet => RecordSet.IsConsentValid == false).ToList<RecordSet>();
-
-            RecordSetGrouping RecordSetsWithConsent = (RecordSetGrouping)RecordsGroupedByPatient.RecordSets.Where(RecordSet => RecordSet.IsConsentValid == true).ToList<RecordSet>();
-
-            OutputFile[] OutputFiles = RecordSetsWithConsent.SplitBackUpIntoFiles();
-
-            RemovedPatientsPanel.RemovedRecords = new BindingList<RecordSet>(RemovedRecords);
-
-            LoadedFilesPanel.FileList.AddRange(OutputFiles);
-
-            
-        }
-
+        
         private void SaveButton_Click(object sender, EventArgs e)
         {
             CommonOpenFileDialog SelectDialog = new CommonOpenFileDialog();
@@ -129,7 +109,7 @@ namespace StripV3Consent
 
         private void OutputFilesChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            var OutputFiles = sender as ObservableCollection<OutputFile>;
+            ObservableCollection<OutputFile> OutputFiles = sender as ObservableCollection<OutputFile>;
 
             if (OutputFiles.Count > 0)
             {
@@ -140,6 +120,88 @@ namespace StripV3Consent
                 SaveButton.Enabled = false;
             }
         }
+
+        private void RemovedPatientsPanel_AllRecordSetsChanged(object sender, EventArgs e)
+        {
+            RecordSetGrouping AllRecordSetsGrouped = ((RemovedPatientsPanel)sender).AllRecordSets;
+
+            if (AllRecordSetsGrouped != null)
+            {
+                DisplayKeptPatientsCheckbox.Enabled = true;
+                DisplayRemovedPatientsCheckbox.Enabled = true;
+            } else
+            {
+                DisplayKeptPatientsCheckbox.Enabled = false;
+                DisplayRemovedPatientsCheckbox.Enabled = false;
+            }
+        }
+
+        public static Predicate<T> Or<T>(IEnumerable<Predicate<T>> predicates)
+        {
+            return delegate (T item)
+            {
+                foreach (Predicate<T> predicate in predicates)
+                {
+                    if (predicate(item))
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            };
+        }
+
+        private void DisplayCheckboxesChanged(object sender, EventArgs e)
+        {
+            //Swap from Func<RecordSet, bool> to Predicate<RecordSet>
+            List<Tuple<CheckBox, Predicate<RecordSet>>> CheckboxSpecifiers = new List<Tuple<CheckBox, Predicate<RecordSet>>>()
+            {
+                new Tuple<CheckBox, Predicate<RecordSet>>(DisplayKeptPatientsCheckbox, rs => rs.IsConsentValid == true ),
+                new Tuple<CheckBox, Predicate<RecordSet>>(DisplayRemovedPatientsCheckbox, rs => rs.IsConsentValid == false)
+            };
+
+            IEnumerable<Predicate<RecordSet>> Specifiers = CheckboxSpecifiers.Where(tuple => tuple.Item1.Checked == true).Select(tuple => tuple.Item2);
+
+            Predicate<RecordSet> CombinedSpecifier = Or<RecordSet>(Specifiers);
+
+            RemovedPatientsPanel.Specifier = CombinedSpecifier;
+        }
+
+        private void ExecuteButton_Click(object sender, EventArgs e)
+        {
+            Execute();
+        }
+
+        private void Execute()
+        {
+            ImportFile[] StartingFiles = DropFilesHerePanel.FileList.Files.Where(File => File.IsValid.IsValid == ValidState.Good || File.IsValid.IsValid == ValidState.Warning).ToArray();
+            RecordSetGrouping RecordsGroupedByPatient = new Model.RecordSetGrouping(StartingFiles);
+
+            RemovedPatientsPanel.AllRecordSets = RecordsGroupedByPatient;
+            
+            OutputFile[] OutputFiles = RecordsGroupedByPatient.SplitBackUpIntoFiles(RecordSet => RecordSet.IsConsentValid == true);
+
+            LoadedFilesPanel.FileList.Files.Clear();
+            LoadedFilesPanel.FileList.AddRange(OutputFiles);
+
+            
+        }
+
+        private void ExecuteWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            
+        }
+
+        private void ExecuteWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+
+        }
+
+        private void ExecuteWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+
+        }
+
 
     }
 }

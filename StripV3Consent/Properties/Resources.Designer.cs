@@ -61,29 +61,6 @@ namespace StripV3Consent.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot;?&gt;
-        ///&lt;DataSubmissionSpecification xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&gt;
-        ///  &lt;PatientFiles&gt;
-        ///    &lt;File&gt;
-        ///      &lt;Name&gt;patient_abc.csv&lt;/Name&gt;
-        ///      &lt;Fields&gt;
-        ///        &lt;Field&gt;
-        ///          &lt;Name&gt;NHS Number&lt;/Name&gt;
-        ///          &lt;DataItemCode&gt;IBD01&lt;/DataItemCode&gt;
-        ///          &lt;Version&gt;2015_H&lt;/Version&gt;
-        ///          &lt;Group&gt;PATIENT: Identifiers&lt;/Group&gt;
-        ///        &lt;/Field&gt;
-        ///        &lt;Field&gt;
-        ///          &lt;Name&gt;Date of birth&lt;/Name&gt;
-        ///          &lt;DataItemCod [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string _2021_K_IBD_Registry_Submission_Dataset_V01__Nov_2021_ {
-            get {
-                return ResourceManager.GetString("_2021_K_IBD_Registry_Submission_Dataset_V01__Nov_2021_", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
         internal static System.Drawing.Icon error {
