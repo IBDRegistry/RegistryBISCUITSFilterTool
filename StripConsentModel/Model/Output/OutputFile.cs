@@ -9,19 +9,19 @@ namespace StripV3Consent.Model
 {
     public class OutputFile: DataFile
     {
-        public string[][] Content;
+        public IEnumerable<Record> OutputRecords;
+        public IEnumerable<Record> AllRecordsOriginallyInFile;
 
         private const string ColumnSeparator = ",";
         private const string RowSeparator = "\r\n";
 
-        public OutputFile(FileInfo file, string[][] content) : base(file)
-        {
-            File = file;
-            Content = content;
-        }
+        public OutputFile(DataFile file) : base(file.File) { }
+        
 
         public string RepackIntoString()
         {
+            string[][] Content = OutputRecords.Select(r => r.DataRecord).ToArray();
+
             return String.Join(RowSeparator, Content.Select(
                                 record => String.Join(ColumnSeparator, record)));
         }

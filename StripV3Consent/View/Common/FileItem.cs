@@ -8,13 +8,6 @@ using System.Drawing;
 
 namespace StripV3Consent.View
 {
-    public class FileItem : AbstractFileItem<DataFile>
-    {
-        public FileItem(DataFile file) : base(file)
-        {
-        }
-    }
-
     public abstract class AbstractFileItem<FileType> : FlowLayoutPanel where FileType : DataFile
     {
         private FileType file;
@@ -47,6 +40,7 @@ namespace StripV3Consent.View
         {
             this.BorderStyle = BorderStyle.Fixed3D;
             this.FlowDirection = FlowDirection.LeftToRight;
+            this.WrapContents = false;
             this.AutoSize = true;
         }
 
@@ -64,7 +58,8 @@ namespace StripV3Consent.View
             Label FileNameLabel = new Label()
             {
                 Text = file.Name,
-                TextAlign = ContentAlignment.MiddleLeft
+                TextAlign = ContentAlignment.MiddleLeft,
+                AutoEllipsis = true
             };
             this.Controls.Add(FileNameLabel);
 

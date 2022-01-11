@@ -178,7 +178,7 @@ namespace StripV3Consent
             RecordSetGrouping RecordsGroupedByPatient = new Model.RecordSetGrouping(StartingFiles);
 
             RemovedPatientsPanel.AllRecordSets = RecordsGroupedByPatient;
-            
+
             OutputFile[] OutputFiles = RecordsGroupedByPatient.SplitBackUpIntoFiles(RecordSet => RecordSet.IsConsentValid == true);
 
             LoadedFilesPanel.FileList.Files.Clear();

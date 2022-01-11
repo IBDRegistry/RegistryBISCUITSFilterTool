@@ -43,25 +43,34 @@ namespace StripV3Consent.Model
 
         }
 
+        private IEnumerable<IEnumerable<Record>> FlattenAndGroupRecordsByOriginalFiles(List<RecordSet> RecordSets)
+        {
+            IEnumerable<Record> RecordsFlattened = RecordSets.Select(rs => rs.Records).SelectMany<IEnumerable<Record>, Record>(x => x);
+
+            IEnumerable<Record> OutputRecords = RecordsFlattened.Where(r => r.OriginalFile.SpecificationFile.IsRegistryFile == true);
+
+            IEnumerable<IEnumerable<Record>> RecordsGroupedByOriginalFiles = OutputRecords.GroupBy
+                                                                                <Record, DataFile, IEnumerable<Record>>(
+                                                                                r => r.OriginalFile,    //Group by original file
+                                                                                (OriginalFile, RecordsIEnumerable) => RecordsIEnumerable    //Output groupings as IEnumerable<Record>
+                                                                                );
+            return RecordsGroupedByOriginalFiles;
+        }
+
         private OutputFile[] SplitBackUpIntoFiles(List<RecordSet> RecordSets)
         {
-            IEnumerable<Record> AllRecords = RecordSets.Select(rs => rs.Records).SelectMany<IEnumerable<Record>, Record>(x => x);
+            IEnumerable<IEnumerable<Record>> OutputRecords = FlattenAndGroupRecordsByOriginalFiles(RecordSets);
 
-            IEnumerable<Record> OutputRecords = AllRecords.Where(r => r.OriginalFile.SpecificationFile.IsRegistryFile == true);
+            List<IEnumerable<Record>> AllRecords = FlattenAndGroupRecordsByOriginalFiles(this.RecordSets).ToList<IEnumerable<Record>>();
+            
 
-            IEnumerable<Record[]> RecordsGroupedByOriginalFiles = OutputRecords.GroupBy
-                                                                                <Record, DataFile, Record[]>(
-                                                                                r => r.OriginalFile,
-                                                                                (OriginalFile, RecordsIEnumerable) => RecordsIEnumerable.ToArray()
-                                                                                );
-
-
-            var Files = RecordsGroupedByOriginalFiles.Select(
-                                                        RecordArray => new OutputFile
-                                                        (
-                                                            content: RecordArray.Select(r => r.DataRecord).ToArray(),
-                                                            file: RecordArray.First().OriginalFile.File
-                                                        ));
+            IEnumerable<OutputFile> Files = OutputRecords.Select(
+                                                                        RecordsInOutputFile => new OutputFile(RecordsInOutputFile.First().OriginalFile) 
+                                                                        {
+                                                                            OutputRecords = RecordsInOutputFile,
+                                                                            AllRecordsOriginallyInFile = AllRecords.Find(RecordIEnumerable => RecordIEnumerable.First().OriginalFile == RecordsInOutputFile.First().OriginalFile)
+                                                                        }
+                                                                        );
 
 
 
