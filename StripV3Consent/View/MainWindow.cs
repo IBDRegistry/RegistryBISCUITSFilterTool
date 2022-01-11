@@ -175,7 +175,7 @@ namespace StripV3Consent
         private void Execute()
         {
             ImportFile[] StartingFiles = DropFilesHerePanel.FileList.Files.Where(File => File.IsValid.IsValid == ValidState.Good || File.IsValid.IsValid == ValidState.Warning).ToArray();
-            RecordSetGrouping RecordsGroupedByPatient = new Model.RecordSetGrouping(StartingFiles);
+            RecordSetGrouping RecordsGroupedByPatient = new RecordSetGrouping(StartingFiles);
 
             RemovedPatientsPanel.AllRecordSets = RecordsGroupedByPatient;
 
@@ -183,8 +183,6 @@ namespace StripV3Consent
 
             LoadedFilesPanel.FileList.Files.Clear();
             LoadedFilesPanel.FileList.AddRange(OutputFiles);
-
-            
         }
 
         private void ExecuteWorker_DoWork(object sender, DoWorkEventArgs e)
