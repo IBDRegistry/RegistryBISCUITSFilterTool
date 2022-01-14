@@ -103,6 +103,16 @@ namespace StripV3Consent.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap NationalOptOut {
+            get {
+                object obj = ResourceManager.GetObject("NationalOptOut", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap nhs_logo_square {
             get {
                 object obj = ResourceManager.GetObject("nhs_logo_square", resourceCulture);

@@ -55,7 +55,7 @@ namespace StripV3Consent
             this.TableLayoutPanel.ColumnCount = 3;
             this.TableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 260F));
             this.TableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.TableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 260F));
+            this.TableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 280F));
             this.TableLayoutPanel.Controls.Add(this.DropFilesHerePanel, 0, 1);
             this.TableLayoutPanel.Controls.Add(this.LoadedFilesPanel, 2, 1);
             this.TableLayoutPanel.Controls.Add(this.ExecuteButton, 0, 2);

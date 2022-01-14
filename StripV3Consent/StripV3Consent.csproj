@@ -189,6 +189,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ibdregistry.ico" />
+    <None Include="Resources\NationalOptOut.png" />
   </ItemGroup>
   <Target Name="ILMerge">
     <!-- the ILMergePath property points to the location of ILMerge.exe console application -->

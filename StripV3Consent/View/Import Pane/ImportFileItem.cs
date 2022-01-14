@@ -77,7 +77,7 @@ namespace StripV3Consent.View
             switch (Model.Organisation)
             {
                 case FileOrganisation.NHS:
-                    Image = Properties.Resources.nhs_logo_square;
+                    Image = Properties.Resources.NationalOptOut;
                     break;
                 case FileOrganisation.Registry:
                     Image = Properties.Resources.ibdregistry;
