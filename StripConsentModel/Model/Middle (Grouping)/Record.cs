@@ -37,9 +37,20 @@ namespace StripV3Consent.Model
             get
             {
                 StringBuilder CompositeIdentifier = new StringBuilder();
-                foreach(int IdentifierLocation in Spec2021K.Specification.IdentiferLocations())
+                foreach(string IdentifierCode in Specification.DataSubmissionSpecification.IdentifierCodes)
                 {
-                    CompositeIdentifier.Append(DataRecord[IdentifierLocation]);
+                    string CurrentValue = DataRecord[Spec2021K.Specification.PositionOfInEveryFile(IdentifierCode)];
+
+                    //Special logic for NHS Numbers on comparison. This allows the matching of 123456890 and 123 456 7890
+                    //Ideally we would have a list of datatypes instead of the list of strings that we have with Record
+                    //And the NHS Number datatype would have a comparison operator that handles this
+                    //But right now I do not have the time to encode all 1800 list data entries from 2021K and I doubt I ever will
+                    if (IdentifierCode == "IBD01")
+                    {
+                        CurrentValue = CurrentValue.Replace(" ", "");
+                    }
+
+                    CompositeIdentifier.Append(CurrentValue);
                 }
                 return CompositeIdentifier.ToString();
             }
