@@ -1775,6 +1775,84 @@ Medication</Group>
       </Fields>
       <IsRegistryFile>true</IsRegistryFile>
     </File>
+    <File xsi:type="RegistryFile">
+      <Name>pregnancy.*\.csv</Name>
+      <Fields>
+        <Field>
+          <Name>NHS Number</Name>
+          <DataItemCode>IBD01</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>PREGNANCY: Identifiers</Group>
+        </Field>
+        <Field>
+          <Name>Date of birth</Name>
+          <DataItemCode>IBD02</DataItemCode>
+          <Version>2015_H</Version>
+          <Group>PREGNANCY: Identifiers</Group>
+        </Field>
+        <Field>
+          <Name>Patient/partner pregnant?</Name>
+          <DataItemCode>IBD400</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>OUTCOME: Pregnancy</Group>
+        </Field>
+        <Field>
+          <Name>Pregnancy outcome</Name>
+          <DataItemCode>IBD401</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>OUTCOME: Pregnancy</Group>
+        </Field>
+        <Field>
+          <Name>Week of delivery</Name>
+          <DataItemCode>IBD402</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>OUTCOME: Pregnancy</Group>
+        </Field>
+        <Field>
+          <Name>Mode of delivery</Name>
+          <DataItemCode>IBD403</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>OUTCOME: Pregnancy</Group>
+        </Field>
+        <Field>
+          <Name>Birth weight (kg)</Name>
+          <DataItemCode>IBD404</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>OUTCOME: Pregnancy</Group>
+        </Field>
+        <Field>
+          <Name>Congenital  malformations</Name>
+          <DataItemCode>IBD405</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>OUTCOME: Pregnancy</Group>
+        </Field>
+        <Field>
+          <Name>Neonatal complications</Name>
+          <DataItemCode>IBD406</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>OUTCOME: Pregnancy</Group>
+        </Field>
+        <Field>
+          <Name>Drug exposure during pregnancy</Name>
+          <DataItemCode>IBD407</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>OUTCOME: Pregnancy</Group>
+        </Field>
+        <Field>
+          <Name>Local unit code</Name>
+          <DataItemCode>IBD13</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>PREGNANCY: Site Identifiers</Group>
+        </Field>
+        <Field>
+          <Name>IBD Audit code</Name>
+          <DataItemCode>IBD14</DataItemCode>
+          <Version>2021_K</Version>
+          <Group>PREGNANCY: Site Identifiers</Group>
+        </Field>
+      </Fields>
+      <IsRegistryFile>true</IsRegistryFile>
+    </File>
     <File xsi:type="NationalOptOutFile">
       <Name>.+\.dat</Name>
       <Fields>
