@@ -8,6 +8,7 @@ using System.ComponentModel;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using System.Collections.ObjectModel;
 using StripV3Consent.View;
+using System.Security.Principal;
 
 namespace StripV3Consent
 {
@@ -18,9 +19,31 @@ namespace StripV3Consent
             InitializeComponent();
             DropFilesHerePanel.FileList.Files.CollectionChanged += ImportFilesChanged;
             LoadedFilesPanel.FileList.Files.CollectionChanged += OutputFilesChanged;
+
+            CheckIfAdministrator();
         }
 
-        
+        private void CheckIfAdministrator()
+        {
+            if (IsAdministrator())
+            {
+                MessageBox.Show(text:
+@"This program is being run in administrator mode, this is known to cause issues with drag and drop in Windows systems implementing UAC (Vista and newer)
+To resolve this either drag and drop from Windows Explorer while running it as administrator, or run the program as a limited user
+
+You can contact your IT support for help with this issue",
+                                caption:"Warning: Administrator Privileges",
+                                buttons: MessageBoxButtons.OK,
+                                icon: MessageBoxIcon.Warning);
+            }
+        }
+
+        private bool IsAdministrator()
+        {
+            WindowsPrincipal principal = new WindowsPrincipal(WindowsIdentity.GetCurrent());
+            return principal.IsInRole(WindowsBuiltInRole.Administrator);
+        }
+
         private void SaveButton_Click(object sender, EventArgs e)
         {
             CommonOpenFileDialog SelectDialog = new CommonOpenFileDialog();
