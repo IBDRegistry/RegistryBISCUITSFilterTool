@@ -150,13 +150,13 @@
     <None Include="Resources\error.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Encode2021KAsXML\XML 2021K Classes\XML 2021K Classes.csproj">
-      <Project>{aff69946-d8e3-4c11-80d1-ecc1f1004ccc}</Project>
-      <Name>XML 2021K Classes</Name>
-    </ProjectReference>
     <ProjectReference Include="..\StripConsentModel\StripConsentModel.csproj">
       <Project>{4340ef9c-27ae-4d0e-b2ff-b1b44feb2c26}</Project>
       <Name>StripConsentModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\XML 2021K Classes\XML 2021K Classes.csproj">
+      <Project>{AFF69946-D8E3-4C11-80D1-ECC1F1004CCC}</Project>
+      <Name>XML 2021K Classes</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
