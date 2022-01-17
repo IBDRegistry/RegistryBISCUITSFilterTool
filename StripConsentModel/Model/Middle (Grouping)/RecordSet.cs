@@ -123,7 +123,6 @@ namespace StripV3Consent.Model
                 //User cannot save page unless version of consent, registry consent and date of consent are provided
 
 
-#warning use both NHS Number and DOB for grouping
                 return new ConsentValidState()
                 {
                     IsValid = false,
