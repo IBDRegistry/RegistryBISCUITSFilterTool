@@ -52,7 +52,6 @@ namespace StripV3Consent.View
                 Width = InteriorSize,
                 Height = InteriorSize
             };
-            Icon test = Icon.ExtractAssociatedIcon(file.Path);
             this.Controls.Add(FileIcon);
 
             Label FileNameLabel = new Label()
