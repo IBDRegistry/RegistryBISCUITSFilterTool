@@ -1,7 +1,15 @@
 ﻿@page "/"
+<button onclick="returnArrayAsync()">
+    Trigger .NET static method
+</button>
+<MainLayoutPanel></MainLayoutPanel>
 
-<h1>Hello, world!</h1>
 
-Welcome to your new app.
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+@code {
+    [JSInvokable]
+    public static Task<int[]> ReturnArrayAsync()
+    {
+        return Task.FromResult(new int[] { 1, 2, 3 });
+    }
+}

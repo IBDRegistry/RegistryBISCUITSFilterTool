@@ -55,6 +55,9 @@
   <PropertyGroup>
     <ApplicationIcon>ibdregistry.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>false</SignManifests>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="MakarovDev.ExpandCollapsePanel, Version=1.0.8038.22160, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
