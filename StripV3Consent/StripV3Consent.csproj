@@ -8,7 +8,7 @@
     <ProjectGuid>{7F0F8F0D-CF4E-4D3C-9EFC-7C9C5A2356CE}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>StripV3Consent</RootNamespace>
-    <AssemblyName>StripV3Consent</AssemblyName>
+    <AssemblyName>Registry Consent Tool</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
