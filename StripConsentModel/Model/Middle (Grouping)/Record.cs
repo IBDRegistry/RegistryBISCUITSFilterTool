@@ -63,7 +63,15 @@ namespace StripV3Consent.Model
         /// <returns></returns>
         public string GetValueByDataItemCode(string DataItemCode)
         {
-            return this[this.OriginalFile.SpecificationFile.Fields.FindIndex(f => f.DataItemCode == DataItemCode)];
+            int FieldIndex = OriginalFile.SpecificationFile.Fields.FindIndex(f => f.DataItemCode == DataItemCode);
+            if (FieldIndex <= this.DataRecord.Length)
+			{
+                return this[FieldIndex];
+            } else
+			{
+                return "";  //For old systems uploading files they may not have new fields such as Consent Version
+			}
+            
         }
 
         /// <summary>
