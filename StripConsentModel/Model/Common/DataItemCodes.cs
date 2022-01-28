@@ -12,5 +12,6 @@ namespace StripV3Consent.Model
         public static string ConsentVersionFieldID = "IBD338";
         public static string ConsentForRegistryFieldID = "IBD16";
         public static string NationalOptOut = "NHS01";
+        public static string DateOfConsent = "IBD15";
     }
 }

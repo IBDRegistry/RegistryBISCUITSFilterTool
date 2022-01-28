@@ -36,15 +36,21 @@ namespace StripV3Consent.Model
                 const string ConsentFileNameInSpec = "consent";
 
                 IEnumerable<Record> ConsentRecords = Records.Where(r => r.OriginalFile.SpecificationFile.Name.Contains(ConsentFileNameInSpec));
+                Record ConsentRecord;
 
                 if (ConsentRecords.Count() > 1)
                 {
-                    throw new OnlyOneRecordExpectedException()
-                    {
-                        NHSNumber = GetFieldValue(DataItemCodes.NHSNumber),
-                        ProblematicRecordGroup = ConsentRecords
-                    };
-
+                    ConsentRecord = ConsentRecords.OrderBy(r => {
+                        string RawValue = r.GetValueByDataItemCode(DataItemCodes.DateOfConsent);
+                        DateTime CastValue;
+                        if (DateTime.TryParse(RawValue, out CastValue))
+						{
+                            return CastValue;
+						} else
+						{
+                            throw new Exception("Failed DateTime cast for Date of Consent");
+                        }
+                    }).First();
                 }
 
 
@@ -85,7 +91,7 @@ namespace StripV3Consent.Model
                     };
                 }
 
-                Record ConsentRecord = ConsentRecords.First();
+                ConsentRecord = ConsentRecords.First();
 
                 //Is Consent V4 and Yes
                 string ConsentVersion = ConsentRecord.GetValueByDataItemCode(DataItemCodes.ConsentVersionFieldID);
