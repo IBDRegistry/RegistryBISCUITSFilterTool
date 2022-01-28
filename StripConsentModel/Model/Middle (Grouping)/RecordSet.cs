@@ -28,6 +28,7 @@ namespace StripV3Consent.Model
             return RecordWithValue[RecordWithValue.OriginalFile.SpecificationFile.Fields.FindIndex(f => f.DataItemCode == SpecifiedDataItemCode)];
         }
 
+        
 
         public ConsentValidState IsConsentValid
         {
@@ -53,37 +54,22 @@ namespace StripV3Consent.Model
                     }).First();
                 }
 
-
-
-                //National Opt-Out
-                IEnumerable<Record> NationalOptOutRecords = Records.Where(r => r.OriginalFile.SpecificationFile is Specification.NationalOptOutFile);
-                if (NationalOptOutRecords.Count() > 1)
-                {
-                    throw new OnlyOneRecordExpectedException()
-                    {
-                        NHSNumber = GetFieldValue(DataItemCodes.NHSNumber),
-                        ProblematicRecordGroup = NationalOptOutRecords
-                    };
-                }
-
-                if (NationalOptOutRecords.Count() != 0) {
-                    Record NationalOptOutRecord = NationalOptOutRecords.First();
-                    string IsOptedOut = NationalOptOutRecord.GetValueByDataItemCode(DataItemCodes.NationalOptOut);
-                    if (IsOptedOut == "Yes")
-                    {
-                        return new ConsentValidState()
-                        {
-                            IsValid = false,
-                            IsValidReason = "Patient participated in the national opt-out"
-                        };
-                    }
-                }
-
-
-
                 // S251
                 if (ConsentRecords.Count() == 0)
                 {
+                    //National Opt-Out
+                    IEnumerable<Record> NationalOptOutRecords = Records.Where(r => r.OriginalFile.SpecificationFile is Specification.NationalOptOutFile);
+                    if (NationalOptOutRecords.Count() != 0)
+                    {
+                        if (NationalOptOutRecords.Any(NOORecord => NOORecord.GetValueByDataItemCode(DataItemCodes.NationalOptOut) == "Yes"))
+                        {
+                            return new ConsentValidState()
+                            {
+                                IsValid = false,
+                                IsValidReason = "Patient participated in the national opt-out"
+                            };
+                        }
+                    }
                     return new ConsentValidState()
                     {
                         IsValid = true,
