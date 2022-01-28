@@ -81,7 +81,7 @@ namespace StripV3Consent.Model
 
 
 
-                // No consent record
+                // S251
                 if (ConsentRecords.Count() == 0)
                 {
                     return new ConsentValidState()
