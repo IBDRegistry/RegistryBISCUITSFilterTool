@@ -11,7 +11,18 @@ namespace StripV3Consent.Model
     {
         public ImportFile(string path) : base(path)
         {
+            ReadInFile(path);
         }
+
+        private async void ReadInFile(string path)
+		{
+            using (StreamReader reader = new StreamReader(path))
+			{
+                FileContents = await reader.ReadToEndAsync();
+			}
+		}
+
+        public string FileContents;
 
         public FileValidationState IsValid
         {
@@ -87,14 +98,13 @@ namespace StripV3Consent.Model
 
         private bool ContainsHeaders()
         {
-            String TopLeftValue = null;
+			string TopLeftValue = null;
             const uint CutOffValue = 32;
-            using (StreamReader StreamReader = new StreamReader(this.Path))
-            {
+            foreach(char CurrentChar in FileContents) { 
                 StringBuilder TopLeftValueBuilder = new StringBuilder();
-                while ((char)StreamReader.Peek() != ',')
+                while (CurrentChar != ',')
                 {
-                    TopLeftValueBuilder.Append((char)StreamReader.Read());
+                    TopLeftValueBuilder.Append(CurrentChar);
                         
                     if (TopLeftValueBuilder.Length >= CutOffValue)
                     {
@@ -120,11 +130,6 @@ namespace StripV3Consent.Model
             //Especially tab as excel loves to swap commas for tabs in csv files
             char[] CommonDelimiters = new char[] {',','\t', '|' };
 
-            string FileContents = null;
-            using (StreamReader StreamReader = new StreamReader(this.Path))
-            {
-                FileContents = StreamReader.ReadToEnd();
-            }
             int[] AppearanceCounts = CommonDelimiters.Select(Delimiter => FileContents.Count(f => f == Delimiter)).ToArray();
 
             if (AppearanceCounts[Array.IndexOf(CommonDelimiters, ',')] == AppearanceCounts.Max())
@@ -144,26 +149,23 @@ namespace StripV3Consent.Model
         private string LineEndingsInFile()
         {
 
-            using (StreamReader StreamReader = new StreamReader(this.Path))
-            {
-                while (StreamReader.EndOfStream == false)
+            for (int i = 0; i < FileContents.Length; i++) { 
+                char CurrentChar = FileContents[i];
+                if (CurrentChar == '\r') //If carraige return is encountered followed by line feed then Windows
                 {
-                    if ((char)StreamReader.Read() == '\r') //If carraige return is encountered followed by line feed then Windows
+                    if (FileContents[i+1] == '\n')
                     {
-                        if ((char)StreamReader.Read() == '\n')
-                        {
-                            return "\r\n";
-                        }
-                    }
-                    else if ((char)StreamReader.Read() == '\n')   //If line feed is encountered first then Unix
-                    {
-                        return "\n";
+                        return "\r\n";
                     }
                 }
-
-                //Neither line ending found, doesn't really matter what we return but we'll return line feed
-                return "\n";
+                else if (CurrentChar == '\n')   //If line feed is encountered first then Unix
+                {
+                    return "\n";
+                }
             }
+
+            //Neither line ending found, doesn't really matter what we return but we'll return line feed and deal with \r pollution
+            return "\n";
 
         }
 
@@ -199,13 +201,7 @@ namespace StripV3Consent.Model
 
         public File2DArray SplitInto2DArray()
         {
-            string FileContent = null;
-            using (StreamReader reader = new StreamReader(this.Path))
-            {
-                FileContent = reader.ReadToEnd();
-            }
-
-            return SplitIntoBoxed2DArrayWithHeaders(FileContent);
+            return SplitIntoBoxed2DArrayWithHeaders(FileContents);
         }
     }
 
