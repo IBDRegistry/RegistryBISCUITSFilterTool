@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StripConsentModel", "StripC
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XML 2021K Classes", "XML 2021K Classes\XML 2021K Classes.csproj", "{AFF69946-D8E3-4C11-80D1-ECC1F1004CCC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelTest", "ModelTest\ModelTest.csproj", "{B25107F0-EE2D-4EC0-AE0A-87CFD3821C03}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{AFF69946-D8E3-4C11-80D1-ECC1F1004CCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AFF69946-D8E3-4C11-80D1-ECC1F1004CCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AFF69946-D8E3-4C11-80D1-ECC1F1004CCC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B25107F0-EE2D-4EC0-AE0A-87CFD3821C03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B25107F0-EE2D-4EC0-AE0A-87CFD3821C03}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B25107F0-EE2D-4EC0-AE0A-87CFD3821C03}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B25107F0-EE2D-4EC0-AE0A-87CFD3821C03}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
