@@ -38,36 +38,6 @@ namespace StripV3Consent.Model
 
 				IEnumerable<Record> AllConsentRecords = Records.Where(r => r.OriginalFile.SpecificationFile.Name.Contains(ConsentFileNameInSpec));
 
-				IEnumerable<Record> ValidConsentRecords = AllConsentRecords.Where(r =>
-				{
-					string RawValue = r.GetValueByDataItemCode(DataItemCodes.DateOfConsent);
-					DateTime CastValue;
-					if (DateTime.TryParse(RawValue, out CastValue))
-					{
-						return true;
-					}
-					else
-					{
-						return false;
-					}
-				});
-
-
-				Record ConsentRecord = null;
-
-				if (ValidConsentRecords.Count() == 1)
-				{
-					ConsentRecord = ValidConsentRecords.First();
-				}
-				else if (ValidConsentRecords.Count() > 1)
-				{
-					ConsentRecord = ValidConsentRecords.OrderBy(r => {
-										string RawValue = r.GetValueByDataItemCode(DataItemCodes.DateOfConsent);
-										return DateTime.Parse(RawValue);
-					}).First();
-
-				}
-
 
 				// S251
 				if (AllConsentRecords.Count() == 0)
@@ -91,6 +61,37 @@ namespace StripV3Consent.Model
 						IsValidReason = "No consent record so patient flows via S251"
 					};
 				}
+
+
+				IEnumerable<Record> ValidConsentRecords = AllConsentRecords.Where(r =>
+				{
+					string RawValue = r.GetValueByDataItemCode(DataItemCodes.DateOfConsent);
+					DateTime CastValue;
+					if (DateTime.TryParse(RawValue, out CastValue))
+					{
+						return true;
+					}
+					else
+					{
+						return false;
+					}
+				});
+
+				Record ConsentRecord = null;
+
+				if (ValidConsentRecords.Count() == 1)
+				{
+					ConsentRecord = ValidConsentRecords.First();
+				}
+				else if (ValidConsentRecords.Count() > 1)
+				{
+					ConsentRecord = ValidConsentRecords.OrderBy(r => {
+										string RawValue = r.GetValueByDataItemCode(DataItemCodes.DateOfConsent);
+										return DateTime.Parse(RawValue);
+					}).First();
+
+				}
+
 
 				if (AllConsentRecords.Count() > 0 & ValidConsentRecords.Count() == 0 )
 				{

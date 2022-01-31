@@ -189,6 +189,11 @@
     <Content Include="ibdregistry.ico" />
     <None Include="Resources\NationalOptOut.png" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="MSBuild.ILMerge.Task">
+      <Version>1.1.3</Version>
+    </PackageReference>
+  </ItemGroup>
   <Target Name="ILMerge">
     <!-- the ILMergePath property points to the location of ILMerge.exe console application -->
     <Exec Command="$(ILMergeConsolePath) Bin\x64\Release\myapp.exe  /out:myapp.exe Bin\x64\Release\File1.dll Bin\x64\Release\File2.dll Bin\x64\Release\File3.dll " />
