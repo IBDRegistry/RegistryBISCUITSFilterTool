@@ -14,11 +14,11 @@ namespace StripV3Consent.Model
             ReadInFile(path);
         }
 
-        private async void ReadInFile(string path)
+        private void ReadInFile(string path)
 		{
             using (StreamReader reader = new StreamReader(path))
 			{
-                FileContents = await reader.ReadToEndAsync();
+                FileContents = reader.ReadToEnd();
 			}
 		}
 
