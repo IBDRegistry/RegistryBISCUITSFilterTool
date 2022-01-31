@@ -100,20 +100,24 @@ namespace StripV3Consent.Model
         {
 			string TopLeftValue = null;
             const uint CutOffValue = 32;
-            foreach(char CurrentChar in FileContents) { 
-                StringBuilder TopLeftValueBuilder = new StringBuilder();
-                while (CurrentChar != ',')
+            StringBuilder TopLeftValueBuilder = new StringBuilder();
+            for (int i = 0; i < FileContents.Length; i++)
+            {
+                char CurrentChar = FileContents[i];
+                if (CurrentChar == ',')
+                {
+                    break;
+                }
+                else
                 {
                     TopLeftValueBuilder.Append(CurrentChar);
-                        
-                    if (TopLeftValueBuilder.Length >= CutOffValue)
-                    {
-                        break;
-                    }
                 }
-                TopLeftValue = TopLeftValueBuilder.ToString();
+                if (TopLeftValueBuilder.Length >= CutOffValue)
+                {
+                    break;
+                }
             }
-
+            TopLeftValue = TopLeftValueBuilder.ToString();
             if (TopLeftValue.StartsWith("HEADER_"))
             {
                 return true;
