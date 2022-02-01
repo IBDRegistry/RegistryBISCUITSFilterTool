@@ -77,8 +77,8 @@ namespace StripV3Consent.Model
         {
             NotWellFormed,
             JaggedRows,
-
         }
+
         /// <summary>
         /// Returns whether the file has the correct number of columns and that each row contains all of those columns
         /// </summary>
