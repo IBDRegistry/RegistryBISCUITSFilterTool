@@ -82,6 +82,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Libraries\FileIcon_Src\IconHelper.cs" />
+    <Compile Include="Libraries\FileIcon_Src\IconListManager.cs" />
     <Compile Include="View\ExecutionThread.cs" />
     <Compile Include="View\Output Pane\OutputFileItem.cs">
       <SubType>Component</SubType>

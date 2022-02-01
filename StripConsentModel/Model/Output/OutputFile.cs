@@ -15,7 +15,7 @@ namespace StripV3Consent.Model
         private const string ColumnSeparator = ",";
         private const string RowSeparator = "\r\n";
 
-        public OutputFile(DataFile file) : base(file.File) { }
+        public OutputFile(DataFile file) : base(file.Name) { }
         
 
         public string RepackIntoString()
@@ -30,7 +30,7 @@ namespace StripV3Consent.Model
         
         public override string ToString()
         {
-            return File.Name;
+            return Name;
         }
     }
 }

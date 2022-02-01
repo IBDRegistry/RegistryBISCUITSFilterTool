@@ -9,17 +9,14 @@ namespace StripV3Consent.Model
 {
     public class ImportFile : DataFile
     {
-        public ImportFile(string path) : base(path)
+        public ImportFile(string FileName, string Contents) : base(FileName)
         {
-            ReadInFile(path);
+            FileContents = Contents;
         }
 
         private void ReadInFile(string path)
 		{
-            using (StreamReader reader = new StreamReader(path))
-			{
-                FileContents = reader.ReadToEnd();
-			}
+            
 		}
 
         public string FileContents;

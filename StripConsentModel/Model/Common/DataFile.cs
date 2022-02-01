@@ -10,19 +10,11 @@ namespace StripV3Consent.Model
 {
     public abstract class DataFile
     {
-        public FileInfo File;
+        public string Name;
 
-        public string Path => File.FullName;
-
-        public string Name => File.Name;
-
-        public DataFile(string path)
+        public DataFile(string FileName)
         {
-            File = new FileInfo(path);
-        }
-        public DataFile(FileInfo fileInfo)
-        {
-            File = fileInfo;
+            Name = FileName;
         }
 
         public Specification.File SpecificationFile { get

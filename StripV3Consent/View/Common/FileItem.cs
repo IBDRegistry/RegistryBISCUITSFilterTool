@@ -44,11 +44,13 @@ namespace StripV3Consent.View
             this.AutoSize = true;
         }
 
+       
+
         public virtual void DrawContents()
         {
             FileIcon = new PictureBox()
             {
-                Image = Icon.ExtractAssociatedIcon(file.Path).ToBitmap(),
+                Image = Etier.IconHelper.IconReader.GetFileIcon(File.Name, Etier.IconHelper.IconReader.IconSize.Large, false).ToBitmap(),
                 Width = InteriorSize,
                 Height = InteriorSize
             };

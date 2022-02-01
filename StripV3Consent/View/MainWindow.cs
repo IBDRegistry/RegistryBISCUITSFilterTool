@@ -47,21 +47,8 @@ You can contact your IT support for help with this issue",
         private void SaveButton_Click(object sender, EventArgs e)
         {
             CommonOpenFileDialog SelectDialog = new CommonOpenFileDialog();
-
-            string MostCommonSourceDirectory = LoadedFilesPanel.FileList.Files.Select(
-                                                                            OutputFile => Path.GetDirectoryName(OutputFile.Path))
-                                                                                .GroupBy(
-                                                                                  Path => Path,
-                                                                                  (FilePath, DF) => new {
-                                                                                                         path = FilePath,
-                                                                                                         NumberOf = DF.Count()
-                                                                                                        }
-                                                                                  ).OrderBy(
-                                                                                       AnonObject => AnonObject.NumberOf).First().path;
-
-
-
-            SelectDialog.InitialDirectory = MostCommonSourceDirectory;
+      
+            SelectDialog.InitialDirectory = DropFilesHerePanel.MostCommonSourceDirectory;
             SelectDialog.IsFolderPicker = true;
             if (SelectDialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
