@@ -29,10 +29,35 @@ namespace StripV3Consent.View
 			}
 		}
 
+		/// <summary>
+		/// Provides preliminary validation that a file can be safely loaded into the program
+		/// </summary>
+		/// <param name="FilePath"></param>
+		/// <returns></returns>
+		private bool IsFileValidForDropping(string FilePath)
+        {
+			FileAttributes Attributes = File.GetAttributes(FilePath);
+			if (Attributes == FileAttributes.Directory | Attributes == FileAttributes.Device) //Prevent doctors from trying to drag and drop folders, devices and all sorts of nonsense
+			{
+				MessageBox.Show("Sorry but we don't support that type of file");
+				return false;
+            }
+
+			const long MaxFileSize = 100000; //100MB
+			long FileSize = new FileInfo(FilePath).Length;
+			if (FileSize > MaxFileSize)
+            {
+				MessageBox.Show($"That file is too large for this program to handle (Size was {FileSize} and Maximum Size is {MaxFileSize}");
+				return false;
+            }
+
+			return true;
+		}
+
 		private void DropFiles_DragDrop(object sender, DragEventArgs e)
 		{
 			string[] InputPaths = (string[])e.Data.GetData(DataFormats.FileDrop);
-			string[] FilePaths = InputPaths.Where(path => !(File.GetAttributes(path) == FileAttributes.Directory | File.GetAttributes(path) == FileAttributes.Device)).ToArray(); //Prevent doctors from trying to drag and drop folders, devices and all sorts of nonsense
+			string[] FilePaths = InputPaths.Where(path => IsFileValidForDropping(path)).ToArray(); //Prevent doctors from trying to drag and drop folders, devices and all sorts of nonsense
 			this.Controls.Clear();
 			this.Controls.Add(FileList);
 			FileList.AddRange(FilePaths.Select<string, ImportFile>(Path => {
