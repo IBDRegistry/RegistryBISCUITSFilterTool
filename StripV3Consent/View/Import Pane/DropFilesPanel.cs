@@ -43,7 +43,7 @@ namespace StripV3Consent.View
 				return false;
             }
 
-			const long MaxFileSize = 100000; //100MB
+			const long MaxFileSize = 10000000; //10MB
 			long FileSize = new FileInfo(FilePath).Length;
 			if (FileSize > MaxFileSize)
             {
