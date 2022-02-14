@@ -19,7 +19,7 @@ namespace StripV3Consent.Model
 
         public Specification.File SpecificationFile { get
             {
-                IEnumerable<Specification.File> FilesWithMatchingPattern = Spec2021K.Specification.AllFiles.Where<Specification.File>(f => new Regex(f.Name).IsMatch(Name));
+                IEnumerable<Specification.File> FilesWithMatchingPattern = Spec2021K.Specification.AllFiles.Where<Specification.File>(f => new Regex(f.Name, RegexOptions.IgnoreCase).IsMatch(Name));
 
                 if (FilesWithMatchingPattern.Count() > 1)
                 {
