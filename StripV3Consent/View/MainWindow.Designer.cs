@@ -101,9 +101,9 @@ namespace StripV3Consent
             // 
             this.LoadedFilesPanel.BackColor = System.Drawing.SystemColors.ControlLight;
             this.LoadedFilesPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.LoadedFilesPanel.Location = new System.Drawing.Point(543, 23);
+            this.LoadedFilesPanel.Location = new System.Drawing.Point(523, 23);
             this.LoadedFilesPanel.Name = "LoadedFilesPanel";
-            this.LoadedFilesPanel.Size = new System.Drawing.Size(254, 338);
+            this.LoadedFilesPanel.Size = new System.Drawing.Size(274, 338);
             this.LoadedFilesPanel.TabIndex = 1;
             // 
             // ExecuteButton
@@ -128,7 +128,7 @@ namespace StripV3Consent
             this.RemovedPatientsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.RemovedPatientsPanel.Location = new System.Drawing.Point(263, 23);
             this.RemovedPatientsPanel.Name = "RemovedPatientsPanel";
-            this.RemovedPatientsPanel.Size = new System.Drawing.Size(274, 338);
+            this.RemovedPatientsPanel.Size = new System.Drawing.Size(254, 338);
             this.RemovedPatientsPanel.TabIndex = 3;
             this.RemovedPatientsPanel.AllRecordSetsChanged += new System.EventHandler(this.RemovedPatientsPanel_AllRecordSetsChanged);
             // 
@@ -137,9 +137,9 @@ namespace StripV3Consent
             this.SaveButton.Dock = System.Windows.Forms.DockStyle.Fill;
             this.SaveButton.Enabled = false;
             this.SaveButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SaveButton.Location = new System.Drawing.Point(543, 367);
+            this.SaveButton.Location = new System.Drawing.Point(523, 367);
             this.SaveButton.Name = "SaveButton";
-            this.SaveButton.Size = new System.Drawing.Size(254, 80);
+            this.SaveButton.Size = new System.Drawing.Size(274, 80);
             this.SaveButton.TabIndex = 4;
             this.SaveButton.Text = "Save output";
             this.SaveButton.UseVisualStyleBackColor = true;
@@ -162,7 +162,7 @@ namespace StripV3Consent
             this.ProcessingPaneLabel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ProcessingPaneLabel.Location = new System.Drawing.Point(263, 0);
             this.ProcessingPaneLabel.Name = "ProcessingPaneLabel";
-            this.ProcessingPaneLabel.Size = new System.Drawing.Size(274, 20);
+            this.ProcessingPaneLabel.Size = new System.Drawing.Size(254, 20);
             this.ProcessingPaneLabel.TabIndex = 6;
             this.ProcessingPaneLabel.Text = "Processing pane";
             this.ProcessingPaneLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -171,9 +171,9 @@ namespace StripV3Consent
             // 
             this.OutputPaneLabel.AutoSize = true;
             this.OutputPaneLabel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.OutputPaneLabel.Location = new System.Drawing.Point(543, 0);
+            this.OutputPaneLabel.Location = new System.Drawing.Point(523, 0);
             this.OutputPaneLabel.Name = "OutputPaneLabel";
-            this.OutputPaneLabel.Size = new System.Drawing.Size(254, 20);
+            this.OutputPaneLabel.Size = new System.Drawing.Size(274, 20);
             this.OutputPaneLabel.TabIndex = 7;
             this.OutputPaneLabel.Text = "Output pane";
             this.OutputPaneLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -185,7 +185,7 @@ namespace StripV3Consent
             this.ProcessingControlPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ProcessingControlPanel.Location = new System.Drawing.Point(263, 367);
             this.ProcessingControlPanel.Name = "ProcessingControlPanel";
-            this.ProcessingControlPanel.Size = new System.Drawing.Size(274, 80);
+            this.ProcessingControlPanel.Size = new System.Drawing.Size(254, 80);
             this.ProcessingControlPanel.TabIndex = 8;
             // 
             // DisplayRemovedPatientsCheckbox

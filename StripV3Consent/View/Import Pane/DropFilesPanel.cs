@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using StripV3Consent.Model;
 
@@ -13,11 +15,27 @@ namespace StripV3Consent.View
 		public DropFilesPanel()
 		{
 			this.AllowDrop = true;
+
 			this.DragEnter += DropFiles_DragEnter;
 			this.DragDrop += DropFiles_DragDrop;
+
+			ElevatedDragDropManager.Instance.EnableDragDrop(Handle);
+			Application.AddMessageFilter(ElevatedDragDropManager.Instance);
+			ElevatedDragDropManager.Instance.ElevatedDragDrop += ElevatedDragDrop;
 		}
 
-		private void DropFiles_DragEnter(object sender, DragEventArgs e)
+        protected override void WndProc(ref Message m)
+        {
+            base.WndProc(ref m);
+
+        }
+
+        private void ElevatedDragDrop(object sender, ElevatedDragDropArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void DropFiles_DragEnter(object sender, DragEventArgs e)
 		{
 			if (e.Data.GetDataPresent(DataFormats.FileDrop))
 			{
