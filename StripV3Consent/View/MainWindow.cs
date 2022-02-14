@@ -194,20 +194,5 @@ You can contact your IT support for help with this issue",
             LoadedFilesPanel.FileList.Files.Clear();
             LoadedFilesPanel.FileList.AddRange(OutputFiles);
         }
-
-        private void ExecuteWorker_DoWork(object sender, DoWorkEventArgs e)
-        {
-            
-        }
-
-        private void ExecuteWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
-        {
-
-        }
-
-        private void ExecuteWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-
-        }
     }
 }

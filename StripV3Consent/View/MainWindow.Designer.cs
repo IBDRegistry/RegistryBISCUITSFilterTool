@@ -44,7 +44,6 @@ namespace StripV3Consent
             this.DisplayRemovedPatientsCheckbox = new System.Windows.Forms.CheckBox();
             this.DisplayKeptPatientsCheckbox = new System.Windows.Forms.CheckBox();
             this.autoResizingLabel1 = new StripV3Consent.View.AutoResizingLabel();
-            this.ExecuteWorker = new System.ComponentModel.BackgroundWorker();
             this.TableLayoutPanel.SuspendLayout();
             this.DropFilesHerePanel.SuspendLayout();
             this.ProcessingControlPanel.SuspendLayout();
@@ -226,12 +225,6 @@ namespace StripV3Consent
             this.autoResizingLabel1.Text = "Drop files here";
             this.autoResizingLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // ExecuteWorker
-            // 
-            this.ExecuteWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.ExecuteWorker_DoWork);
-            this.ExecuteWorker.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.ExecuteWorker_ProgressChanged);
-            this.ExecuteWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.ExecuteWorker_RunWorkerCompleted);
-            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -263,7 +256,6 @@ namespace StripV3Consent
         private System.Windows.Forms.Label ImportPanelLabel;
         private System.Windows.Forms.Label ProcessingPaneLabel;
         private System.Windows.Forms.Label OutputPaneLabel;
-        private System.ComponentModel.BackgroundWorker ExecuteWorker;
         private System.Windows.Forms.Panel ProcessingControlPanel;
         private System.Windows.Forms.CheckBox DisplayRemovedPatientsCheckbox;
         private System.Windows.Forms.CheckBox DisplayKeptPatientsCheckbox;
