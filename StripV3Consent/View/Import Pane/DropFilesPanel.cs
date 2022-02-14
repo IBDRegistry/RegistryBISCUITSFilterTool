@@ -19,16 +19,15 @@ namespace StripV3Consent.View
 			this.DragEnter += DropFiles_DragEnter;
 			this.DragDrop += DropFiles_DragDrop;
 
-			ElevatedDragDropManager.Instance.EnableDragDrop(Handle);
-			Application.AddMessageFilter(ElevatedDragDropManager.Instance);
-			ElevatedDragDropManager.Instance.ElevatedDragDrop += ElevatedDragDrop;
+			//ElevatedDragDropManager.Instance.EnableDragDrop(Handle);
+			//Application.AddMessageFilter(ElevatedDragDropManager.Instance);
+			//ElevatedDragDropManager.Instance.ElevatedDragDrop += ElevatedDragDrop;
 		}
 
-        protected override void WndProc(ref Message m)
-        {
-            base.WndProc(ref m);
-
-        }
+        //protected override void WndProc(ref Message m)
+        //{
+        //    base.WndProc(ref m);
+        //}
 
         private void ElevatedDragDrop(object sender, ElevatedDragDropArgs e)
         {
