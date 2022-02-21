@@ -217,7 +217,7 @@ namespace StripV3Consent.View
 			this.Controls.Add(this.TableLayoutPanel);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "MainWindow";
-			this.Text = "Strip V3 Consent";
+			this.Text = "IBDR Extract Filter Tool";
 			this.TableLayoutPanel.ResumeLayout(false);
 			this.TableLayoutPanel.PerformLayout();
 			this.DropFilesHerePanel.ResumeLayout(false);
