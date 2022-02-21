@@ -14,7 +14,10 @@ namespace StripV3Consent.Model
             FileContents = Contents;
         }
 
-        
+        /// <summary>
+        /// This is optional and helps with the file save dialog at the end by letting it choose the most common path of the input files
+        /// </summary>
+        public string FilePath;
 
         public string FileContents;
 

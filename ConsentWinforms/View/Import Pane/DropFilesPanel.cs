@@ -84,26 +84,18 @@ namespace StripV3Consent.View
 				{
 					FileContents = reader.ReadToEnd();
 				}
-				return new ImportFile(System.IO.Path.GetFileName(Path), FileContents);
+				return new ImportFile(System.IO.Path.GetFileName(Path), FileContents) {FilePath = Path };
 			}).ToArray());
 
-			SourceFilePaths.AddRange(FilePaths);
 		}
 
-		private List<string> SourceFilePaths = new List<string>();
 
-		public string MostCommonSourceDirectory { get {
-				IEnumerable<string> SourceFilePathsRemaining = SourceFilePaths	//Some of the source paths may have been removed, only keep the ones that are still in the File List
-																			.Where(SourcePath => FileList.Files
-																										.Where(ImportFile => ImportFile.IsValid.ValidState == (ValidState.Good | ValidState.Warning))
-																										.Select(ImportFile => ImportFile.Name)
-																										.Contains(System.IO.Path.GetFileName(SourcePath)));
-
-				return SourceFilePathsRemaining
+		public string MostCommonSourceDirectory {
+			get => FileList.Files.Select(ImportFile => ImportFile.FilePath).Where(Path => Path != null).Select(Path => System.IO.Path.GetDirectoryName(Path))
 									.GroupBy(Path => Path)
 									.OrderBy(t => t.Count())
 									.First().Key;
-			} }
+		}
 
 
 	}
