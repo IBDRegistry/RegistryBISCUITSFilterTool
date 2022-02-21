@@ -59,9 +59,32 @@ namespace StripV3Consent.View
 			return true;
 		}
 
+		/// <summary>
+		/// Takes any directories in Paths and replaces them with their contents
+		/// </summary>
+		/// <param name="Paths">A list of strings indicating paths indicating files or directories</param>
+		/// <returns></returns>
+		private void RecursivelyExpandFolders(List<string> Paths)
+		{
+			do
+			{
+				Func<string, bool> IsDirectory = path => File.GetAttributes(path) == FileAttributes.Directory;
+
+				string[] Directories = Paths.Where(IsDirectory).ToArray();	//Cast to string[] rather than keep as IEnumerable<string> otherwise it will be lost on the next line
+				Paths.RemoveAll(new Predicate<string>(IsDirectory));
+
+				IEnumerable<string> NewFiles = Directories.SelectMany(DirectoryPath => new DirectoryInfo(DirectoryPath).GetFiles())
+														  .Select(FileAttr => FileAttr.FullName);
+
+				Paths.AddRange(NewFiles);
+			} while (Paths.Select(path => File.GetAttributes(path)).Any(attr => attr == FileAttributes.Directory));
+		}
+
 		private void DropFiles_DragDrop(object sender, DragEventArgs e)
 		{
-			string[] InputPaths = (string[])e.Data.GetData(DataFormats.FileDrop);
+			List<string> InputPaths = ((string[])e.Data.GetData(DataFormats.FileDrop)).ToList<string>();
+			RecursivelyExpandFolders(InputPaths);
+
 			string[] FilePaths = InputPaths.Where(path => IsFileValidForDropping(path)).ToArray(); //Prevent doctors from trying to drag and drop folders, devices and all sorts of nonsense
 			this.Controls.Clear();
 			this.Controls.Add(FileList);
