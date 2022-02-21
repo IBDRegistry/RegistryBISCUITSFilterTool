@@ -19,13 +19,13 @@ namespace StripV3Consent.View
         {
             InitializeComponent();
             
-            LoadedFilesPanel.FileList.Files.CollectionChanged += OutputFilesChanged;
-
             DropFilesHerePanel.FileList.Files = Model.InputFiles;
             RemovedPatientsPanel.AllRecordSets = Model.Patients;
             LoadedFilesPanel.FileList.Files = Model.OutputFiles;
 
-			CheckIfAdministrator();
+            LoadedFilesPanel.FileList.Files.CollectionChanged += OutputFilesChanged;
+
+            CheckIfAdministrator();
         }
 
         private void CheckIfAdministrator()
@@ -107,11 +107,6 @@ You can contact your IT support for help with this issue",
                 System.Diagnostics.Process.Start(startInfo);
 
             }
-        }
-
-        private void ImportFilesChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            ImportFile[] ValidFiles = (sender as ObservableCollection<ImportFile>).Where(file => file.IsValid.IsValid != ValidState.Error & file.IsValid.IsValid != ValidState.None).ToArray();
         }
 
         private void OutputFilesChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)

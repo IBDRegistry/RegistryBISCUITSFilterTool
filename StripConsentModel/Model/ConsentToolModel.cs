@@ -77,16 +77,18 @@ namespace StripV3Consent.Model
 
         private IEnumerable<OutputFile> SplitBackUpIntoFiles(IEnumerable<RecordSet> RecordSets)
         {
+            IEnumerable<IEnumerable<Record>> AllConsentedRecordsGroupedByFile = FlattenAndGroupRecordsByOriginalFiles(RecordSets.Where(RS => RS.IsConsentValid == true));
+
             //Have to do ToList in order to use Find() later on which isn't present in IEnumerable<T>
-            List<IEnumerable<Record>> AllRecords = FlattenAndGroupRecordsByOriginalFiles(RecordSets).ToList<IEnumerable<Record>>();
+            List<IEnumerable<Record>> AllRecordsGroupedByFile = FlattenAndGroupRecordsByOriginalFiles(RecordSets).ToList<IEnumerable<Record>>();
 
 
-            IEnumerable<OutputFile> Files = AllRecords.Select(
-                                                                    RecordsInOutputFile => new OutputFile(RecordsInOutputFile.First().OriginalFile)
-                                                                    {
-                                                                        OutputRecords = RecordsInOutputFile,
-                                                                        AllRecordsOriginallyInFile = AllRecords.Find(RecordIEnumerable => RecordIEnumerable.First().OriginalFile == RecordsInOutputFile.First().OriginalFile)
-                                                                    }
+            IEnumerable<OutputFile> Files = AllConsentedRecordsGroupedByFile.Select(RecordsInOutputFile => new OutputFile(RecordsInOutputFile.First().OriginalFile) //Match each set of records to a new OutputFile object
+                                                                {
+                                                                    OutputRecords = RecordsInOutputFile,    //Make the OutputRecords the current set of (consented) records
+                                                                    AllRecordsOriginallyInFile = AllRecordsGroupedByFile.Find(RecordIEnumerable => RecordIEnumerable.First().OriginalFile == RecordsInOutputFile.First().OriginalFile)
+                                                                    //Find the full set (consented and non-consented) of records by looking through AllRecordsGroupedByFile for one with the same OriginalFile attribute
+                                                                }
                                                             );
             return Files;
         }
