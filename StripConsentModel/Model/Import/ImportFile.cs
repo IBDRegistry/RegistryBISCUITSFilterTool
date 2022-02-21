@@ -34,12 +34,12 @@ namespace StripV3Consent.Model
                 } else if (SpecificationFile is Specification.NationalOptOutFile)
                 {
                     ReturnValue.Organisation = FileOrganisation.NHS;
-                    ReturnValue.IsValid = ValidState.Good;
+                    ReturnValue.ValidState = ValidState.Good;
                     ReturnValue.Message = "National Opt-Out file";
                 } else
                 {
                     ReturnValue.Organisation = FileOrganisation.Unknown;
-                    ReturnValue.IsValid = ValidState.None;
+                    ReturnValue.ValidState = ValidState.None;
                     ReturnValue.Message = "Unknown file type";
 
                     return ReturnValue;
@@ -48,19 +48,19 @@ namespace StripV3Consent.Model
 
                 if (IsSpecificationFileAlreadyImported(this) == true)
                 {
-                    ReturnValue.IsValid = ValidState.Error;
+                    ReturnValue.ValidState = ValidState.Error;
                     ReturnValue.Message = "File already imported";
                     return ReturnValue;
                 }
 
                 if (IsCommaDelimited() == true)
                 {
-                    ReturnValue.IsValid = ValidState.Good;
+                    ReturnValue.ValidState = ValidState.Good;
                     ReturnValue.Message = "File passed validation checks";
                 }
                 else
                 {
-                    ReturnValue.IsValid = ValidState.Error;
+                    ReturnValue.ValidState = ValidState.Error;
                     ReturnValue.Message = "CSV file not comma separated";
 
                 }

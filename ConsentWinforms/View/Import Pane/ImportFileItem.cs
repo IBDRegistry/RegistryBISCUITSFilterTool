@@ -88,7 +88,7 @@ namespace StripV3Consent.View
             }
 
             Icon ValidImage = null;
-            switch (Model.IsValid)
+            switch (Model.ValidState)
             {
                 case ValidState.Good:
                     ValidImage = ConsentWinforms.Properties.Resources.good;

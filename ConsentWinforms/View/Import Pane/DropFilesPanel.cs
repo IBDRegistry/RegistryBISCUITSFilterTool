@@ -94,11 +94,10 @@ namespace StripV3Consent.View
 
 		public string MostCommonSourceDirectory { get {
 				IEnumerable<string> SourceFilePathsRemaining = SourceFilePaths	//Some of the source paths may have been removed, only keep the ones that are still in the File List
-																		.Where(SourcePath => FileList.Files
-																										.Where(ImportFile => ImportFile.IsValid.IsValid == (ValidState.Good | ValidState.Warning))
+																			.Where(SourcePath => FileList.Files
+																										.Where(ImportFile => ImportFile.IsValid.ValidState == (ValidState.Good | ValidState.Warning))
 																										.Select(ImportFile => ImportFile.Name)
 																										.Contains(System.IO.Path.GetFileName(SourcePath)));
-
 
 				return SourceFilePathsRemaining
 									.GroupBy(Path => Path)

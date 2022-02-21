@@ -21,7 +21,7 @@ namespace StripV3Consent.Model
 
     public class FileValidationState
     {
-        public ValidState IsValid;
+        public ValidState ValidState;
         public FileOrganisation Organisation;
         public string Message;
     }
