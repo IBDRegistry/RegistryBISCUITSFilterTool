@@ -14,10 +14,7 @@ namespace StripV3Consent.Model
             FileContents = Contents;
         }
 
-        private void ReadInFile(string path)
-		{
-            
-		}
+        
 
         public string FileContents;
 
