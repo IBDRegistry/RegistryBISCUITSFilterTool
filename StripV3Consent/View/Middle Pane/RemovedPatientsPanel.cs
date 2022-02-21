@@ -1,6 +1,7 @@
 ﻿using StripV3Consent.Model;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -11,8 +12,8 @@ namespace StripV3Consent.View
 {
     class RemovedPatientsPanel: Panel
     {
-        private RecordSetGrouping allRecordSets;
-        public RecordSetGrouping AllRecordSets
+        private ObservableCollection<RecordSet> allRecordSets;
+        public ObservableCollection<RecordSet> AllRecordSets
         {
             get => allRecordSets;
             set
@@ -43,7 +44,7 @@ namespace StripV3Consent.View
         private void SetDisplayRecords()
         {
             if (!(AllRecordSets is null | Specifier is null)) { 
-                DisplayRecords = new BindingList<RecordSet>(AllRecordSets.RecordSets.Where(specifier).ToList<RecordSet>());
+                DisplayRecords = new BindingList<RecordSet>(AllRecordSets.Where(specifier).ToList<RecordSet>());
             }
         }
         private BindingList<RecordSet> displayRecords;

@@ -9,7 +9,10 @@ namespace ModelTest
 		[TestMethod]
 		public void TestMethod1()
 		{
-			//Record PatientRecord = new Record(new string[] { "366 857 8761, 24/12/2000", new ImportFile() });
+			string PatientLine = "366 857 8761, 24/12/2000";
+
+			ImportFile PatientFile = new("patient_abc.csv", PatientLine);
+			//Record PatientRecord = new Record(new string[] { PatientFile.Sp, new ImportFile() });
 			Record ConsentRecord;
 			Record OptOutReocrd;
 		}

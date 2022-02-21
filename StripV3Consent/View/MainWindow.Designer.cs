@@ -1,5 +1,5 @@
 ﻿
-namespace StripV3Consent
+namespace StripV3Consent.View
 {
     partial class MainWindow
     {

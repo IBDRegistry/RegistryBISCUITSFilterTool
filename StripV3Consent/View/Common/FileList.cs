@@ -16,15 +16,21 @@ namespace StripV3Consent.View
     {
 
         #region files
-        public ObservableCollection<DataFileType> Files = new ObservableCollection<DataFileType>();
+        private ObservableCollection<DataFileType> _files = new ObservableCollection<DataFileType>();
+        public ObservableCollection<DataFileType> Files
+		{
+            get => _files;
+            set
+			{
+                _files = value;
+                Files.CollectionChanged += Files_CollectionChanged;
+            }
+		}
 
-        public FileList(DataFileType[] files) : this()
-        {
-            AddRange(files);
-        }
+        public FileList(ObservableCollection<DataFileType> FileListToUse = null) {
+            if (!(FileListToUse is null))
+                Files = FileListToUse;
 
-        public FileList() {
-            Files.CollectionChanged += Files_CollectionChanged;
             CustomizeControl(); 
         }
 
@@ -49,10 +55,6 @@ namespace StripV3Consent.View
                 Files.Add(item);
             }
         }
-
-
-        public static explicit operator DataFileType[](FileList<FileItemType, DataFileType> me) => me.Files.ToArray();
-        public static explicit operator FileList<FileItemType, DataFileType>(DataFileType[] array) => new FileList<FileItemType, DataFileType>(array);
 
         #endregion
 

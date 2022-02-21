@@ -7,18 +7,23 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using System.Collections.ObjectModel;
-using StripV3Consent.View;
 using System.Security.Principal;
 
-namespace StripV3Consent
+namespace StripV3Consent.View
 {
     public partial class MainWindow : Form
     {
+        private ConsentToolModel Model = new ConsentToolModel();
+
         public MainWindow()
         {
             InitializeComponent();
-            DropFilesHerePanel.FileList.Files.CollectionChanged += ImportFilesChanged;
+            DropFilesHerePanel.FileList.Files = Model.InputFiles;
+            Model.InputFiles.CollectionChanged += ImportFilesChanged;
             LoadedFilesPanel.FileList.Files.CollectionChanged += OutputFilesChanged;
+
+
+            LoadedFilesPanel.FileList.Files = new ObservableCollection<OutputFile>(Model.OutputFiles);
 
             CheckIfAdministrator();
         }
@@ -106,6 +111,7 @@ You can contact your IT support for help with this issue",
 
         private void ImportFilesChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
+            RemovedPatientsPanel.AllRecordSets = new ObservableCollection<RecordSet>(Model.Patients);
             ImportFile[] ValidFiles = (sender as ObservableCollection<ImportFile>).Where(file => file.IsValid.IsValid != ValidState.Error & file.IsValid.IsValid != ValidState.None).ToArray();
 
             if (ValidFiles.Length > 0)
@@ -133,7 +139,7 @@ You can contact your IT support for help with this issue",
 
         private void RemovedPatientsPanel_AllRecordSetsChanged(object sender, EventArgs e)
         {
-            RecordSetGrouping AllRecordSetsGrouped = ((RemovedPatientsPanel)sender).AllRecordSets;
+            ObservableCollection<RecordSet> AllRecordSetsGrouped = ((RemovedPatientsPanel)sender).AllRecordSets;
 
             if (AllRecordSetsGrouped != null)
             {
@@ -184,15 +190,15 @@ You can contact your IT support for help with this issue",
 
         private void Execute()
         {
-            ImportFile[] StartingFiles = DropFilesHerePanel.FileList.Files.Where(File => File.IsValid.IsValid == ValidState.Good || File.IsValid.IsValid == ValidState.Warning).ToArray();
-            RecordSetGrouping RecordsGroupedByPatient = new RecordSetGrouping(StartingFiles);
+            //ImportFile[] StartingFiles = DropFilesHerePanel.FileList.Files.Where(File => File.IsValid.IsValid == ValidState.Good || File.IsValid.IsValid == ValidState.Warning).ToArray();
+            //RecordSetGrouping RecordsGroupedByPatient = new RecordSetGrouping(StartingFiles);
 
-            RemovedPatientsPanel.AllRecordSets = RecordsGroupedByPatient;
+            //RemovedPatientsPanel.AllRecordSets = RecordsGroupedByPatient;
 
-            OutputFile[] OutputFiles = RecordsGroupedByPatient.SplitBackUpIntoFiles(RecordSet => RecordSet.IsConsentValid == true);
+            //OutputFile[] OutputFiles = RecordsGroupedByPatient.SplitBackUpIntoFiles(RecordSet => RecordSet.IsConsentValid == true);
 
-            LoadedFilesPanel.FileList.Files.Clear();
-            LoadedFilesPanel.FileList.AddRange(OutputFiles);
+            //LoadedFilesPanel.FileList.Files.Clear();
+            //LoadedFilesPanel.FileList.AddRange(OutputFiles);
         }
     }
 }

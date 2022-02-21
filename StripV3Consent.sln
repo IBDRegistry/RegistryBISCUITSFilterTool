@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31702.278
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StripV3Consent", "StripV3Consent\StripV3Consent.csproj", "{7F0F8F0D-CF4E-4D3C-9EFC-7C9C5A2356CE}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StripConsentModel", "StripConsentModel\StripConsentModel.csproj", "{4340EF9C-27AE-4D0E-B2FF-B1B44FEB2C26}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XML 2021K Classes", "XML 2021K Classes\XML 2021K Classes.csproj", "{AFF69946-D8E3-4C11-80D1-ECC1F1004CCC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelTest", "ModelTest\ModelTest.csproj", "{B25107F0-EE2D-4EC0-AE0A-87CFD3821C03}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModelTest", "ModelTest\ModelTest.csproj", "{B25107F0-EE2D-4EC0-AE0A-87CFD3821C03}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsentWinforms", "ConsentWinforms\ConsentWinforms.csproj", "{E33340D1-056A-4019-991E-D786572DD1A6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{7F0F8F0D-CF4E-4D3C-9EFC-7C9C5A2356CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7F0F8F0D-CF4E-4D3C-9EFC-7C9C5A2356CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7F0F8F0D-CF4E-4D3C-9EFC-7C9C5A2356CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7F0F8F0D-CF4E-4D3C-9EFC-7C9C5A2356CE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4340EF9C-27AE-4D0E-B2FF-B1B44FEB2C26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4340EF9C-27AE-4D0E-B2FF-B1B44FEB2C26}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4340EF9C-27AE-4D0E-B2FF-B1B44FEB2C26}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -33,6 +29,10 @@ Global
 		{B25107F0-EE2D-4EC0-AE0A-87CFD3821C03}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B25107F0-EE2D-4EC0-AE0A-87CFD3821C03}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B25107F0-EE2D-4EC0-AE0A-87CFD3821C03}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E33340D1-056A-4019-991E-D786572DD1A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E33340D1-056A-4019-991E-D786572DD1A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E33340D1-056A-4019-991E-D786572DD1A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E33340D1-056A-4019-991E-D786572DD1A6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
