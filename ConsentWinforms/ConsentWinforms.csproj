@@ -72,7 +72,6 @@
     <Compile Include="View\Import Pane\DropFilesPanel.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="View\Import Pane\ElevatedDragDropManager.cs" />
     <Compile Include="View\Import Pane\ExecuteButton.cs">
       <SubType>Component</SubType>
     </Compile>
