@@ -39,7 +39,7 @@ namespace StripV3Consent.Model
         /// </summary>
         /// <param name="Files"></param>
         /// <returns></returns>
-        private IEnumerable<RecordSet> SplitInputFilesIntoRecordSets(IEnumerable<ImportFile> Files)
+        public static IEnumerable<RecordSet> SplitInputFilesIntoRecordSets(IEnumerable<ImportFile> Files)
         {
             List<Record> AllRecords = Files
                                             .Select(File => File.SplitInto2DArray().Content         //Transform DataFile into string[][] resulting in IEnumerable<string[][]>

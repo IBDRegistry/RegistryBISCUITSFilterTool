@@ -1,20 +1,33 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using StripV3Consent.Model;
+using System.Linq;
 
 namespace ModelTest
 {
 	[TestClass]
 	public class RecordSetTests
 	{
+		/// <summary>
+		/// Tests whether a consent record with a newer date would override one with an older date
+		/// </summary>
 		[TestMethod]
-		public void TestMethod1()
+		public void TestConsentDateOverride()
 		{
-			string PatientLine = "366 857 8761, 24/12/2000";
+			const string NHSNumber = "426 221 1894";
+			const string DOB = "14/07/1926";
+			string PatientLine = $"{NHSNumber}, {DOB}";
+			string OldConsentLine = $"{NHSNumber}, {DOB},10/05/2003,N,,,,,,,V4";
+			string NewConsentLine = $"{NHSNumber}, {DOB},28/02/2022,Y,,,,,,,V4";
 
-			ImportFile PatientFile = new("patient_abc.csv", PatientLine);
-			//Record PatientRecord = new Record(new string[] { PatientFile.Sp, new ImportFile() });
-			Record ConsentRecord;
-			Record OptOutReocrd;
+			ImportFile PatientFile = new("patient_Trust.csv", PatientLine);
+			ImportFile OldConsentFile = new("consent_Trust.csv", OldConsentLine);
+			ImportFile NewConsentFile = new("consent_Registry.csv", NewConsentLine);
+
+			RecordSet[] Patients = ConsentToolModel.SplitInputFilesIntoRecordSets(new ImportFile[] { PatientFile, OldConsentFile, NewConsentFile }).ToArray();
+
+			RecordSet TestingRecord = Patients.Where(rs => rs.GetFieldValue(DataItemCodes.NHSNumber) == NHSNumber).First();
+
+			Assert.IsTrue(TestingRecord.IsConsentValid);
 		}
 	}
 }

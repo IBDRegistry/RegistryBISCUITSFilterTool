@@ -86,7 +86,7 @@ namespace StripV3Consent.Model
 				}
 				else if (ValidConsentRecords.Count() > 1)
 				{
-					ConsentRecord = ValidConsentRecords.OrderBy(r => {
+					ConsentRecord = ValidConsentRecords.OrderByDescending(r => {
 										string RawValue = r.GetValueByDataItemCode(DataItemCodes.DateOfConsent);
 										return DateTime.Parse(RawValue);
 					}).First();

@@ -45,13 +45,13 @@ namespace StripV3Consent.Model
                     return ReturnValue;
                 }
 
-
-                if (IsSpecificationFileAlreadyImported(this) == true)
-                {
-                    ReturnValue.ValidState = ValidState.Error;
-                    ReturnValue.Message = "File already imported";
-                    return ReturnValue;
-                }
+                //Disabled to support the import of multiple files of the same type
+                //if (IsSpecificationFileAlreadyImported(this) == true)
+                //{
+                //    ReturnValue.ValidState = ValidState.Error;
+                //    ReturnValue.Message = "File already imported";
+                //    return ReturnValue;
+                //}
 
                 if (IsCommaDelimited() == true)
                 {
