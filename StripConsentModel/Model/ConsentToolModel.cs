@@ -9,7 +9,7 @@ namespace StripV3Consent.Model
 {
     public class ConsentToolModel
     {
-        public readonly ObservableCollection<ImportFile> InputFiles = new ObservableCollection<ImportFile>();        
+        public readonly ObservableRangeCollection<ImportFile> InputFiles = new ObservableRangeCollection<ImportFile>();        
 
         private void InputFiles_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
@@ -28,7 +28,7 @@ namespace StripV3Consent.Model
 
         public readonly ObservableRangeCollection<RecordSet> Patients = new ObservableRangeCollection<RecordSet>();
 
-        public readonly ObservableCollection<OutputFile> OutputFiles = new ObservableCollection<OutputFile>();
+        public readonly ObservableRangeCollection<OutputFile> OutputFiles = new ObservableRangeCollection<OutputFile>();
 
         public ConsentToolModel()
         {
