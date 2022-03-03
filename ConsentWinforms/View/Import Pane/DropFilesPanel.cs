@@ -73,8 +73,14 @@ namespace StripV3Consent.View
 				string[] Directories = Paths.Where(IsDirectory).ToArray();	//Cast to string[] rather than keep as IEnumerable<string> otherwise it will be lost on the next line
 				Paths.RemoveAll(new Predicate<string>(IsDirectory));
 
-				IEnumerable<string> NewFiles = Directories.SelectMany(DirectoryPath => new DirectoryInfo(DirectoryPath).GetFiles())
-														  .Select(FileAttr => FileAttr.FullName);
+				IEnumerable<string> NewFiles = Directories.SelectMany(DirectoryPath =>
+				{
+					DirectoryInfo ExpandedDirectoryInfo = new DirectoryInfo(DirectoryPath);
+					IEnumerable<string> FilesInDirectory = ExpandedDirectoryInfo.GetFiles().Select(FI => FI.FullName);
+					IEnumerable<string> FoldersInDirectory = ExpandedDirectoryInfo.GetDirectories().Select(DI => DI.FullName);
+
+					return FilesInDirectory.Union(FoldersInDirectory);
+				});
 
 				Paths.AddRange(NewFiles);
 			} while (Paths.Select(path => File.GetAttributes(path)).Any(attr => attr == FileAttributes.Directory));
