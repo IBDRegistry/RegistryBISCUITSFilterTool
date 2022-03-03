@@ -20,10 +20,7 @@ namespace StripV3Consent.Model
 
             OutputFiles.Clear();
             IEnumerable<OutputFile> NewOutputFiles = SplitBackUpIntoFiles(Patients);
-            foreach (OutputFile File in NewOutputFiles)
-			{
-                OutputFiles.Add(File);
-			}
+            OutputFiles.AddRange(NewOutputFiles);
         }
 
         public readonly ObservableRangeCollection<RecordSet> Patients = new ObservableRangeCollection<RecordSet>();

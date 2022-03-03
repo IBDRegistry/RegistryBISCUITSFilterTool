@@ -39,7 +39,7 @@ namespace StripV3Consent.Model
                 } else
                 {
                     ReturnValue.Organisation = FileOrganisation.Unknown;
-                    ReturnValue.ValidState = ValidState.None;
+                    ReturnValue.ValidState = ValidState.Error;
                     ReturnValue.Message = "Unknown file type";
 
                     return ReturnValue;

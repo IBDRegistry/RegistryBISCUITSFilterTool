@@ -31,10 +31,6 @@ namespace StripV3Consent.View
         {
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
 			this.TableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
-			this.DropFilesHerePanel = new StripV3Consent.View.DropFilesPanel();
-			this.autoResizingLabel2 = new StripV3Consent.View.AutoResizingLabel();
-			this.LoadedFilesPanel = new StripV3Consent.View.OutputFilesPanel();
-			this.RemovedPatientsPanel = new StripV3Consent.View.RemovedPatientsPanel();
 			this.SaveButton = new System.Windows.Forms.Button();
 			this.ImportPanelLabel = new System.Windows.Forms.Label();
 			this.ProcessingPaneLabel = new System.Windows.Forms.Label();
@@ -42,10 +38,14 @@ namespace StripV3Consent.View
 			this.ProcessingControlPanel = new System.Windows.Forms.Panel();
 			this.DisplayRemovedPatientsCheckbox = new System.Windows.Forms.CheckBox();
 			this.DisplayKeptPatientsCheckbox = new System.Windows.Forms.CheckBox();
+			this.DropFilesHerePanel = new StripV3Consent.View.DropFilesPanel();
+			this.autoResizingLabel2 = new StripV3Consent.View.AutoResizingLabel();
+			this.LoadedFilesPanel = new StripV3Consent.View.OutputFilesPanel();
+			this.RemovedPatientsPanel = new StripV3Consent.View.RemovedPatientsPanel();
 			this.autoResizingLabel1 = new StripV3Consent.View.AutoResizingLabel();
 			this.TableLayoutPanel.SuspendLayout();
-			this.DropFilesHerePanel.SuspendLayout();
 			this.ProcessingControlPanel.SuspendLayout();
+			this.DropFilesHerePanel.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// TableLayoutPanel
@@ -71,49 +71,6 @@ namespace StripV3Consent.View
 			this.TableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
 			this.TableLayoutPanel.Size = new System.Drawing.Size(800, 450);
 			this.TableLayoutPanel.TabIndex = 0;
-			// 
-			// DropFilesHerePanel
-			// 
-			this.DropFilesHerePanel.AllowDrop = true;
-			this.DropFilesHerePanel.BackColor = System.Drawing.SystemColors.ControlLight;
-			this.DropFilesHerePanel.Controls.Add(this.autoResizingLabel2);
-			this.DropFilesHerePanel.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.DropFilesHerePanel.Location = new System.Drawing.Point(3, 23);
-			this.DropFilesHerePanel.Name = "DropFilesHerePanel";
-			this.DropFilesHerePanel.Size = new System.Drawing.Size(254, 338);
-			this.DropFilesHerePanel.TabIndex = 0;
-			// 
-			// autoResizingLabel2
-			// 
-			this.autoResizingLabel2.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.autoResizingLabel2.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.28F);
-			this.autoResizingLabel2.Location = new System.Drawing.Point(0, 0);
-			this.autoResizingLabel2.Name = "autoResizingLabel2";
-			this.autoResizingLabel2.Size = new System.Drawing.Size(254, 338);
-			this.autoResizingLabel2.TabIndex = 0;
-			this.autoResizingLabel2.Text = "Drop files here";
-			this.autoResizingLabel2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-			// 
-			// LoadedFilesPanel
-			// 
-			this.LoadedFilesPanel.BackColor = System.Drawing.SystemColors.ControlLight;
-			this.LoadedFilesPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.LoadedFilesPanel.Location = new System.Drawing.Point(523, 23);
-			this.LoadedFilesPanel.Name = "LoadedFilesPanel";
-			this.LoadedFilesPanel.Size = new System.Drawing.Size(274, 338);
-			this.LoadedFilesPanel.TabIndex = 1;
-			// 
-			// RemovedPatientsPanel
-			// 
-			this.RemovedPatientsPanel.AllRecordSets = null;
-			this.RemovedPatientsPanel.AutoScroll = true;
-			this.RemovedPatientsPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.RemovedPatientsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.RemovedPatientsPanel.Location = new System.Drawing.Point(263, 23);
-			this.RemovedPatientsPanel.Name = "RemovedPatientsPanel";
-			this.RemovedPatientsPanel.Size = new System.Drawing.Size(254, 338);
-			this.RemovedPatientsPanel.TabIndex = 3;
-			this.RemovedPatientsPanel.AllRecordSetsChanged += new System.EventHandler(this.RemovedPatientsPanel_AllRecordSetsChanged);
 			// 
 			// SaveButton
 			// 
@@ -197,6 +154,50 @@ namespace StripV3Consent.View
 			this.DisplayKeptPatientsCheckbox.UseVisualStyleBackColor = true;
 			this.DisplayKeptPatientsCheckbox.CheckedChanged += new System.EventHandler(this.DisplayCheckboxesChanged);
 			// 
+			// DropFilesHerePanel
+			// 
+			this.DropFilesHerePanel.AllowDrop = true;
+			this.DropFilesHerePanel.BackColor = System.Drawing.SystemColors.ControlLight;
+			this.DropFilesHerePanel.Controls.Add(this.autoResizingLabel2);
+			this.DropFilesHerePanel.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.DropFilesHerePanel.Location = new System.Drawing.Point(3, 23);
+			this.DropFilesHerePanel.Name = "DropFilesHerePanel";
+			this.DropFilesHerePanel.Size = new System.Drawing.Size(254, 338);
+			this.DropFilesHerePanel.TabIndex = 0;
+			// 
+			// autoResizingLabel2
+			// 
+			this.autoResizingLabel2.BackColor = System.Drawing.SystemColors.ControlLight;
+			this.autoResizingLabel2.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.autoResizingLabel2.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.28F);
+			this.autoResizingLabel2.Location = new System.Drawing.Point(0, 0);
+			this.autoResizingLabel2.Name = "autoResizingLabel2";
+			this.autoResizingLabel2.Size = new System.Drawing.Size(254, 338);
+			this.autoResizingLabel2.TabIndex = 0;
+			this.autoResizingLabel2.Text = "Drop files here";
+			this.autoResizingLabel2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			// 
+			// LoadedFilesPanel
+			// 
+			this.LoadedFilesPanel.BackColor = System.Drawing.SystemColors.ControlLight;
+			this.LoadedFilesPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.LoadedFilesPanel.Location = new System.Drawing.Point(523, 23);
+			this.LoadedFilesPanel.Name = "LoadedFilesPanel";
+			this.LoadedFilesPanel.Size = new System.Drawing.Size(274, 338);
+			this.LoadedFilesPanel.TabIndex = 1;
+			// 
+			// RemovedPatientsPanel
+			// 
+			this.RemovedPatientsPanel.AllRecordSets = null;
+			this.RemovedPatientsPanel.AutoScroll = true;
+			this.RemovedPatientsPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.RemovedPatientsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.RemovedPatientsPanel.Location = new System.Drawing.Point(263, 23);
+			this.RemovedPatientsPanel.Name = "RemovedPatientsPanel";
+			this.RemovedPatientsPanel.Size = new System.Drawing.Size(254, 338);
+			this.RemovedPatientsPanel.TabIndex = 3;
+			this.RemovedPatientsPanel.AllRecordSetsChanged += new System.EventHandler(this.RemovedPatientsPanel_AllRecordSetsChanged);
+			// 
 			// autoResizingLabel1
 			// 
 			this.autoResizingLabel1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -220,9 +221,9 @@ namespace StripV3Consent.View
 			this.Text = "IBDR Extract Filter Tool";
 			this.TableLayoutPanel.ResumeLayout(false);
 			this.TableLayoutPanel.PerformLayout();
-			this.DropFilesHerePanel.ResumeLayout(false);
 			this.ProcessingControlPanel.ResumeLayout(false);
 			this.ProcessingControlPanel.PerformLayout();
+			this.DropFilesHerePanel.ResumeLayout(false);
 			this.ResumeLayout(false);
 
         }

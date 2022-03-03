@@ -19,6 +19,7 @@ namespace StripV3Consent.View
 			AllowDrop = true;
 			DragEnter += DropFiles_DragEnter;
 			DragDrop += DropFiles_DragDrop;
+			
 		}
 
 
@@ -31,7 +32,7 @@ namespace StripV3Consent.View
 			else
 			{
 				e.Effect = DragDropEffects.None;
-			}
+			};
 		}
 
 		/// <summary>
@@ -108,6 +109,7 @@ namespace StripV3Consent.View
 			ImportFile[] ImportFiles = Contents.Select(content => new ImportFile(System.IO.Path.GetFileName(FilePaths[Array.IndexOf(Contents, content)]), content)).ToArray();
 			FileList.AddRange(ImportFiles);
 
+			System.Diagnostics.Debug.WriteLine(FileList.Controls.Count);
 		}
 
 

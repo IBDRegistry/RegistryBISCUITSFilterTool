@@ -24,16 +24,14 @@ namespace StripV3Consent.View
 			{
                 _files = value;
                 Files.CollectionChanged += Files_CollectionChanged;
-                Files_CollectionChanged(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+                //Files_CollectionChanged(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
             }
 		}
 
-        //public FileList(ObservableRangeCollection<DataFileType> FileListToUse = null) {
-        //    if (!(FileListToUse is null))
-        //        Files = FileListToUse;
-
-        //    CustomizeControl(); 
-        //}
+        public FileList()
+		{
+            CustomizeControl();
+        }
 
         
 
@@ -64,14 +62,19 @@ namespace StripV3Consent.View
             Dock = DockStyle.Fill;
             AutoScroll = true;
             WrapContents = false;
+            BorderStyle = BorderStyle.FixedSingle;
         }
 
         private void Files_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            switch (e.Action)
+			switch (e.Action)
             {
                 case NotifyCollectionChangedAction.Add:
-                    AddItem((DataFileType)e.NewItems[0]);
+                    foreach (object NewItem in e.NewItems)
+					{
+                        AddItem((DataFileType)NewItem);
+                    }
+                    
                     break;
                 case NotifyCollectionChangedAction.Reset:
                     RedrawList();
