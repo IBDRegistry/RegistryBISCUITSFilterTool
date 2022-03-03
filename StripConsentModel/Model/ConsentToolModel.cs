@@ -14,7 +14,8 @@ namespace StripV3Consent.Model
         private void InputFiles_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             Patients.Clear();
-            IEnumerable<RecordSet> NewPatients = SplitInputFilesIntoRecordSets(InputFiles);
+            List<ImportFile> ValidFilesForImport = InputFiles.Where(i => i.IsValid.ValidState != ValidState.Error).ToList<ImportFile>();
+            IEnumerable<RecordSet> NewPatients = SplitInputFilesIntoRecordSets(ValidFilesForImport);
             Patients.AddRange(NewPatients);
 
             OutputFiles.Clear();

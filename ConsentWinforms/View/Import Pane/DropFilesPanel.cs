@@ -80,7 +80,7 @@ namespace StripV3Consent.View
 			} while (Paths.Select(path => File.GetAttributes(path)).Any(attr => attr == FileAttributes.Directory));
 		}
 
-		private void DropFiles_DragDrop(object sender, DragEventArgs e)
+		private async void DropFiles_DragDrop(object sender, DragEventArgs e)
 		{
 			List<string> InputPaths = ((string[])e.Data.GetData(DataFormats.FileDrop)).ToList<string>();
 			RecursivelyExpandFolders(InputPaths);
@@ -88,14 +88,19 @@ namespace StripV3Consent.View
 			string[] FilePaths = InputPaths.Where(path => IsFileValidForDropping(path)).ToArray(); //Prevent doctors from trying to drag and drop folders, devices and all sorts of nonsense
 			this.Controls.Clear();
 			this.Controls.Add(FileList);
-			FileList.AddRange(FilePaths.Select<string, ImportFile>(Path => {
-				string FileContents = null;
-				using (StreamReader reader = new StreamReader(Path))
+
+			string[] Contents = new string[FilePaths.Count()];
+
+			foreach (string path in FilePaths)
+			{
+				using (StreamReader reader = new StreamReader(path))
 				{
-					FileContents = reader.ReadToEnd();
+					Contents[Array.IndexOf(FilePaths, path)] = await reader.ReadToEndAsync();
 				}
-				return new ImportFile(System.IO.Path.GetFileName(Path), FileContents) {FilePath = Path };
-			}).ToArray());
+			}
+
+			ImportFile[] ImportFiles = Contents.Select(content => new ImportFile(System.IO.Path.GetFileName(FilePaths[Array.IndexOf(Contents, content)]), content)).ToArray();
+			FileList.AddRange(ImportFiles);
 
 		}
 
