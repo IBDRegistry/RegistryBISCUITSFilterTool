@@ -10,7 +10,8 @@ namespace StripV3Consent.Model
 {
     public abstract class DataFile
     {
-        public string Name;
+		public string Name;
+        public virtual string OutputName { get => Name; }
 
         public DataFile(string FileName)
         {
@@ -37,10 +38,9 @@ namespace StripV3Consent.Model
             }
         }
 
-        
+		
 
-
-        public override string ToString() => this.Name;
+		public override string ToString() => this.OutputName;
     }
 
     public class File2DArray

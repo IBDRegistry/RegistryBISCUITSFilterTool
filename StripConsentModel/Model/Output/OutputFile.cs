@@ -12,6 +12,14 @@ namespace StripV3Consent.Model
         public IEnumerable<Record> OutputRecords;
         public IEnumerable<Record> AllRecordsOriginallyInFile;
 
+        public override string OutputName
+		{
+            get
+			{
+                return SpecificationFile.Name.Replace(@".*\", "").Replace(".csv", "_Processed.csv");
+            }
+		}
+
         private const string ColumnSeparator = ",";
         private const string RowSeparator = "\r\n";
 

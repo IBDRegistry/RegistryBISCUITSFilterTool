@@ -50,7 +50,7 @@ namespace StripV3Consent.View
         {
             FileIcon = new PictureBox()
             {
-                Image = Etier.IconHelper.IconReader.GetFileIcon(File.Name, Etier.IconHelper.IconReader.IconSize.Large, false).ToBitmap(),
+                Image = Etier.IconHelper.IconReader.GetFileIcon(File.OutputName, Etier.IconHelper.IconReader.IconSize.Large, false).ToBitmap(),
                 Width = InteriorSize,
                 Height = InteriorSize
             };
@@ -58,7 +58,7 @@ namespace StripV3Consent.View
 
             Label FileNameLabel = new Label()
             {
-                Text = file.Name,
+                Text = file.OutputName,
                 TextAlign = ContentAlignment.MiddleLeft,
                 AutoEllipsis = true
             };
