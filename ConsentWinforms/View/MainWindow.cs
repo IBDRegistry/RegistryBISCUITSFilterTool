@@ -91,7 +91,9 @@ You can contact your IT support for help with this issue",
 
                 foreach(OutputFile OutFile in LoadedFilesPanel.FileList.Files)
                 {
-                    string OutPath = OutputFolder + OutFile.Name;
+                    //Remove wildcard and append _Processed to filename
+                    string FileName = OutFile.SpecificationFile.Name.Replace(@".*\", "").Replace(".csv", "_Processed.csv");
+                    string OutPath = OutputFolder + FileName;
 #warning add try catch for StreamWriter I/O
                     using (StreamWriter writer = new StreamWriter(OutPath))
                     {
