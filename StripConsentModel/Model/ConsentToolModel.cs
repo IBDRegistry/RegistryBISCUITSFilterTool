@@ -59,15 +59,15 @@ namespace StripV3Consent.Model
             return GroupedRecords;
         }
 
-        private IEnumerable<IEnumerable<Record>> FlattenAndGroupRecordsByOriginalFiles(IEnumerable<RecordSet> RecordSets)
+        private IEnumerable<IEnumerable<Record>> FlattenAndGroupRecordsBySpecificationFiles(IEnumerable<RecordSet> RecordSets)
         {
             IEnumerable<Record> RecordsFlattened = RecordSets.Select(rs => rs.Records).SelectMany<IEnumerable<Record>, Record>(x => x);
 
             IEnumerable<Record> OutputRecords = RecordsFlattened.Where(r => r.OriginalFile.SpecificationFile.IsRegistryFile == true);
 
             IEnumerable<IEnumerable<Record>> RecordsGroupedByOriginalFiles = OutputRecords.GroupBy
-                                                                                <Record, DataFile, IEnumerable<Record>>(
-                                                                                r => r.OriginalFile,    //Group by original file
+                                                                                <Record, Specification.File, IEnumerable<Record>>(
+                                                                                r => r.OriginalFile.SpecificationFile,    //Group by original file
                                                                                 (OriginalFile, RecordsIEnumerable) => RecordsIEnumerable    //Output groupings as IEnumerable<Record>
                                                                                 );
             return RecordsGroupedByOriginalFiles;
@@ -75,10 +75,10 @@ namespace StripV3Consent.Model
 
         private IEnumerable<OutputFile> SplitBackUpIntoFiles(IEnumerable<RecordSet> RecordSets)
         {
-            IEnumerable<IEnumerable<Record>> AllConsentedRecordsGroupedByFile = FlattenAndGroupRecordsByOriginalFiles(RecordSets.Where(RS => RS.IsConsentValid == true));
+            IEnumerable<IEnumerable<Record>> AllConsentedRecordsGroupedByFile = FlattenAndGroupRecordsBySpecificationFiles(RecordSets.Where(RS => RS.IsConsentValid == true));
 
             //Have to do ToList in order to use Find() later on which isn't present in IEnumerable<T>
-            List<IEnumerable<Record>> AllRecordsGroupedByFile = FlattenAndGroupRecordsByOriginalFiles(RecordSets).ToList<IEnumerable<Record>>();
+            List<IEnumerable<Record>> AllRecordsGroupedByFile = FlattenAndGroupRecordsBySpecificationFiles(RecordSets).ToList<IEnumerable<Record>>();
 
 
             IEnumerable<OutputFile> Files = AllConsentedRecordsGroupedByFile.Select(RecordsInOutputFile => new OutputFile(RecordsInOutputFile.First().OriginalFile) //Match each set of records to a new OutputFile object
