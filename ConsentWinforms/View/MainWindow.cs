@@ -94,11 +94,19 @@ You can contact your IT support for help with this issue",
                     //Remove wildcard and append _Processed to filename
                     string FileName = OutFile.SpecificationFile.Name.Replace(@".*\", "").Replace(".csv", "_Processed.csv");
                     string OutPath = OutputFolder + FileName;
-#warning add try catch for StreamWriter I/O
-                    using (StreamWriter writer = new StreamWriter(OutPath))
+                    try
                     {
-                        writer.Write(OutFile.RepackIntoString());
+                        using (StreamWriter writer = new StreamWriter(OutPath))
+                        {
+                            writer.Write(OutFile.RepackIntoString());
+                        }
                     }
+                    catch (Exception ex)
+					{
+                        MessageBox.Show($"There was an {ex.ToString()} while writing file {FileName} to disk, this will not have been completed", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                        continue;
+					}
                 }
 
                 //Open explorer window to show results

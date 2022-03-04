@@ -125,7 +125,6 @@ namespace StripV3Consent.Model
 					};
 				}
 
-#warning add check for ConsentVersion == "Pre-V4" as well as blank
 				if (ConsentVersion != "V4" & RegistryConsent == "Y")
 				{
 					return new ConsentValidState()

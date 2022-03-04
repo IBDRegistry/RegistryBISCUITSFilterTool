@@ -100,9 +100,18 @@ namespace StripV3Consent.View
 
 			foreach (string path in FilePaths)
 			{
-				using (StreamReader reader = new StreamReader(path))
+				try
 				{
-					Contents[Array.IndexOf(FilePaths, path)] = await reader.ReadToEndAsync();
+					using (StreamReader reader = new StreamReader(path))
+					{
+						Contents[Array.IndexOf(FilePaths, path)] = await reader.ReadToEndAsync();
+					}
+				}
+				catch (Exception ex)
+				{
+					MessageBox.Show($"There was an {ex.ToString()} while reading file {path} from disk, this will not have been completed", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+					continue;
 				}
 			}
 
