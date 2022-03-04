@@ -45,7 +45,7 @@ namespace StripV3Consent.Model
 				{
 					//National Opt-Out
 					IEnumerable<Record> NationalOptOutRecords = Records.Where(r => r.OriginalFile.SpecificationFile is Specification.NationalOptOutFile);
-					if (NationalOptOutRecords.Count() != 0)
+					if (NationalOptOutRecords.Count() == 0)
 					{
 						if (NationalOptOutRecords.Any(NOORecord => NOORecord.GetValueByDataItemCode(DataItemCodes.NationalOptOut) == "Yes"))
 						{
