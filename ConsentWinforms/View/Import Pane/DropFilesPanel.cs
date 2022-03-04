@@ -106,7 +106,11 @@ namespace StripV3Consent.View
 				}
 			}
 
-			ImportFile[] ImportFiles = Contents.Select(content => new ImportFile(System.IO.Path.GetFileName(FilePaths[Array.IndexOf(Contents, content)]), content)).ToArray();
+			ImportFile[] ImportFiles = Contents.Select(content => {
+				string FilePath = FilePaths[Array.IndexOf(Contents, content)];
+				string FileName = Path.GetFileName(FilePath);
+				return new ImportFile(FileName, content) { FilePath = FilePath };
+			}).ToArray();
 			FileList.AddRange(ImportFiles);
 
 			System.Diagnostics.Debug.WriteLine(FileList.Controls.Count);
@@ -114,10 +118,14 @@ namespace StripV3Consent.View
 
 
 		public string MostCommonSourceDirectory {
-			get => FileList.Files.Select(ImportFile => ImportFile.FilePath).Where(Path => Path != null).Select(Path => System.IO.Path.GetDirectoryName(Path))
-									.GroupBy(Path => Path)
-									.OrderBy(t => t.Count())
-									.First().Key;
+			get
+			{
+				var ContainingDirectories = FileList.Files.Select(ImportFile => ImportFile.FilePath).Where(Path => Path != null).Select(Path => System.IO.Path.GetDirectoryName(Path));
+				if (ContainingDirectories.Count() == 0) { return null; }
+				return ContainingDirectories.GroupBy(Path => Path)
+								   .OrderBy(t => t.Count())
+								   .FirstOrDefault().Key;
+			}
 		}
 
 

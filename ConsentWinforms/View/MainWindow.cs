@@ -52,8 +52,10 @@ You can contact your IT support for help with this issue",
         private void SaveButton_Click(object sender, EventArgs e)
         {
             CommonOpenFileDialog SelectDialog = new CommonOpenFileDialog();
-      
-            SelectDialog.InitialDirectory = DropFilesHerePanel.MostCommonSourceDirectory;
+
+            if (DropFilesHerePanel.MostCommonSourceDirectory != null)
+                SelectDialog.InitialDirectory = DropFilesHerePanel.MostCommonSourceDirectory;
+            
             SelectDialog.IsFolderPicker = true;
             if (SelectDialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
