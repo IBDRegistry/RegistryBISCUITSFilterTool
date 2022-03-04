@@ -100,15 +100,21 @@ You can contact your IT support for help with this issue",
                 }
 
                 //Open explorer window to show results
-                System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo
-                {
-                    Arguments = OutputFolder,
-                    FileName = "explorer.exe"
-                };
-
-                System.Diagnostics.Process.Start(startInfo);
+                StartExplorer(OutputFolder);
 
             }
+        }
+
+        //Process.Start is slow so putting it into an async void "Fire and Forget" method means we can prevent it from blocking the UI thread for about 7 seconds
+        private async void StartExplorer(string FolderPath)
+		{
+            System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo
+            {
+                Arguments = FolderPath,
+                FileName = "explorer.exe"
+            };
+
+            System.Diagnostics.Process.Start(startInfo);
         }
 
         private void OutputFilesChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
