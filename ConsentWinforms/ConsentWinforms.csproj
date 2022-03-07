@@ -34,7 +34,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="MakarovDev.ExpandCollapsePanel">
-      <HintPath>Libraries\ExpandCollapsePanel-master\MakarovDev.ExpandCollapsePanel\bin\Release\MakarovDev.ExpandCollapsePanel.dll</HintPath>
+      <HintPath>..\StripV3Consent\Libraries\ExpandCollapsePanel-master\MakarovDev.ExpandCollapsePanel\bin\Release\MakarovDev.ExpandCollapsePanel.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.WindowsAPICodePack, Version=1.1.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\WindowsAPICodePack-Core.1.1.2\lib\Microsoft.WindowsAPICodePack.dll</HintPath>
