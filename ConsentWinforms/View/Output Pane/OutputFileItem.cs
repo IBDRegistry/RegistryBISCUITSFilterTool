@@ -39,6 +39,14 @@ namespace StripV3Consent.View
             };
             KeptRemoveLabelsStackPanel.Controls.Add(RecordsKeptLabel);
 
+            //int NumberOfRecordsRemoved;
+            //if (File.AllRecordsOriginallyInFile == null || File.OutputRecords == null)
+            //{
+            //    NumberOfRecordsRemoved = 0;
+            //} else
+            //{
+            //    NumberOfRecordsRemoved = File.AllRecordsOriginallyInFile.Except(File.OutputRecords).Count();
+            //}
             Label RecordsRemovedLabel = new Label()
             {
                 Text = $"{File.AllRecordsOriginallyInFile.Except(File.OutputRecords).Count()} records removed",
