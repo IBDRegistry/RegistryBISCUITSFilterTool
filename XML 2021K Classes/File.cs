@@ -31,13 +31,7 @@ namespace Specification
         /// </summary>
         public string SimplifiedName
         {
-            get
-            {
-                string FileWith_abcAndExtension = Name;
-                string FileWith_abc = System.IO.Path.GetFileNameWithoutExtension(FileWith_abcAndExtension);
-                string File = FileWith_abc.Substring(0, FileWith_abc.Length - "_abc".Length);
-                return File;
-            }
+            get => Name.Replace(@".*\", "").Replace(".csv", "");
         }
 
         public override string ToString()
