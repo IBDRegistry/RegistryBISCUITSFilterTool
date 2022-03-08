@@ -103,11 +103,6 @@ namespace StripV3Consent.View
 
         private void AddItem(DataFileType File)
         {
-            if (typeof(DataFileType) == typeof(ImportFile))//Set collision detection callback
-            {
-                ((ImportFile)(DataFile)File).IsSpecificationFileAlreadyImported = IsFileAlreadyInList;
-            }
-
             FileItemType NewEntry = (FileItemType)Activator.CreateInstance(typeof(FileItemType), new object[] { File });
             
 
