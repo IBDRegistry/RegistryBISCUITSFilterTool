@@ -54,6 +54,9 @@ namespace StripV3Consent.View
 
         #endregion
 
+        /// <summary>
+        /// Used for setting if you want a remove button to appear to the right of each FileItem
+        /// </summary>
         public bool RemoveButtons = true;
 
         private void CustomizeControl()
@@ -86,6 +89,12 @@ namespace StripV3Consent.View
             }
         }
 
+        /// <summary>
+        /// Callback method to check if a file is already in the list. Currently obsolete and candidate for removal
+        /// </summary>
+        /// <param name="File"></param>
+        /// <returns></returns>
+        [Obsolete]
         public bool IsFileAlreadyInList(ImportFile File)
         {
             //This line looks a bit crazy but the point of it is two create an IEnumerable of 1.The file calling (File) and 2.Other files that are have the 'already imported' error
@@ -100,6 +109,11 @@ namespace StripV3Consent.View
             return SpecificationFiles.Contains(File.SpecificationFile);
         }
 
+        /// <summary>
+        /// Also obsolete like IsFileAlreadyInList
+        /// </summary>
+        /// <param name="File"></param>
+        [Obsolete]
         public void ReCheckFileCollisions(ImportFile File)
         {
             IEnumerable<ImportFileItem> OtherFilesWithSameSpecificationFile = Controls.Cast<ImportFileItem>().Where(i => i.File.SpecificationFile == File.SpecificationFile);
