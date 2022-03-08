@@ -59,6 +59,15 @@ namespace StripV3Consent.View
         /// </summary>
         public bool RemoveButtons = true;
 
+        /// <summary>
+        /// A panel that appears when there are no FileItems in the FileList and sticks to the bottom of the list as more are added/removed
+        /// </summary>
+        public readonly Panel BottomPanel = new Panel() { 
+            BackColor = System.Drawing.Color.White,
+            Dock = DockStyle.Top,
+            Height = 120
+        };
+
         private void CustomizeControl()
         {
             FlowDirection = FlowDirection.TopDown;
@@ -66,6 +75,8 @@ namespace StripV3Consent.View
             AutoScroll = true;
             WrapContents = false;
             BorderStyle = BorderStyle.FixedSingle;
+
+            Controls.Add(BottomPanel);
         }
 
         private void Files_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -89,39 +100,6 @@ namespace StripV3Consent.View
             }
         }
 
-        /// <summary>
-        /// Callback method to check if a file is already in the list. Currently obsolete and candidate for removal
-        /// </summary>
-        /// <param name="File"></param>
-        /// <returns></returns>
-        [Obsolete]
-        public bool IsFileAlreadyInList(ImportFile File)
-        {
-            //This line looks a bit crazy but the point of it is two create an IEnumerable of 1.The file calling (File) and 2.Other files that are have the 'already imported' error
-            //We need to do 1. otherwise the function always returns true as it will detect itself in the list when doing .Contains()
-            //We also need to do 2. otherwise scenarios with multiple files from the same specification file get buggy as they and the method never gives them all the error until only one of them is left
-            //We need to get the information from 2. from the Controls collection not the Files ObservableCollection as calling Files.Where(file => file.IsValid.Message =="Already imported") calls this method in IsValid resulting in a StackOverflow
-            //By using the one stored in the UI it acts as a sort of cache so no circular references or StackOverflow.
-            IEnumerable<ImportFile> FilesToExclude = (new ImportFile[] { File }).Union(Controls.Cast<ImportFileItem>().Where(control => control.ValidationPictureBox.Model.Message == "File already imported").Select(control => control.File));
-            
-            IEnumerable <ImportFile> ImportFiles = Files.Cast<ImportFile>().Except(FilesToExclude);
-            IEnumerable<Specification.File> SpecificationFiles = ImportFiles.Select(i => i.SpecificationFile);
-            return SpecificationFiles.Contains(File.SpecificationFile);
-        }
-
-        /// <summary>
-        /// Also obsolete like IsFileAlreadyInList
-        /// </summary>
-        /// <param name="File"></param>
-        [Obsolete]
-        public void ReCheckFileCollisions(ImportFile File)
-        {
-            IEnumerable<ImportFileItem> OtherFilesWithSameSpecificationFile = Controls.Cast<ImportFileItem>().Where(i => i.File.SpecificationFile == File.SpecificationFile);
-            foreach (ImportFileItem CurrentOtherFile in OtherFilesWithSameSpecificationFile.ToArray())
-            {
-                CurrentOtherFile.ReCheckValidation();
-            }
-        }
 
         private void AddItem(DataFileType File)
         {
@@ -140,13 +118,17 @@ namespace StripV3Consent.View
             }
 
             this.Controls.Add(NewEntry);
+
+            int IndexOfBottomPanel = Controls.GetChildIndex(BottomPanel);
+            int IndexOfNewControl = Controls.GetChildIndex(NewEntry);
+            Controls.SetChildIndex(NewEntry, IndexOfBottomPanel);
+            Controls.SetChildIndex(BottomPanel, IndexOfNewControl);
         }
 
         private void RemoveItem(DataFileType File)
         {
             FileItemType FileItemToRemove = Controls.Cast<FileItemType>().Where(FileItem => FileItem.File == File).First();
             Controls.Remove(FileItemToRemove);
-            ReCheckFileCollisions((ImportFile)(DataFile)FileItemToRemove.File);
         }
         
         private void RedrawList()
