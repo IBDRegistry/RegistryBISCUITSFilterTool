@@ -81,10 +81,10 @@ namespace StripV3Consent.Model
             List<IEnumerable<Record>> AllRecordsGroupedByFile = FlattenAndGroupRecordsBySpecificationFiles(RecordSets).ToList<IEnumerable<Record>>();
 
 
-            IEnumerable<OutputFile> Files = AllConsentedRecordsGroupedByFile.Select(RecordsInOutputFile => new OutputFile(RecordsInOutputFile.First().OriginalFile) //Match each set of records to a new OutputFile object
+            IEnumerable<OutputFile> Files = AllConsentedRecordsGroupedByFile.Select(FileOutputRecords => new OutputFile(FileOutputRecords.First().OriginalFile) //Match each set of records to a new OutputFile object
                                                                 {
-                                                                    OutputRecords = RecordsInOutputFile,    //Make the OutputRecords the current set of (consented) records
-                                                                    AllRecordsOriginallyInFile = AllRecordsGroupedByFile.Find(RecordIEnumerable => RecordIEnumerable.First().OriginalFile == RecordsInOutputFile.First().OriginalFile)
+                                                                    OutputRecords = FileOutputRecords,    //Make the OutputRecords the current set of (consented) records
+                                                                    AllRecordsOriginallyInFile = AllRecordsGroupedByFile.Find(FileAllRecords => FileAllRecords.First().OriginalFile.SpecificationFile == FileOutputRecords.First().OriginalFile.SpecificationFile)
                                                                     //Find the full set (consented and non-consented) of records by looking through AllRecordsGroupedByFile for one with the same OriginalFile attribute
                                                                 }
                                                             );

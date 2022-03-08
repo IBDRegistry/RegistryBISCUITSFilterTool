@@ -42,6 +42,12 @@ namespace StripV3Consent.View
 		/// <returns></returns>
 		private bool IsFileValidForDropping(string FilePath)
         {
+			if (!File.Exists(FilePath))
+            {
+				MessageBox.Show($"The file at {FilePath} doesn't exist and won't be imported into the application");
+				return false;
+            }
+
 			FileAttributes Attributes = File.GetAttributes(FilePath);
 			if (Attributes == FileAttributes.Directory | Attributes == FileAttributes.Device) //Prevent doctors from trying to drag and drop folders, devices and all sorts of nonsense
 			{
