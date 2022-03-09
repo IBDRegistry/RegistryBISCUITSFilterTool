@@ -23,7 +23,10 @@ namespace StripV3Consent.View
 
 			CustomizeBottomPanel();
 
-		}
+			Controls.Add(FileList);
+            FileList.Controls.Add(new Label());
+
+        }
 
 		private void CustomizeBottomPanel()
         {
@@ -126,9 +129,7 @@ namespace StripV3Consent.View
 			RecursivelyExpandFolders(InputPaths);
 
 			string[] FilePaths = InputPaths.Where(path => IsFileValidForDropping(path)).ToArray(); //Prevent doctors from trying to drag and drop folders, devices and all sorts of nonsense
-			this.Controls.Clear();
-			this.Controls.Add(FileList);
-
+			
 			string[] Contents = new string[FilePaths.Count()];
 
 			foreach (string path in FilePaths)
@@ -154,8 +155,6 @@ namespace StripV3Consent.View
 				return new ImportFile(FileName, content) { FilePath = FilePath };
 			}).ToArray();
 			FileList.AddRange(ImportFiles);
-
-			System.Diagnostics.Debug.WriteLine(FileList.Controls.Count);
 		}
 
 

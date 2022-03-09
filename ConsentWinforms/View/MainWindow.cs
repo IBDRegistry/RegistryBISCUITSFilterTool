@@ -24,8 +24,28 @@ namespace StripV3Consent.View
             LoadedFilesPanel.FileList.Files = Model.OutputFiles;
 
             LoadedFilesPanel.FileList.Files.CollectionChanged += OutputFilesChanged;
+            Model.InputFiles.CollectionChanged += UpdateBlankFilesRemovedLabel;
 
             CheckIfAdministrator();
+        }
+
+        private void UpdateBlankFilesRemovedLabel(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            IEnumerable<Specification.File> SpecificationFilesInInput = Model.InputFiles.GroupBy
+                <ImportFile, Specification.File, Specification.File>
+                (file => file.SpecificationFile,    //group by specification file
+                (SpecificationFile, ImportFileIEnumerable) => SpecificationFile //output specification file from IGrouping
+                );
+
+            IEnumerable<Specification.File> SpecificationFilesInOutput = Model.OutputFiles.Select(OutFile => OutFile.SpecificationFile);
+
+            List<Specification.File> FilesThatDidntMakeIt = SpecificationFilesInInput.Except(SpecificationFilesInOutput).ToList();
+            FilesThatDidntMakeIt.RemoveAll(element => element is null);
+
+            if (FilesThatDidntMakeIt.Count() != 0)  {
+                string LabelText = $"{FilesThatDidntMakeIt.Count()} files were excluded for being empty after the process: {Environment.NewLine} {string.Join(Environment.NewLine, FilesThatDidntMakeIt.Select(file => file.SimplifiedName).ToArray())}";
+            }
+
         }
 
         private void CheckIfAdministrator()

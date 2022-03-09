@@ -24,13 +24,19 @@ namespace StripV3Consent.View
 			{
                 _files = value;
                 Files.CollectionChanged += Files_CollectionChanged;
-                //Files_CollectionChanged(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
             }
 		}
 
         public FileList()
 		{
-            CustomizeControl();
+            FlowDirection = FlowDirection.TopDown;
+            Dock = DockStyle.Fill;
+            AutoScroll = true;
+            WrapContents = false;
+            BorderStyle = BorderStyle.FixedSingle;
+            BackColor = System.Drawing.Color.Blue;
+
+            Controls.Add(BottomPanel);
         }
 
         
@@ -62,22 +68,12 @@ namespace StripV3Consent.View
         /// <summary>
         /// A panel that appears when there are no FileItems in the FileList and sticks to the bottom of the list as more are added/removed
         /// </summary>
-        public readonly Panel BottomPanel = new Panel() { 
+        public readonly Panel BottomPanel = new Panel() {
             Dock = DockStyle.Top,
             AutoSize = true,
-            Height = 120
+            Height = 120,
+            BackColor = System.Drawing.Color.White
         };
-
-        private void CustomizeControl()
-        {
-            FlowDirection = FlowDirection.TopDown;
-            Dock = DockStyle.Fill;
-            AutoScroll = true;
-            WrapContents = false;
-            BorderStyle = BorderStyle.FixedSingle;
-
-            Controls.Add(BottomPanel);
-        }
 
         private void Files_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
@@ -112,7 +108,7 @@ namespace StripV3Consent.View
                 NewEntry.Controls.Add(NewEntry.CloseButton);
             }
 
-            this.Controls.Add(NewEntry);
+            Controls.Add(NewEntry);
 
             int IndexOfBottomPanel = Controls.GetChildIndex(BottomPanel);
             int IndexOfNewControl = Controls.GetChildIndex(NewEntry);
