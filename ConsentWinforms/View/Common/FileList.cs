@@ -63,7 +63,6 @@ namespace StripV3Consent.View
         /// A panel that appears when there are no FileItems in the FileList and sticks to the bottom of the list as more are added/removed
         /// </summary>
         public readonly Panel BottomPanel = new Panel() { 
-            BackColor = System.Drawing.Color.White,
             Dock = DockStyle.Top,
             AutoSize = true,
             Height = 120
