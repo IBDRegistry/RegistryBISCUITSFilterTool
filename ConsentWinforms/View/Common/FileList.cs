@@ -65,6 +65,7 @@ namespace StripV3Consent.View
         public readonly Panel BottomPanel = new Panel() { 
             BackColor = System.Drawing.Color.White,
             Dock = DockStyle.Top,
+            AutoSize = true,
             Height = 120
         };
 
