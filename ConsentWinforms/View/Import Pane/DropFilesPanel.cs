@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using StripV3Consent.Model;
+using System.Drawing;
 
 namespace StripV3Consent.View
 {
@@ -19,7 +20,33 @@ namespace StripV3Consent.View
 			AllowDrop = true;
 			DragEnter += DropFiles_DragEnter;
 			DragDrop += DropFiles_DragDrop;
+
+			CustomizeBottomPanel();
+
+		}
+
+		private void CustomizeBottomPanel()
+        {
 			
+			Label BottomPanelLabel = new Label()
+			{
+				Text = "You can drop files onto this box or use the file dialog below",
+				AutoSize = true,
+				MaximumSize = new Size() { Width = 240, Height = 0 },
+				Dock = DockStyle.Top,
+				TextAlign = ContentAlignment.MiddleCenter,
+				Font = new Font("Microsoft Sans Serif", 14.5f)
+			};
+			
+			Button BottomPanelFileDialogButton = new Button()
+			{
+				Text = "Alternatively, browse files;",
+				AutoSize = true,
+				Dock = DockStyle.Top,
+			};
+
+			FileList.BottomPanel.Controls.Add(BottomPanelFileDialogButton);
+			FileList.BottomPanel.Controls.Add(BottomPanelLabel);
 		}
 
 
