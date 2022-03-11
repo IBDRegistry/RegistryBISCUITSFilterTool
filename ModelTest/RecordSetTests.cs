@@ -46,7 +46,7 @@ namespace ModelTest
 			ImportFile OldConsentFile = new("consent_Trust.csv", OldConsentLine);
 			ImportFile NewConsentFile = new("consent_Registry.csv", NewConsentLine);
 
-			RecordSet[] Patients = ConsentToolModel.SplitInputFilesIntoRecordSets(new ImportFile[] { PatientFile, OldConsentFile, NewConsentFile }).ToArray();
+			RecordSet[] Patients = ConsentToolModel.SplitInputFilesIntoRecordSets(new ImportFile[] { PatientFile, NewConsentFile, OldConsentFile }).ToArray();
 
 			RecordSet TestingRecord = Patients.Where(rs => rs.GetFieldValue(DataItemCodes.NHSNumber) == NHSNumber).First();
 
