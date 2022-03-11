@@ -18,6 +18,8 @@ namespace StripV3Consent.View
         public OutputFilesPanel()
         {
             this.Controls.Add(FileList);
+
+            FileList.BottomPanel.AutoSize = true;
         }
 
 
