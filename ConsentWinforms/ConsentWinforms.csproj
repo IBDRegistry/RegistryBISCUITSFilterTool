@@ -32,6 +32,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>ibdregistry.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="MakarovDev.ExpandCollapsePanel">
       <HintPath>..\StripV3Consent\Libraries\ExpandCollapsePanel-master\MakarovDev.ExpandCollapsePanel\bin\Release\MakarovDev.ExpandCollapsePanel.dll</HintPath>
@@ -154,6 +157,9 @@
       <Project>{aff69946-d8e3-4c11-80d1-ecc1f1004ccc}</Project>
       <Name>XML 2021K Classes</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ibdregistry.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
