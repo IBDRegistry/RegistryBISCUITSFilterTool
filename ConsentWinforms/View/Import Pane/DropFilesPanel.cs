@@ -47,11 +47,28 @@ namespace StripV3Consent.View
 				AutoSize = true,
 				Dock = DockStyle.Top,
 			};
+            BottomPanelFileDialogButton.Click += BottomPanelFileDialogButton_Click;
 
 			FileList.BottomPanel.Controls.Add(BottomPanelFileDialogButton);
 			FileList.BottomPanel.Controls.Add(BottomPanelLabel);
 		}
 
+        private void BottomPanelFileDialogButton_Click(object sender, EventArgs e)
+        {
+			using (OpenFileDialog openFileDialog = new OpenFileDialog())
+			{
+				//openFileDialog.InitialDirectory = "c:\\";
+				openFileDialog.Filter = "csv and dat files |*.csv;*.dat|All files (*.*)|*.*";
+				//openFileDialog.FilterIndex = 1;
+				openFileDialog.RestoreDirectory = true;
+				openFileDialog.Multiselect = true;
+
+				if (openFileDialog.ShowDialog() == DialogResult.OK)
+				{
+					AddFiles(openFileDialog.FileNames);
+				}
+			}
+		}
 
         private void DropFiles_DragEnter(object sender, DragEventArgs e)
 		{
@@ -129,7 +146,12 @@ namespace StripV3Consent.View
 			RecursivelyExpandFolders(InputPaths);
 
 			string[] FilePaths = InputPaths.Where(path => IsFileValidForDropping(path)).ToArray(); //Prevent doctors from trying to drag and drop folders, devices and all sorts of nonsense
-			
+
+			AddFiles(FilePaths);
+		}
+
+		private async void AddFiles(string[] FilePaths)
+        {
 			string[] Contents = new string[FilePaths.Count()];
 
 			foreach (string path in FilePaths)

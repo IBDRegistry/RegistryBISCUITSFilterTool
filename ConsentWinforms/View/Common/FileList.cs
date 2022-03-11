@@ -120,7 +120,11 @@ namespace StripV3Consent.View
         
         private void RedrawList()
         {
-            this.Controls.Clear();
+            FileItemType[] ControlsToRemove = Controls.Cast<Control>().Where(ctrl => ctrl is FileItemType).Select(ctrl => (FileItemType)ctrl).ToArray();
+            foreach(FileItemType fileItem in ControlsToRemove)
+            {
+                Controls.Remove(fileItem);
+            }
             foreach(DataFileType File in Files)
             {
                 AddItem(File);
