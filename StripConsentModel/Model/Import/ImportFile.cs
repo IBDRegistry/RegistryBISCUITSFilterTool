@@ -115,7 +115,7 @@ namespace StripV3Consent.Model
                 }
             }
             TopLeftValue = TopLeftValueBuilder.ToString();
-            if (TopLeftValue.StartsWith("HEADER_"))
+            if (TopLeftValue.ToUpper().StartsWith("HEADER_"))
             {
                 return true;
             }
