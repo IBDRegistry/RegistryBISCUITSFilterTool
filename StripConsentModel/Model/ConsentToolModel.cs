@@ -9,7 +9,18 @@ namespace StripV3Consent.Model
 {
     public class ConsentToolModel
     {
-        public readonly ObservableRangeCollection<ImportFile> InputFiles = new ObservableRangeCollection<ImportFile>();        
+        public readonly ObservableRangeCollection<ImportFile> InputFiles = new ObservableRangeCollection<ImportFile>();
+
+        public event NotifyCollectionChangedEventHandler InputFilesChanged;
+
+        private static bool enableNationalOptOut;
+        public static bool EnableNationalOptOut { get => enableNationalOptOut;
+            set { 
+                enableNationalOptOut = value;
+                EnableNationalOptOutChanged.Invoke();
+            }
+        }
+        public static event Action EnableNationalOptOutChanged;
 
         private void InputFiles_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
@@ -27,9 +38,24 @@ namespace StripV3Consent.Model
 
         public readonly ObservableRangeCollection<OutputFile> OutputFiles = new ObservableRangeCollection<OutputFile>();
 
+        
+
         public ConsentToolModel()
         {
-            InputFiles.CollectionChanged += InputFiles_CollectionChanged;
+            InputFiles.CollectionChanged += InputFiles_SubCollectionChanged;
+            InputFilesChanged += InputFiles_CollectionChanged;
+            EnableNationalOptOutChanged += ConsentToolModel_EnableNationalOptOutChanged;
+        }
+
+        private void InputFiles_SubCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            InputFilesChanged?.Invoke(sender, e);
+        }
+
+        private void ConsentToolModel_EnableNationalOptOutChanged()
+        {
+            //Reload other file lists to take into account NOO (or not)
+            InputFilesChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
         }
 
         /// <summary>

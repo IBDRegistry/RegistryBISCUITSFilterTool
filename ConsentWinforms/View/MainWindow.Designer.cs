@@ -29,19 +29,22 @@ namespace StripV3Consent.View
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
             this.TableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.DropFilesHerePanel = new StripV3Consent.View.DropFilesPanel();
+            this.LoadedFilesPanel = new StripV3Consent.View.OutputFilesPanel();
+            this.RemovedPatientsPanel = new StripV3Consent.View.RemovedPatientsPanel();
             this.SaveButton = new System.Windows.Forms.Button();
             this.ImportPanelLabel = new System.Windows.Forms.Label();
             this.ProcessingPaneLabel = new System.Windows.Forms.Label();
             this.OutputPaneLabel = new System.Windows.Forms.Label();
             this.ProcessingControlPanel = new System.Windows.Forms.Panel();
+            this.CheckOptOutFile = new System.Windows.Forms.CheckBox();
             this.DisplayRemovedPatientsCheckbox = new System.Windows.Forms.CheckBox();
             this.DisplayKeptPatientsCheckbox = new System.Windows.Forms.CheckBox();
-            this.DropFilesHerePanel = new StripV3Consent.View.DropFilesPanel();
-            this.LoadedFilesPanel = new StripV3Consent.View.OutputFilesPanel();
-            this.RemovedPatientsPanel = new StripV3Consent.View.RemovedPatientsPanel();
             this.autoResizingLabel1 = new StripV3Consent.View.AutoResizingLabel();
+            this.CheckOptOutToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.TableLayoutPanel.SuspendLayout();
             this.ProcessingControlPanel.SuspendLayout();
             this.SuspendLayout();
@@ -69,6 +72,37 @@ namespace StripV3Consent.View
             this.TableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.TableLayoutPanel.Size = new System.Drawing.Size(800, 450);
             this.TableLayoutPanel.TabIndex = 0;
+            // 
+            // DropFilesHerePanel
+            // 
+            this.DropFilesHerePanel.AllowDrop = true;
+            this.DropFilesHerePanel.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.DropFilesHerePanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.DropFilesHerePanel.Location = new System.Drawing.Point(3, 23);
+            this.DropFilesHerePanel.Name = "DropFilesHerePanel";
+            this.DropFilesHerePanel.Size = new System.Drawing.Size(264, 338);
+            this.DropFilesHerePanel.TabIndex = 0;
+            // 
+            // LoadedFilesPanel
+            // 
+            this.LoadedFilesPanel.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.LoadedFilesPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.LoadedFilesPanel.Location = new System.Drawing.Point(513, 23);
+            this.LoadedFilesPanel.Name = "LoadedFilesPanel";
+            this.LoadedFilesPanel.Size = new System.Drawing.Size(284, 338);
+            this.LoadedFilesPanel.TabIndex = 1;
+            // 
+            // RemovedPatientsPanel
+            // 
+            this.RemovedPatientsPanel.AllRecordSets = null;
+            this.RemovedPatientsPanel.AutoScroll = true;
+            this.RemovedPatientsPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.RemovedPatientsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.RemovedPatientsPanel.Location = new System.Drawing.Point(273, 23);
+            this.RemovedPatientsPanel.Name = "RemovedPatientsPanel";
+            this.RemovedPatientsPanel.Size = new System.Drawing.Size(234, 338);
+            this.RemovedPatientsPanel.TabIndex = 3;
+            this.RemovedPatientsPanel.AllRecordSetsChanged += new System.EventHandler(this.RemovedPatientsPanel_AllRecordSetsChanged);
             // 
             // SaveButton
             // 
@@ -118,6 +152,7 @@ namespace StripV3Consent.View
             // 
             // ProcessingControlPanel
             // 
+            this.ProcessingControlPanel.Controls.Add(this.CheckOptOutFile);
             this.ProcessingControlPanel.Controls.Add(this.DisplayRemovedPatientsCheckbox);
             this.ProcessingControlPanel.Controls.Add(this.DisplayKeptPatientsCheckbox);
             this.ProcessingControlPanel.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -125,6 +160,22 @@ namespace StripV3Consent.View
             this.ProcessingControlPanel.Name = "ProcessingControlPanel";
             this.ProcessingControlPanel.Size = new System.Drawing.Size(234, 80);
             this.ProcessingControlPanel.TabIndex = 8;
+            // 
+            // CheckOptOutFile
+            // 
+            this.CheckOptOutFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.CheckOptOutFile.AutoSize = true;
+            this.CheckOptOutFile.Checked = true;
+            this.CheckOptOutFile.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.CheckOptOutFile.Enabled = false;
+            this.CheckOptOutFile.Location = new System.Drawing.Point(4, 60);
+            this.CheckOptOutFile.Name = "CheckOptOutFile";
+            this.CheckOptOutFile.Size = new System.Drawing.Size(139, 17);
+            this.CheckOptOutFile.TabIndex = 2;
+            this.CheckOptOutFile.Text = "Check National Opt-Out";
+            this.CheckOptOutToolTip.SetToolTip(this.CheckOptOutFile, "This is optional until the 31st March, after which it will lock on");
+            this.CheckOptOutFile.UseVisualStyleBackColor = true;
+            this.CheckOptOutFile.CheckedChanged += new System.EventHandler(this.CheckOptOutFile_CheckedChanged);
             // 
             // DisplayRemovedPatientsCheckbox
             // 
@@ -152,37 +203,6 @@ namespace StripV3Consent.View
             this.DisplayKeptPatientsCheckbox.UseVisualStyleBackColor = true;
             this.DisplayKeptPatientsCheckbox.CheckedChanged += new System.EventHandler(this.DisplayCheckboxesChanged);
             // 
-            // DropFilesHerePanel
-            // 
-            this.DropFilesHerePanel.AllowDrop = true;
-            this.DropFilesHerePanel.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.DropFilesHerePanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.DropFilesHerePanel.Location = new System.Drawing.Point(3, 23);
-            this.DropFilesHerePanel.Name = "DropFilesHerePanel";
-            this.DropFilesHerePanel.Size = new System.Drawing.Size(264, 338);
-            this.DropFilesHerePanel.TabIndex = 0;
-            // 
-            // LoadedFilesPanel
-            // 
-            this.LoadedFilesPanel.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.LoadedFilesPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.LoadedFilesPanel.Location = new System.Drawing.Point(513, 23);
-            this.LoadedFilesPanel.Name = "LoadedFilesPanel";
-            this.LoadedFilesPanel.Size = new System.Drawing.Size(284, 338);
-            this.LoadedFilesPanel.TabIndex = 1;
-            // 
-            // RemovedPatientsPanel
-            // 
-            this.RemovedPatientsPanel.AllRecordSets = null;
-            this.RemovedPatientsPanel.AutoScroll = true;
-            this.RemovedPatientsPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.RemovedPatientsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.RemovedPatientsPanel.Location = new System.Drawing.Point(273, 23);
-            this.RemovedPatientsPanel.Name = "RemovedPatientsPanel";
-            this.RemovedPatientsPanel.Size = new System.Drawing.Size(234, 338);
-            this.RemovedPatientsPanel.TabIndex = 3;
-            this.RemovedPatientsPanel.AllRecordSetsChanged += new System.EventHandler(this.RemovedPatientsPanel_AllRecordSetsChanged);
-            // 
             // autoResizingLabel1
             // 
             this.autoResizingLabel1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -204,6 +224,7 @@ namespace StripV3Consent.View
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainWindow";
             this.Text = "IBDR Extract Filter Tool";
+            this.Load += new System.EventHandler(this.MainWindow_Load);
             this.TableLayoutPanel.ResumeLayout(false);
             this.TableLayoutPanel.PerformLayout();
             this.ProcessingControlPanel.ResumeLayout(false);
@@ -226,6 +247,8 @@ namespace StripV3Consent.View
         private System.Windows.Forms.Panel ProcessingControlPanel;
         private System.Windows.Forms.CheckBox DisplayRemovedPatientsCheckbox;
         private System.Windows.Forms.CheckBox DisplayKeptPatientsCheckbox;
+        private System.Windows.Forms.CheckBox CheckOptOutFile;
+        private System.Windows.Forms.ToolTip CheckOptOutToolTip;
     }
 }
 

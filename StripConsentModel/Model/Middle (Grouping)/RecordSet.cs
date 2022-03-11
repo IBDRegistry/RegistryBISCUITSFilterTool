@@ -110,22 +110,21 @@ namespace StripV3Consent.Model
 				{
 					//National Opt-Out
 					IEnumerable<Record> NationalOptOutRecords = Records.Where(r => r.OriginalFile.SpecificationFile is Specification.NationalOptOutFile);
-					if (NationalOptOutRecords.Count() == 0)
+					if (ConsentToolModel.EnableNationalOptOut == true && NationalOptOutRecords.Count() == 0)
 					{
-						if (NationalOptOutRecords.Any(NOORecord => NOORecord.GetValueByDataItemCode(DataItemCodes.NationalOptOut) == "Yes"))
+						return new ConsentValidState()
 						{
-							return new ConsentValidState()
-							{
-								IsValid = false,
-								IsValidReason = "Patient participated in the national opt-out"
-							};
-						}
+							IsValid = false,
+							IsValidReason = "Patient participated in the national opt-out"
+						};
+					} else 
+					{ 
+						return new ConsentValidState()
+						{
+							IsValid = true,
+							IsValidReason = "No consent record so patient flows via S251"
+						};
 					}
-					return new ConsentValidState()
-					{
-						IsValid = true,
-						IsValidReason = "No consent record so patient flows via S251"
-					};
 				}
 
 
