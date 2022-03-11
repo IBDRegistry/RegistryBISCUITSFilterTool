@@ -3,7 +3,7 @@
 :: this script needs https://www.nuget.org/packages/ilmerge
 
 :: set your target executable name here
-SET APP_NAME="IBDR Extract Filter Tool.exe"
+SET APP_NAME="IBDR_Extract_Filter_Tool.exe"
 
 :: Set directory for separate files
 SET ILMERGE_BUILD=DumpBinariesHere
@@ -11,6 +11,9 @@ SET ILMERGE_BUILD=DumpBinariesHere
 :: the full ILMerge should be found here:
 SET ILMERGE_PATH= "ILMerge.exe"
 :: dir "%ILMERGE_PATH%"\ILMerge.exe
+
+echo Removing old file
+del %APP_NAME%
 
 echo Merging %APP_NAME% ...
 

@@ -72,5 +72,9 @@ namespace StripV3Consent.View
             };
             
         }
+        public override string ToString()
+        {
+            return file.Name;
+        }
     }
 }

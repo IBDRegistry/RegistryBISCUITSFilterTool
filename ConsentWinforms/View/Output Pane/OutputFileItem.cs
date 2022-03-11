@@ -13,7 +13,6 @@ namespace StripV3Consent.View
     {
         public OutputFileItem(OutputFile file) : base(file)
         {
-
         }
 
         public override void DrawContents()
@@ -30,6 +29,7 @@ namespace StripV3Consent.View
             Label RecordsKeptLabel = new Label()
             {
                 Text = $"{File.OutputRecords.Count()} records kept",
+                Width = 120,
                 ForeColor = Color.LimeGreen,
                 AutoSize = true,
                 Padding = new Padding()

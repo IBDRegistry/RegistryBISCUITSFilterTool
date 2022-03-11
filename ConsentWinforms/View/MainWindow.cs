@@ -39,14 +39,18 @@ namespace StripV3Consent.View
 
             IEnumerable<Specification.File> SpecificationFilesInOutput = Model.OutputFiles.Select(OutFile => OutFile.SpecificationFile);
 
-            List<Specification.File> FilesThatDidntMakeIt = SpecificationFilesInInput.Except(SpecificationFilesInOutput).ToList();
-            FilesThatDidntMakeIt.RemoveAll(element => element is null);
+            List<Specification.File> SpecificationFilesThatDidntMakeIt = SpecificationFilesInInput.Except(SpecificationFilesInOutput).ToList();
+            SpecificationFilesThatDidntMakeIt.RemoveAll(element => element is null);
+
+            List<ImportFile> InputFilesThatDidntMakeIt = Model.InputFiles.Where(inputFile => SpecificationFilesThatDidntMakeIt.Contains(inputFile.SpecificationFile)).ToList();
+
+            
 
             const string BlankFilesRemovedLabelName = "BlankFilesRemovedLabel";
 
             string LabelText = "";
-            if (FilesThatDidntMakeIt.Count() != 0)  {
-                LabelText = $"{FilesThatDidntMakeIt.Count()} files were excluded for being empty: {Environment.NewLine}{string.Join(Environment.NewLine, FilesThatDidntMakeIt.Select(file => $"-{file.SimplifiedName.Replace(" ", "")}").ToArray())}";
+            if (InputFilesThatDidntMakeIt.Count() != 0)  {
+                LabelText = $"{InputFilesThatDidntMakeIt.Count()} files were excluded for being empty: {Environment.NewLine}{string.Join(Environment.NewLine, InputFilesThatDidntMakeIt.Select(file => $"-{file.Name}").ToArray())}";
             }
             
             Control ExistingLabel = LoadedFilesPanel.FileList.BottomPanel.Controls.Cast<Control>().Where(ctrl => ctrl.Name == BlankFilesRemovedLabelName).FirstOrDefault();
