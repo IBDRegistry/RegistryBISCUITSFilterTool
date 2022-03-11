@@ -9,7 +9,7 @@ SET APP_NAME="IBDR Extract Filter Tool.exe"
 SET ILMERGE_BUILD=DumpBinariesHere
 
 :: the full ILMerge should be found here:
-SET ILMERGE_PATH= "D:\Users\Alexander\source\repos\StripV3Consent\ConsentWinforms\BuildTools\ILMerge.exe"
+SET ILMERGE_PATH= "ILMerge.exe"
 :: dir "%ILMERGE_PATH%"\ILMerge.exe
 
 echo Merging %APP_NAME% ...
