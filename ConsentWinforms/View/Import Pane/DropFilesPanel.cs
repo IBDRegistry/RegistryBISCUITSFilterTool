@@ -122,7 +122,7 @@ namespace StripV3Consent.View
 		{
 			do
 			{
-				Func<string, bool> IsDirectory = path => File.GetAttributes(path) == FileAttributes.Directory;
+				Func<string, bool> IsDirectory = path => File.GetAttributes(path).HasFlag(FileAttributes.Directory);
 
 				string[] Directories = Paths.Where(IsDirectory).ToArray();	//Cast to string[] rather than keep as IEnumerable<string> otherwise it will be lost on the next line
 				Paths.RemoveAll(new Predicate<string>(IsDirectory));
