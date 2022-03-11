@@ -34,7 +34,6 @@ namespace StripV3Consent.View
             AutoScroll = true;
             WrapContents = false;
             BorderStyle = BorderStyle.FixedSingle;
-            BackColor = System.Drawing.Color.Blue;
 
             Controls.Add(BottomPanel);
         }
@@ -69,10 +68,7 @@ namespace StripV3Consent.View
         /// A panel that appears when there are no FileItems in the FileList and sticks to the bottom of the list as more are added/removed
         /// </summary>
         public readonly Panel BottomPanel = new Panel() {
-            Dock = DockStyle.Top,
-            AutoSize = true,
             Height = 120,
-            BackColor = System.Drawing.Color.White
         };
 
         private void Files_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)

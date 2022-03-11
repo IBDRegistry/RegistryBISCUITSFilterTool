@@ -24,21 +24,21 @@ namespace StripV3Consent.View
 			CustomizeBottomPanel();
 
 			Controls.Add(FileList);
-            FileList.Controls.Add(new Label());
 
         }
 
 		private void CustomizeBottomPanel()
         {
-			
+			FileList.BottomPanel.Width = 240;
+
 			Label BottomPanelLabel = new Label()
 			{
-				Text = "You can drop files onto this box or use the file dialog below",
+				Text = "You can drop files here",
 				AutoSize = true,
-				MaximumSize = new Size() { Width = 240, Height = 0 },
+				//MaximumSize = new Size() { Width = 240, Height = 0 },
 				Dock = DockStyle.Top,
 				TextAlign = ContentAlignment.MiddleCenter,
-				Font = new Font("Microsoft Sans Serif", 14.5f)
+                Font = new Font("Microsoft Sans Serif", 14.5f)
 			};
 			
 			Button BottomPanelFileDialogButton = new Button()

@@ -42,8 +42,26 @@ namespace StripV3Consent.View
             List<Specification.File> FilesThatDidntMakeIt = SpecificationFilesInInput.Except(SpecificationFilesInOutput).ToList();
             FilesThatDidntMakeIt.RemoveAll(element => element is null);
 
+            const string BlankFilesRemovedLabelName = "BlankFilesRemovedLabel";
+
+            string LabelText = "";
             if (FilesThatDidntMakeIt.Count() != 0)  {
-                string LabelText = $"{FilesThatDidntMakeIt.Count()} files were excluded for being empty after the process: {Environment.NewLine} {string.Join(Environment.NewLine, FilesThatDidntMakeIt.Select(file => file.SimplifiedName).ToArray())}";
+                LabelText = $"{FilesThatDidntMakeIt.Count()} files were excluded for being empty: {Environment.NewLine}{string.Join(Environment.NewLine, FilesThatDidntMakeIt.Select(file => $"-{file.SimplifiedName.Replace(" ", "")}").ToArray())}";
+            }
+            
+            Control ExistingLabel = LoadedFilesPanel.FileList.BottomPanel.Controls.Cast<Control>().Where(ctrl => ctrl.Name == BlankFilesRemovedLabelName).FirstOrDefault();
+            if (ExistingLabel == null)
+            {
+                Label NewLabel = new Label()
+                {
+                    Name = BlankFilesRemovedLabelName,
+                    AutoSize = true,
+                    Text = LabelText
+                };
+                LoadedFilesPanel.FileList.BottomPanel.Controls.Add(NewLabel);
+            } else
+            {
+                ((Label)ExistingLabel).Text = LabelText;
             }
 
         }
