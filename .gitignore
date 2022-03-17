@@ -361,3 +361,8 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+#ILMerge BuildTools
+StripV3Consent/ConsentWinforms/BuildTools/DumpBinariesHere/
+StripV3Consent/ConsentWinforms/BuildTools/IBDR_Extract_Filter_Tool.exe
+StripV3Consent/ConsentWinforms/BuildTools/IBDR_Extract_Filter_Tool.pdb
