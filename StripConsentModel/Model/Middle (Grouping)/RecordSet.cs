@@ -202,7 +202,7 @@ namespace StripV3Consent.Model
 				}
 				else // false false and true true
 				{
-					return -1;  //it doesn't really matter, they're both good
+					return 0;  //it doesn't really matter, they're both good
 				}
 
 			}
