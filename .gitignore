@@ -363,6 +363,6 @@ MigrationBackup/
 FodyWeavers.xsd
 
 #ILMerge BuildTools
-StripV3Consent/ConsentWinforms/BuildTools/DumpBinariesHere/
-StripV3Consent/ConsentWinforms/BuildTools/IBDR_Extract_Filter_Tool.exe
-StripV3Consent/ConsentWinforms/BuildTools/IBDR_Extract_Filter_Tool.pdb
+ConsentWinforms/BuildTools/DumpBinariesHere/
+ConsentWinforms/BuildTools/IBDR_Extract_Filter_Tool.exe
+ConsentWinforms/BuildTools/IBDR_Extract_Filter_Tool.pdb
