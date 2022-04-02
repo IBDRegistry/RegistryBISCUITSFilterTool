@@ -9,17 +9,20 @@ namespace StripV3Consent.Model
 {
     public class ImportFile : DataFile
     {
-        public ImportFile(string FileName, string Contents) : base(FileName)
-        {
-            FileContents = Contents;
-        }
-
         /// <summary>
         /// This is optional and helps with the file save dialog at the end by letting it choose the most common path of the input files
         /// </summary>
         public string FilePath;
 
         public string FileContents;
+
+
+        public ImportFile(string FileName, string Contents) : base(FileName)
+        {
+            FileContents = Contents;
+        }
+
+        
 
         public FileValidationState IsValid
         {
