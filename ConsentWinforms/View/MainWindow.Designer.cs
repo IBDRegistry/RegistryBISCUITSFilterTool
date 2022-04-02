@@ -167,7 +167,6 @@ namespace StripV3Consent.View
 			this.CheckOptOutFile.AutoSize = true;
 			this.CheckOptOutFile.Checked = true;
 			this.CheckOptOutFile.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.CheckOptOutFile.Enabled = false;
 			this.CheckOptOutFile.Location = new System.Drawing.Point(4, 60);
 			this.CheckOptOutFile.Name = "CheckOptOutFile";
 			this.CheckOptOutFile.Size = new System.Drawing.Size(181, 17);

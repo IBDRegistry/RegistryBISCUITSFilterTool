@@ -231,23 +231,9 @@ You can contact your IT support for help with this issue",
 
         private void MainWindow_Load(object sender, EventArgs e)
         {
-            DetermineIfCheckOptOutCanBeEnabled();
             ConsentToolModel.EnableNationalOptOut = CheckOptOutFile.Checked;   //Set designer value as default value, currently this is true
         }
-        /// <summary>
-        /// If the date is past the 31st of March 2022 Opt-Out becomes mandatory
-        /// </summary>
-        private void DetermineIfCheckOptOutCanBeEnabled()
-        {
-            DateTime CutOffDate = new DateTime(2022, 3, 31);
-            if (DateTime.Now < CutOffDate)
-            {
-                CheckOptOutFile.Enabled = true;
-            } else
-            {
-                CheckOptOutFile.Enabled = false;
-            }
-        }
+
 
         private void CheckOptOutFile_CheckedChanged(object sender, EventArgs e)
         {
