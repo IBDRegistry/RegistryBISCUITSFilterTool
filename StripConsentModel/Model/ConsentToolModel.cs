@@ -26,13 +26,17 @@ namespace StripV3Consent.Model
         {
             Patients.Clear();
             IEnumerable<ImportFile> ValidFilesForImport = InputFiles.Where(i => i.IsValid.ValidState != ValidState.Error);
-            IEnumerable<ImportFile> ValidFilesForProcessing = ValidFilesForImport.Where(i => i.SpecificationFile.IsPatientLevelFile == true);
+
+            IEnumerable<ImportFile> NonPatientLevelFiles = ValidFilesForImport.Where(i => i.SpecificationFile.IsPatientLevelFile == false);
+            IEnumerable<ImportFile> ValidFilesForProcessing = ValidFilesForImport.Except(NonPatientLevelFiles);
+
             IEnumerable<RecordSet> NewPatients = SplitInputFilesIntoRecordSets(ValidFilesForProcessing.ToList());
             Patients.AddRange(NewPatients);
 
             OutputFiles.Clear();
             IEnumerable<OutputFile> NewOutputFiles = SplitBackUpIntoFiles(Patients);
             OutputFiles.AddRange(NewOutputFiles);
+            OutputFiles.AddRange(NonPatientLevelFiles.Select(i => new OutputFile(i)));
         }
 
         public readonly ObservableRangeCollection<RecordSet> Patients = new ObservableRangeCollection<RecordSet>();
