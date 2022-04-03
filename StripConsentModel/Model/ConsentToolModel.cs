@@ -25,8 +25,9 @@ namespace StripV3Consent.Model
         private void InputFiles_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             Patients.Clear();
-            List<ImportFile> ValidFilesForImport = InputFiles.Where(i => i.IsValid.ValidState != ValidState.Error).ToList<ImportFile>();
-            IEnumerable<RecordSet> NewPatients = SplitInputFilesIntoRecordSets(ValidFilesForImport);
+            IEnumerable<ImportFile> ValidFilesForImport = InputFiles.Where(i => i.IsValid.ValidState != ValidState.Error);
+            IEnumerable<ImportFile> ValidFilesForProcessing = ValidFilesForImport.Where(i => i.SpecificationFile.IsPatientLevelFile == true);
+            IEnumerable<RecordSet> NewPatients = SplitInputFilesIntoRecordSets(ValidFilesForProcessing.ToList());
             Patients.AddRange(NewPatients);
 
             OutputFiles.Clear();
@@ -35,7 +36,7 @@ namespace StripV3Consent.Model
         }
 
         public readonly ObservableRangeCollection<RecordSet> Patients = new ObservableRangeCollection<RecordSet>();
-
+        
         public readonly ObservableRangeCollection<OutputFile> OutputFiles = new ObservableRangeCollection<OutputFile>();
 
         
