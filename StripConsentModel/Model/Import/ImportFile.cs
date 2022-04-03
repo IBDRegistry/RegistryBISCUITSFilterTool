@@ -213,11 +213,14 @@ namespace StripV3Consent.Model
     {
         public static bool IsEmpty(this string[] Array)
         {
-            if (Array.Length == 1 & Array[0] == "") { return true; }
+			if (Array.All(element => element == "")) {
+                return true; 
+            } else
+			{
+                return false;
+            }
 
-            if (Array.All(element => element == Array[0])) { return true; }
-
-            return false;
+			
         }
     }
 
