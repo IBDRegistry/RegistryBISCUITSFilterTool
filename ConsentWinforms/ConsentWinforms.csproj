@@ -96,6 +96,12 @@
     <Compile Include="View\Output Pane\OutputFileItem.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="View\Output Pane\NonPatientOutputFileItem.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="View\Output Pane\PatientOutputFileItem.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="View\Output Pane\OutputFilesPanel.cs">
       <SubType>Component</SubType>
     </Compile>
