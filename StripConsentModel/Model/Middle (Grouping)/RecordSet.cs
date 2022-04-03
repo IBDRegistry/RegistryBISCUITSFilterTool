@@ -24,7 +24,13 @@ namespace StripV3Consent.Model
 		/// <returns></returns>
 		public string GetFieldValue(string SpecifiedDataItemCode)
 		{
-			Record RecordWithValue = Records.Where(r => r.OriginalFile.SpecificationFile.Fields.Where(Field => Field.DataItemCode == SpecifiedDataItemCode).Count() > 0).First();
+			Record RecordWithValue = Records.Where(r => r.OriginalFile.SpecificationFile.Fields
+																.Where(Field => Field.DataItemCode == SpecifiedDataItemCode)
+																.Count() > 0
+											 ).FirstOrDefault();
+
+			if (RecordWithValue is null)
+				return null;
 
 			return RecordWithValue[RecordWithValue.OriginalFile.SpecificationFile.Fields.FindIndex(f => f.DataItemCode == SpecifiedDataItemCode)];
 		}

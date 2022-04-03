@@ -59,7 +59,9 @@ namespace StripV3Consent.View
 
         private void Draw()
         {
-            Text = $"{(Patient.IsConsentValid.IsValid? "Kept" : "Removed")} Patient: {Patient.GetFieldValue(DataItemCodes.NHSNumber)}";
+            string PatientsNHSNumber = Patient.GetFieldValue(DataItemCodes.NHSNumber);
+            string DisplayNHSNumber = PatientsNHSNumber != null ? PatientsNHSNumber : "Unknown";
+            Text = $"{(Patient.IsConsentValid.IsValid? "Kept" : "Removed")} Patient: {DisplayNHSNumber}";
 
             Label RejectionReason = new Label()
             {
