@@ -50,7 +50,7 @@ namespace StripV3Consent.View
 
             string LabelText = "";
             if (InputFilesThatDidntMakeIt.Count() != 0)  {
-                LabelText = $"{InputFilesThatDidntMakeIt.Count()} files were excluded for being empty: {Environment.NewLine}{string.Join(Environment.NewLine, InputFilesThatDidntMakeIt.Select(file => $"-{file.Name}").ToArray())}";
+                LabelText = $"{InputFilesThatDidntMakeIt.Count()} files were excluded from the output: {Environment.NewLine}{string.Join(Environment.NewLine, InputFilesThatDidntMakeIt.Select(file => $"-{file.Name}").ToArray())}";
             }
             
             Control ExistingLabel = LoadedFilesPanel.FileList.BottomPanel.Controls.Cast<Control>().Where(ctrl => ctrl.Name == BlankFilesRemovedLabelName).FirstOrDefault();

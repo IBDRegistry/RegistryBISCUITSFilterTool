@@ -11,7 +11,7 @@ using StripV3Consent.Model;
 namespace StripV3Consent.View
 {
     public class FileList<FileItemType, DataFileType>: FlowLayoutPanel
-                                                       where FileItemType : AbstractFileItem<DataFileType> 
+                                                       where FileItemType : AbstractFileItem<DataFileType>
                                                        where DataFileType : DataFile
     {
 
@@ -92,11 +92,16 @@ namespace StripV3Consent.View
             }
         }
 
+        protected virtual FileItemType CreateItemInstance(DataFileType DataFile)
+		{
+            return (FileItemType)Activator.CreateInstance(typeof(FileItemType), new object[] { DataFile });
+        }
 
         private void AddItem(DataFileType File)
         {
-            FileItemType NewEntry = (FileItemType)Activator.CreateInstance(typeof(FileItemType), new object[] { File });
-            
+            FileItemType NewEntry = CreateItemInstance(File);
+
+
 
             if (RemoveButtons)
             {
