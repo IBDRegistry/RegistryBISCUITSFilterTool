@@ -1860,6 +1860,10 @@ Medication</Group>
           <Name>NHS Number</Name>
           <DataItemCode>IBD01</DataItemCode>
         </Field>
+        <Field>
+          <Name>Is Opted-Out</Name>
+          <DataItemCode>NHS01</DataItemCode>
+        </Field>
       </Fields>
       <IsRegistryFile>false</IsRegistryFile>
     </File>
