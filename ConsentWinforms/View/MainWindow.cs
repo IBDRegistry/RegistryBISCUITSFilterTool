@@ -91,8 +91,59 @@ You can contact your IT support for help with this issue",
             return principal.IsInRole(WindowsBuiltInRole.Administrator);
         }
 
+        private bool CheckNationalOptOut()
+		{
+            const string NOOFileNameInSpec = ".dat";
+            //enter if either true & false or false & true
+            bool NOOChecked = ConsentToolModel.EnableNationalOptOut;
+            bool NOOFilePresent = Model.InputFiles.Where(i => i.SpecificationFile.Name.Contains(NOOFileNameInSpec)).Count() > 0;
+            if (NOOChecked != NOOFilePresent)
+			{
+                string MessageBoxText = null;
+                if (NOOChecked == true && NOOFilePresent == false)
+                {
+                    MessageBoxText = "You have ticked the national data opt-out compliancy checkbox but not loaded a relevant file. This means that all unconsented records will be removed in the output files";
+                    DialogResult MessageBoxResult = MessageBox.Show(
+                        text: $"{MessageBoxText}. Do you wish to continue?",
+                        caption: "National data opt-out mismatch",
+                        buttons: MessageBoxButtons.YesNo,
+                        icon: MessageBoxIcon.Warning
+                    );
+                    if (MessageBoxResult == DialogResult.Yes)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+
+                } else if (NOOChecked == false && NOOFilePresent == true)
+                {
+                    DialogResult MessageBoxResult = MessageBox.Show(
+                        text: "You have loaded a national data opt-out file but have not ticked the box to turn on the NDOO compliancy function.\nPlease switch the functionality on using the on-screen checkbox before downloading your outputs.",
+                        caption: "National data opt-out mismatch",
+                        buttons: MessageBoxButtons.OK,
+                        icon: MessageBoxIcon.Error
+                    );
+                    return false;
+                } else
+				{
+                    return true;
+				}
+			} else
+			{
+                return true;
+			}
+
+        }
+
         private void SaveButton_Click(object sender, EventArgs e)
         {
+            if (CheckNationalOptOut() != true)
+			{
+                return;
+			}
             CommonOpenFileDialog SelectDialog = new CommonOpenFileDialog();
 
             if (DropFilesHerePanel.MostCommonSourceDirectory != null)
