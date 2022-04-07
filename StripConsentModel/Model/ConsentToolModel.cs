@@ -25,10 +25,10 @@ namespace StripV3Consent.Model
         private void InputFiles_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             Patients.Clear();
-            IEnumerable<ImportFile> ValidFilesForImport = InputFiles.Where(i => i.IsValid.ValidState != ValidState.Error);
+            IEnumerable<ImportFile> ValidFilesForImport = InputFiles.Where(i => i.IsValid.ValidState != ValidState.Error).ToList();
 
-            IEnumerable<ImportFile> NonPatientLevelFiles = ValidFilesForImport.Where(i => i.SpecificationFile.IsPatientLevelFile == false);
-            IEnumerable<ImportFile> ValidFilesForProcessing = ValidFilesForImport.Except(NonPatientLevelFiles);
+            IEnumerable<ImportFile> NonPatientLevelFiles = ValidFilesForImport.Where(i => i.SpecificationFile.IsPatientLevelFile == false).ToList();
+            IEnumerable<ImportFile> ValidFilesForProcessing = ValidFilesForImport.Except(NonPatientLevelFiles).ToList();
 
             IEnumerable<RecordSet> NewPatients = SplitInputFilesIntoRecordSets(ValidFilesForProcessing.ToList());
             Patients.AddRange(NewPatients);
@@ -36,8 +36,13 @@ namespace StripV3Consent.Model
             OutputFiles.Clear();
             IEnumerable<OutputFile> NewOutputFiles = SplitBackUpIntoFiles(Patients);
             OutputFiles.AddRange(NewOutputFiles);
-            OutputFiles.AddRange(NonPatientLevelFiles.Select(i => new OutputFile(i)));
-        }
+			OutputFiles.AddRange(NonPatientLevelFiles.Select(i => new DirectOutputFile
+			(
+				file: i,
+                contentToOutput: i.FileContents
+			)
+            ));
+		}
 
         public readonly ObservableRangeCollection<RecordSet> Patients = new ObservableRangeCollection<RecordSet>();
         
@@ -112,13 +117,11 @@ namespace StripV3Consent.Model
             List<IEnumerable<Record>> AllRecordsGroupedByFile = FlattenAndGroupRecordsBySpecificationFiles(RecordSets).ToList<IEnumerable<Record>>();
 
 
-            IEnumerable<OutputFile> Files = AllConsentedRecordsGroupedByFile.Select(FileOutputRecords => new OutputFile(FileOutputRecords.First().OriginalFile) //Match each set of records to a new OutputFile object
-                                                                {
-                                                                    OutputRecords = FileOutputRecords,    //Make the OutputRecords the current set of (consented) records
-                                                                    AllRecordsOriginallyInFile = AllRecordsGroupedByFile.Find(FileAllRecords => FileAllRecords.First().OriginalFile.SpecificationFile == FileOutputRecords.First().OriginalFile.SpecificationFile)
-                                                                    //Find the full set (consented and non-consented) of records by looking through AllRecordsGroupedByFile for one with the same OriginalFile attribute
-                                                                }
-                                                            );
+            IEnumerable<OutputFile> Files = AllConsentedRecordsGroupedByFile.Select(FileOutputRecords => new RepackingOutputFile(
+                                                                                                                                    file: FileOutputRecords.First().OriginalFile,
+                                                                                                                                    outputRecords: FileOutputRecords,    ///Match each set of records to a new OutputFile object
+                                                                                                                                    allRecordsOriginallyInFile: AllRecordsGroupedByFile.Find(FileAllRecords => FileAllRecords.First().OriginalFile.SpecificationFile == FileOutputRecords.First().OriginalFile.SpecificationFile) //Find the full set (consented and non-consented) of records by looking through AllRecordsGroupedByFile for one with the same OriginalFile attribute
+                                                                                                                                ));
             return Files;
         }
 

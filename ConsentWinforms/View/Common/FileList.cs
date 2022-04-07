@@ -11,7 +11,7 @@ using StripV3Consent.Model;
 namespace StripV3Consent.View
 {
     public class FileList<FileItemType, DataFileType>: FlowLayoutPanel
-                                                       where FileItemType : AbstractFileItem<DataFileType>
+                                                       where FileItemType : IFileItem<DataFileType>
                                                        where DataFileType : DataFile
     {
 
@@ -109,26 +109,26 @@ namespace StripV3Consent.View
                 NewEntry.Controls.Add(NewEntry.CloseButton);
             }
 
-            Controls.Add(NewEntry);
+            Controls.Add(NewEntry.control);
 
             int IndexOfBottomPanel = Controls.GetChildIndex(BottomPanel);
-            int IndexOfNewControl = Controls.GetChildIndex(NewEntry);
-            Controls.SetChildIndex(NewEntry, IndexOfBottomPanel);
+            int IndexOfNewControl = Controls.GetChildIndex(NewEntry.control);
+            Controls.SetChildIndex(NewEntry.control, IndexOfBottomPanel);
             Controls.SetChildIndex(BottomPanel, IndexOfNewControl);
         }
 
         private void RemoveItem(DataFileType File)
         {
             FileItemType FileItemToRemove = Controls.Cast<FileItemType>().Where(FileItem => FileItem.File == File).First();
-            Controls.Remove(FileItemToRemove);
+            Controls.Remove(FileItemToRemove.control);
         }
         
         private void RedrawList()
         {
-            FileItemType[] ControlsToRemove = Controls.Cast<Control>().Where(ctrl => ctrl is FileItemType).Select(ctrl => (FileItemType)ctrl).ToArray();
+            IFileItem<DataFileType>[] ControlsToRemove = Controls.Cast<Control>().Where(ctrl => ctrl is IFileItem<DataFileType>).Select(ctrl => (IFileItem<DataFileType>)ctrl).ToArray();
             foreach(FileItemType fileItem in ControlsToRemove)
             {
-                Controls.Remove(fileItem);
+                Controls.Remove(fileItem.control);
             }
             foreach(DataFileType File in Files)
             {
@@ -139,7 +139,7 @@ namespace StripV3Consent.View
         private void ItemCloseButton_Click(object sender, EventArgs e)
         {
             Button CloseButtonClicked = (Button)sender;
-            FileItemType Entry = (FileItemType)CloseButtonClicked.Parent;
+            IFileItem<DataFileType> Entry = (AbstractFileItem<DataFileType>)CloseButtonClicked.Parent;
             Files.Remove(Entry.File);
         }
 

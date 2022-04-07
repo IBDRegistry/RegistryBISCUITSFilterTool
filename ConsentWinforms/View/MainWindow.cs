@@ -129,7 +129,7 @@ You can contact your IT support for help with this issue",
                 }
                 Directory.CreateDirectory(OutputFolder);
 
-                List<string> FilesToWrite = LoadedFilesPanel.FileList.Files.Select(OutputFile => OutputFile.RepackIntoString()).ToList<string>();
+                List<string> FilesToWrite = LoadedFilesPanel.FileList.Files.Select(OutputFile => OutputFile.StringOutput()).ToList<string>();
 
                 foreach(OutputFile OutFile in LoadedFilesPanel.FileList.Files)
                 {
@@ -140,7 +140,7 @@ You can contact your IT support for help with this issue",
                     {
                         using (StreamWriter writer = new StreamWriter(OutPath))
                         {
-                            writer.Write(OutFile.RepackIntoString());
+                            writer.Write(OutFile.StringOutput());
                         }
                     }
                     catch (Exception ex)

@@ -93,9 +93,6 @@
     <Compile Include="View\Middle Pane\RemovedPatientsPanel.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="View\Output Pane\OutputFileItem.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="View\Output Pane\NonPatientOutputFileItem.cs">
       <SubType>Component</SubType>
     </Compile>

@@ -9,9 +9,9 @@ using System.Drawing;
 
 namespace StripV3Consent.View
 {
-    public class PatientOutputFileItem: OutputFileItem
+    public class PatientOutputFileItem: AbstractFileItem<RepackingOutputFile>
     {
-        public PatientOutputFileItem(OutputFile file) : base(file)
+        public PatientOutputFileItem(RepackingOutputFile file) : base(file)
         {
         }
 

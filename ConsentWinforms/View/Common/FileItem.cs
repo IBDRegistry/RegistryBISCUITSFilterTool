@@ -5,10 +5,19 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Drawing;
+using static System.Windows.Forms.Control;
 
 namespace StripV3Consent.View
 {
-    public abstract class AbstractFileItem<FileType> : FlowLayoutPanel where FileType : DataFile
+    public interface IFileItem<out FileType> where FileType : DataFile
+	{
+        ControlCollection Controls { get; }
+        FlowLayoutPanel control { get; }
+        Button CloseButton { get; }
+        FileType File { get; }
+
+	}
+    public abstract class AbstractFileItem<FileType> : FlowLayoutPanel, IFileItem<FileType> where FileType : DataFile
     {
         private FileType file;
 
@@ -18,6 +27,8 @@ namespace StripV3Consent.View
         private const int InteriorSize = 32;
 
         public Button CloseButton => closeButton;
+
+        public FlowLayoutPanel control => this;
 
 
         public FileType File

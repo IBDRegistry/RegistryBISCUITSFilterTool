@@ -10,7 +10,7 @@ namespace StripV3Consent.View
 {
     class OutputFilesPanel : Panel
     {
-        public FileList<OutputFileItem, OutputFile> FileList = new OutputFileList()
+        public FileList<IFileItem<OutputFile>, OutputFile> FileList = new OutputFileList()
         {
             RemoveButtons = false
         };
@@ -23,16 +23,16 @@ namespace StripV3Consent.View
         }
 
 
-        private class OutputFileList: FileList<OutputFileItem, OutputFile>
+        private class OutputFileList: FileList<IFileItem<OutputFile>, OutputFile>
 		{
-			protected override OutputFileItem CreateItemInstance(OutputFile DataFile)
+			protected override IFileItem<OutputFile> CreateItemInstance(OutputFile DataFile)
 			{
 				switch (DataFile.SpecificationFile.IsPatientLevelFile)
 				{
                     case true:
-                        return new PatientOutputFileItem(DataFile);
+                        return new PatientOutputFileItem((RepackingOutputFile)DataFile);
                     case false:
-                        return new NonPatientOutputFileItem(DataFile);
+                        return new NonPatientOutputFileItem((DirectOutputFile)DataFile);
                     default:
                         return null;
 				}
