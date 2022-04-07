@@ -290,5 +290,10 @@ You can contact your IT support for help with this issue",
         {
             ConsentToolModel.EnableNationalOptOut = CheckOptOutFile.Checked;
         }
-    }
+
+		private void GetManualLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+		{
+            System.Diagnostics.Process.Start("https://ibdregistry.org.uk/extract-filter-guide");
+		}
+	}
 }

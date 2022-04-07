@@ -43,7 +43,7 @@ namespace StripV3Consent.View
 			
 			Button BottomPanelFileDialogButton = new Button()
 			{
-				Text = "Alternatively, browse files;",
+				Text = "Alternatively, click here to browse for files",
 				AutoSize = true,
 				Dock = DockStyle.Top,
 			};
