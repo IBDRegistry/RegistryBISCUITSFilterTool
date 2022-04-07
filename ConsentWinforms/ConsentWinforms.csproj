@@ -35,6 +35,9 @@
   <PropertyGroup>
     <ApplicationIcon>ibdregistry.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>App.manifest</ApplicationManifest>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="MakarovDev.ExpandCollapsePanel">
       <HintPath>..\StripV3Consent\Libraries\ExpandCollapsePanel-master\MakarovDev.ExpandCollapsePanel\bin\Release\MakarovDev.ExpandCollapsePanel.dll</HintPath>
@@ -116,6 +119,7 @@
       <DependentUpon>MainWindow.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <None Include="App.manifest" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
