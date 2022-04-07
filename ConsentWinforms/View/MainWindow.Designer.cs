@@ -154,9 +154,9 @@ namespace StripV3Consent.View
 			this.CheckOptOutFile.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.CheckOptOutFile.Location = new System.Drawing.Point(3, 4);
 			this.CheckOptOutFile.Name = "CheckOptOutFile";
-			this.CheckOptOutFile.Size = new System.Drawing.Size(181, 17);
+			this.CheckOptOutFile.Size = new System.Drawing.Size(241, 17);
 			this.CheckOptOutFile.TabIndex = 2;
-			this.CheckOptOutFile.Text = "Check National Data Opt-Out file";
+			this.CheckOptOutFile.Text = "National data opt-out compliance functionality";
 			this.CheckOptOutToolTip.SetToolTip(this.CheckOptOutFile, "If this box is ticked, a .dat file of patients who have not chosen the NDOO shoul" +
         "d be loaded, otherwise all unconsented patients will be removed");
 			this.CheckOptOutFile.UseVisualStyleBackColor = true;
