@@ -75,12 +75,12 @@ namespace StripV3Consent.Model
 				};
 			}
 
-			if (ConsentVersion != "V4" & RegistryConsent == "Y")
+			if (ConsentVersion.ToUpper() != "V4" & RegistryConsent == "Y")
 			{
 				return new ConsentValidState()
 				{
 					IsValid = false,
-					IsValidReason = "Consented patients are no longer valid unless they are Consent V4+"
+					IsValidReason = "Consented patients are no longer valid unless they hold V4 consent"
 				};
 			}
 
@@ -121,14 +121,14 @@ namespace StripV3Consent.Model
 						return new ConsentValidState()
 						{
 							IsValid = false,
-							IsValidReason = "Patient participated in the national opt-out"
+							IsValidReason = "Patient removed to ensure compliance with national data opt-out"
 						};
 					} else 
 					{ 
 						return new ConsentValidState()
 						{
 							IsValid = true,
-							IsValidReason = "No consent record so patient flows via S251"
+							IsValidReason = "No consent record so patient flows via s251"
 						};
 					}
 				}
@@ -153,7 +153,7 @@ namespace StripV3Consent.Model
 					return new ConsentValidState()
 					{
 						IsValid = false,
-						IsValidReason = "No valid consent records"
+						IsValidReason = "Consent record(s) not valid"
 					};
 				}
 
