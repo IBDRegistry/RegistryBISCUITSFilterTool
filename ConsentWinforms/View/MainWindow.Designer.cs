@@ -29,9 +29,11 @@ namespace StripV3Consent.View
         /// </summary>
         private void InitializeComponent()
         {
-			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
 			this.TableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+			this.DropFilesHerePanel = new StripV3Consent.View.DropFilesPanel();
+			this.LoadedFilesPanel = new StripV3Consent.View.OutputFilesPanel();
+			this.RemovedPatientsPanel = new StripV3Consent.View.RemovedPatientsPanel();
 			this.SaveButton = new System.Windows.Forms.Button();
 			this.ImportPanelLabel = new System.Windows.Forms.Label();
 			this.ProcessingPaneLabel = new System.Windows.Forms.Label();
@@ -43,10 +45,6 @@ namespace StripV3Consent.View
 			this.GetManualLabel = new System.Windows.Forms.LinkLabel();
 			this.CheckOptOutMessage = new System.Windows.Forms.Label();
 			this.CheckOptOutFile = new System.Windows.Forms.CheckBox();
-			this.CheckOptOutToolTip = new System.Windows.Forms.ToolTip(this.components);
-			this.DropFilesHerePanel = new StripV3Consent.View.DropFilesPanel();
-			this.LoadedFilesPanel = new StripV3Consent.View.OutputFilesPanel();
-			this.RemovedPatientsPanel = new StripV3Consent.View.RemovedPatientsPanel();
 			this.autoResizingLabel1 = new StripV3Consent.View.AutoResizingLabel();
 			this.TableLayoutPanel.SuspendLayout();
 			this.ProcessingControlPanel.SuspendLayout();
@@ -77,6 +75,37 @@ namespace StripV3Consent.View
 			this.TableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
 			this.TableLayoutPanel.Size = new System.Drawing.Size(915, 558);
 			this.TableLayoutPanel.TabIndex = 0;
+			// 
+			// DropFilesHerePanel
+			// 
+			this.DropFilesHerePanel.AllowDrop = true;
+			this.DropFilesHerePanel.BackColor = System.Drawing.SystemColors.ControlLight;
+			this.DropFilesHerePanel.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.DropFilesHerePanel.Location = new System.Drawing.Point(3, 23);
+			this.DropFilesHerePanel.Name = "DropFilesHerePanel";
+			this.DropFilesHerePanel.Size = new System.Drawing.Size(264, 424);
+			this.DropFilesHerePanel.TabIndex = 0;
+			// 
+			// LoadedFilesPanel
+			// 
+			this.LoadedFilesPanel.BackColor = System.Drawing.SystemColors.ControlLight;
+			this.LoadedFilesPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.LoadedFilesPanel.Location = new System.Drawing.Point(628, 23);
+			this.LoadedFilesPanel.Name = "LoadedFilesPanel";
+			this.LoadedFilesPanel.Size = new System.Drawing.Size(284, 424);
+			this.LoadedFilesPanel.TabIndex = 1;
+			// 
+			// RemovedPatientsPanel
+			// 
+			this.RemovedPatientsPanel.AllRecordSets = null;
+			this.RemovedPatientsPanel.AutoScroll = true;
+			this.RemovedPatientsPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.RemovedPatientsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.RemovedPatientsPanel.Location = new System.Drawing.Point(273, 23);
+			this.RemovedPatientsPanel.Name = "RemovedPatientsPanel";
+			this.RemovedPatientsPanel.Size = new System.Drawing.Size(349, 424);
+			this.RemovedPatientsPanel.TabIndex = 3;
+			this.RemovedPatientsPanel.AllRecordSetsChanged += new System.EventHandler(this.RemovedPatientsPanel_AllRecordSetsChanged);
 			// 
 			// SaveButton
 			// 
@@ -193,8 +222,6 @@ namespace StripV3Consent.View
 			this.CheckOptOutMessage.TabIndex = 3;
 			this.CheckOptOutMessage.Text = "If this box is ticked, a .dat file of patients who have not chosen the NDOO shoul" +
     "d be loaded, otherwise all unconsented patients will be removed.";
-			this.CheckOptOutToolTip.SetToolTip(this.CheckOptOutMessage, "If this box is ticked, a .dat file of patients who have not chosen the NDOO shoul" +
-        "d be loaded, otherwise all unconsented patients will be removed");
 			// 
 			// CheckOptOutFile
 			// 
@@ -206,41 +233,8 @@ namespace StripV3Consent.View
 			this.CheckOptOutFile.Size = new System.Drawing.Size(241, 17);
 			this.CheckOptOutFile.TabIndex = 2;
 			this.CheckOptOutFile.Text = "National data opt-out compliance functionality";
-			this.CheckOptOutToolTip.SetToolTip(this.CheckOptOutFile, "If this box is ticked, a .dat file of patients who have not chosen the NDOO shoul" +
-        "d be loaded, otherwise all unconsented patients will be removed");
 			this.CheckOptOutFile.UseVisualStyleBackColor = true;
 			this.CheckOptOutFile.CheckedChanged += new System.EventHandler(this.CheckOptOutFile_CheckedChanged);
-			// 
-			// DropFilesHerePanel
-			// 
-			this.DropFilesHerePanel.AllowDrop = true;
-			this.DropFilesHerePanel.BackColor = System.Drawing.SystemColors.ControlLight;
-			this.DropFilesHerePanel.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.DropFilesHerePanel.Location = new System.Drawing.Point(3, 23);
-			this.DropFilesHerePanel.Name = "DropFilesHerePanel";
-			this.DropFilesHerePanel.Size = new System.Drawing.Size(264, 424);
-			this.DropFilesHerePanel.TabIndex = 0;
-			// 
-			// LoadedFilesPanel
-			// 
-			this.LoadedFilesPanel.BackColor = System.Drawing.SystemColors.ControlLight;
-			this.LoadedFilesPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.LoadedFilesPanel.Location = new System.Drawing.Point(628, 23);
-			this.LoadedFilesPanel.Name = "LoadedFilesPanel";
-			this.LoadedFilesPanel.Size = new System.Drawing.Size(284, 424);
-			this.LoadedFilesPanel.TabIndex = 1;
-			// 
-			// RemovedPatientsPanel
-			// 
-			this.RemovedPatientsPanel.AllRecordSets = null;
-			this.RemovedPatientsPanel.AutoScroll = true;
-			this.RemovedPatientsPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.RemovedPatientsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.RemovedPatientsPanel.Location = new System.Drawing.Point(273, 23);
-			this.RemovedPatientsPanel.Name = "RemovedPatientsPanel";
-			this.RemovedPatientsPanel.Size = new System.Drawing.Size(349, 424);
-			this.RemovedPatientsPanel.TabIndex = 3;
-			this.RemovedPatientsPanel.AllRecordSetsChanged += new System.EventHandler(this.RemovedPatientsPanel_AllRecordSetsChanged);
 			// 
 			// autoResizingLabel1
 			// 
@@ -289,7 +283,6 @@ namespace StripV3Consent.View
         private System.Windows.Forms.CheckBox DisplayRemovedPatientsCheckbox;
         private System.Windows.Forms.CheckBox DisplayKeptPatientsCheckbox;
         private System.Windows.Forms.CheckBox CheckOptOutFile;
-        private System.Windows.Forms.ToolTip CheckOptOutToolTip;
 		private System.Windows.Forms.Label CheckOptOutMessage;
 		private System.Windows.Forms.Panel LeftControlPanel;
 		private System.Windows.Forms.LinkLabel GetManualLabel;
