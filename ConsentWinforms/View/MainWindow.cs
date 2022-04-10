@@ -96,7 +96,16 @@ You can contact your IT support for help with this issue",
             const string NOOFileNameInSpec = ".dat";
             //enter if either true & false or false & true
             bool NOOChecked = ConsentToolModel.EnableNationalOptOut;
-            bool NOOFilePresent = Model.InputFiles.Where(i => i.SpecificationFile.Name.Contains(NOOFileNameInSpec)).Count() > 0;
+            bool NOOFilePresent = Model.InputFiles.Where(i => {
+                if (i.SpecificationFile == null)    //would like to use bool? but not supported in .NET Framework
+				{
+                    return false;
+				} else
+				{
+                    return (bool)i.SpecificationFile?.Name.Contains(NOOFileNameInSpec);
+                }
+                
+            }).Count() > 0;
             if (NOOChecked != NOOFilePresent)
 			{
                 string MessageBoxText = null;
