@@ -186,7 +186,7 @@ namespace StripV3Consent.View
 				var ContainingDirectories = FileList.Files.Select(ImportFile => ImportFile.FilePath).Where(Path => Path != null).Select(Path => System.IO.Path.GetDirectoryName(Path));
 				if (ContainingDirectories.Count() == 0) { return null; }
 				return ContainingDirectories.GroupBy(Path => Path)
-								   .OrderBy(t => t.Count())
+								   .OrderByDescending(t => t.Count())
 								   .FirstOrDefault().Key;
 			}
 		}
