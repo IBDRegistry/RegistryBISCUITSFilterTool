@@ -292,6 +292,9 @@ You can contact your IT support for help with this issue",
         private void MainWindow_Load(object sender, EventArgs e)
         {
             ConsentToolModel.EnableNationalOptOut = CheckOptOutFile.Checked;   //Set designer value as default value, currently this is true
+
+            Version AssemblyVersion = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+            this.Text = this.Text + $" v{AssemblyVersion.Major}.{AssemblyVersion.Minor}";
         }
 
 
