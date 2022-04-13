@@ -161,7 +161,7 @@ You can contact your IT support for help with this issue",
             SelectDialog.IsFolderPicker = true;
             if (SelectDialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
-                string OutputFolder = SelectDialog.FileName + $"\\Processed {DateTime.Now.ToString("dd_mm_yyyy")}\\";
+                string OutputFolder = SelectDialog.FileName + $"\\Processed {DateTime.Now.ToString("dd_MM_yyyy")}\\";
 
                 if (Directory.Exists(OutputFolder))
                 {
