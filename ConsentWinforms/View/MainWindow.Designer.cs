@@ -255,6 +255,7 @@ namespace StripV3Consent.View
 			this.ClientSize = new System.Drawing.Size(915, 558);
 			this.Controls.Add(this.TableLayoutPanel);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+			this.MinimumSize = new System.Drawing.Size(931, 597);
 			this.Name = "MainWindow";
 			this.Text = "IBDR Extract Filter Tool";
 			this.Load += new System.EventHandler(this.MainWindow_Load);
