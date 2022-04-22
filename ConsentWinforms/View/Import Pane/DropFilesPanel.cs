@@ -153,7 +153,6 @@ namespace StripV3Consent.View
 
 		private async void AddFiles(string[] FilePaths)
         {
-			//Key is path, value is string
 			List<(string Path, string Content)> Contents = new List<(string Path, string Content)>();
 
 			foreach (string path in FilePaths)
