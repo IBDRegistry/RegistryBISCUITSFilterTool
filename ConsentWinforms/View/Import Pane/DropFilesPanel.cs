@@ -172,7 +172,7 @@ namespace StripV3Consent.View
 				}
 				catch (Exception ex)
 				{
-					MessageBox.Show($"There was an error while reading file {path} from disk, this will not have been completed", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+					MessageBox.Show(ex.Message + Environment.NewLine + Environment.NewLine + "This file will not have been imported.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
 					continue;
 				}
