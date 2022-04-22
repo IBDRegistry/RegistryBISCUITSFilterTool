@@ -150,11 +150,6 @@ namespace StripV3Consent.View
 			AddFiles(FilePaths);
 		}
 
-		class PathContentPair
-		{
-			public string Path;
-			public string Content;
-		};
 
 		private async void AddFiles(string[] FilePaths)
         {
