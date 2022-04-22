@@ -150,9 +150,16 @@ namespace StripV3Consent.View
 			AddFiles(FilePaths);
 		}
 
+		class PathContentPair
+		{
+			public string Path;
+			public string Content;
+		};
+
 		private async void AddFiles(string[] FilePaths)
         {
-			string[] Contents = new string[FilePaths.Count()];
+			//Key is path, value is string
+			List<(string Path, string Content)> Contents = new List<(string Path, string Content)>();
 
 			foreach (string path in FilePaths)
 			{
@@ -160,22 +167,18 @@ namespace StripV3Consent.View
 				{
 					using (StreamReader reader = new StreamReader(path))
 					{
-						Contents[Array.IndexOf(FilePaths, path)] = await reader.ReadToEndAsync();
+						Contents.Add((Path: path, Content: await reader.ReadToEndAsync()));
 					}
 				}
 				catch (Exception ex)
 				{
-					MessageBox.Show($"There was an {ex.ToString()} while reading file {path} from disk, this will not have been completed", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+					MessageBox.Show($"There was an error while reading file {path} from disk, this will not have been completed", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
 					continue;
 				}
 			}
 
-			ImportFile[] ImportFiles = Contents.Select(content => {
-				string FilePath = FilePaths[Array.IndexOf(Contents, content)];
-				string FileName = Path.GetFileName(FilePath);
-				return new ImportFile(FileName, content) { FilePath = FilePath };
-			}).ToArray();
+			ImportFile[] ImportFiles = Contents.Select(content => new ImportFile(Path.GetFileName(content.Path), content.Content) { FilePath = content.Path }).ToArray();
 			FileList.AddRange(ImportFiles);
 		}
 
