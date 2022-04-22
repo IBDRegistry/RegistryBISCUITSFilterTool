@@ -294,7 +294,7 @@ You can contact your IT support for help with this issue",
             ConsentToolModel.EnableNationalOptOut = CheckOptOutFile.Checked;   //Set designer value as default value, currently this is true
 
             Version AssemblyVersion = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
-            this.Text = this.Text + $" v{AssemblyVersion.Major}.{AssemblyVersion.Minor}{(AssemblyVersion.MinorRevision != 0 ? AssemblyVersion.MinorRevision.ToString() : "")}";
+            this.Text = this.Text + $" v{AssemblyVersion.Major}.{AssemblyVersion.Minor}.{(AssemblyVersion.MinorRevision != 0 ? AssemblyVersion.MinorRevision.ToString() : "")}";
         }
 
 
