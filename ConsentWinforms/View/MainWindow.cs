@@ -8,6 +8,7 @@ using System.ComponentModel;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using System.Collections.ObjectModel;
 using System.Security.Principal;
+using System.Threading.Tasks;
 
 namespace StripV3Consent.View
 {
@@ -147,6 +148,45 @@ You can contact your IT support for help with this issue",
 
         }
 
+        /// <summary>
+        /// Solves Directory.Delete's fun hidden feature of race conditions by dele
+        /// </summary>
+        /// <param name="directory"></param>
+        /// <param name="timeoutInMilliseconds"></param>
+        /// <returns></returns>
+        private bool DeleteDirectorySync(string directory, bool recursive, int timeoutInMilliseconds = 5000)
+        {
+            if (!Directory.Exists(directory))
+            {
+                return true;
+            }
+
+            var watcher = new FileSystemWatcher
+            {
+                Path = Path.Combine(directory, ".."),
+                NotifyFilter = NotifyFilters.DirectoryName,
+                Filter = directory,
+            };
+            var task = Task.Run(() => watcher.WaitForChanged(WatcherChangeTypes.Deleted, timeoutInMilliseconds));
+
+            // we must not start deleting before the watcher is running
+            while (task.Status != TaskStatus.Running)
+            {
+                System.Threading.Thread.Sleep(100);
+            }
+
+            try
+            {
+                Directory.Delete(directory, recursive);
+            }
+            catch
+            {
+                return false;
+            }
+
+            return !task.Result.TimedOut;
+        }
+
         private void SaveButton_Click(object sender, EventArgs e)
         {
             if (CheckNationalOptOut() != true)
@@ -170,7 +210,7 @@ You can contact your IT support for help with this issue",
                     {
                         try
                         {
-                            Directory.Delete(OutputFolder, true);
+                            DeleteDirectorySync(OutputFolder, true);
                         } catch (Exception ex)
                         {
                             MessageBox.Show(
@@ -187,17 +227,21 @@ You can contact your IT support for help with this issue",
                         return;
                     }
                 }
-                Directory.CreateDirectory(OutputFolder);
 
-                List<string> FilesToWrite = LoadedFilesPanel.FileList.Files.Select(OutputFile => OutputFile.StringOutput()).ToList<string>();
+                DirectoryInfo OutputDirectory = Directory.CreateDirectory(OutputFolder);
 
-                foreach(OutputFile OutFile in LoadedFilesPanel.FileList.Files)
+                var DirectoryExists = Directory.Exists(OutputFolder);
+
+                foreach (OutputFile OutFile in LoadedFilesPanel.FileList.Files)
                 {
                     //Remove wildcard and append _Processed to filename
+                    var DirectoryExistsBeforeOutFileName = Directory.Exists(OutputFolder);
                     string FileName = OutFile.SpecificationFile.Name.Replace(@".*\", "").Replace(".csv", "_Processed.csv");
-                    string OutPath = OutputFolder + FileName;
+                    var DirectoryExistsBeforeCombination = Directory.Exists(OutputFolder);
+                    string OutPath = Path.Combine(OutputDirectory.FullName, FileName);
                     try
                     {
+                        var DirectoryExistsBeforeUse = Directory.Exists(OutputFolder);
                         using (StreamWriter writer = new StreamWriter(OutPath))
                         {
                             writer.Write(OutFile.StringOutput());
@@ -205,7 +249,8 @@ You can contact your IT support for help with this issue",
                     }
                     catch (Exception ex)
 					{
-                        MessageBox.Show($"There was an {ex.ToString()} while writing file {FileName} to disk, this will not have been completed", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        var DirectoryExistsInException = Directory.Exists(OutputFolder);
+                        MessageBox.Show($"{ex.Message} \n this will not have been completed", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
                         continue;
 					}
