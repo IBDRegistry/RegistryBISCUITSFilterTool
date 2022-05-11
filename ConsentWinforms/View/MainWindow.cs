@@ -230,14 +230,11 @@ You can contact your IT support for help with this issue",
 
                 DirectoryInfo OutputDirectory = Directory.CreateDirectory(OutputFolder);
 
-                var DirectoryExists = Directory.Exists(OutputFolder);
 
                 foreach (OutputFile OutFile in LoadedFilesPanel.FileList.Files)
                 {
                     //Remove wildcard and append _Processed to filename
-                    var DirectoryExistsBeforeOutFileName = Directory.Exists(OutputFolder);
                     string FileName = OutFile.SpecificationFile.Name.Replace(@".*\", "").Replace(".csv", "_Processed.csv");
-                    var DirectoryExistsBeforeCombination = Directory.Exists(OutputFolder);
                     string OutPath = Path.Combine(OutputDirectory.FullName, FileName);
                     try
                     {
@@ -249,7 +246,6 @@ You can contact your IT support for help with this issue",
                     }
                     catch (Exception ex)
 					{
-                        var DirectoryExistsInException = Directory.Exists(OutputFolder);
                         MessageBox.Show($"{ex.Message} \n this will not have been completed", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
                         continue;
