@@ -95,11 +95,11 @@ namespace StripV3Consent.View
         /// </summary>
         private void RemovedRecords_Redraw()
         {
-            IEnumerable<RecordSet> DisplayRecords = AllRecordSets.Where(specifier);
+            RecordSet[] DisplayRecords = AllRecordSets.Where(specifier).ToArray();
 
             Controls.Clear();
 
-            if (DisplayRecords.Count() > 100)
+            if (DisplayRecords.Length > 100)
 			{
                 Controls.Add(new Label() { 
                     Text = "There are too many patients to display in this panel",
