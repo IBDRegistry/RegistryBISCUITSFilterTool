@@ -22,20 +22,24 @@ namespace StripV3Consent.Model
         }
         public static event Action EnableNationalOptOutChanged;
 
+        public readonly ObservableRangeCollection<RecordSet> Patients = new ObservableRangeCollection<RecordSet>();
+
+        public readonly ObservableRangeCollection<OutputFile> OutputFiles = new ObservableRangeCollection<OutputFile>();
+
         private void InputFiles_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             Patients.Clear();
-            IEnumerable<ImportFile> ValidFilesForImport = InputFiles.Where(i => i.IsValid.ValidState != ValidState.Error).ToList();
-
-            IEnumerable<ImportFile> NonPatientLevelFiles = ValidFilesForImport.Where(i => i.SpecificationFile.IsPatientLevelFile == false).ToList();
-            IEnumerable<ImportFile> ValidFilesForProcessing = ValidFilesForImport.Except(NonPatientLevelFiles).ToList();
+            IEnumerable<ImportFile> ValidFilesForImport = InputFiles.Where(i => i.IsValid.ValidState != ValidState.Error);
+            
+            IEnumerable<ImportFile> NonPatientLevelFiles = ValidFilesForImport.Where(i => i.SpecificationFile.IsPatientLevelFile == false);
+            IEnumerable<ImportFile> ValidFilesForProcessing = ValidFilesForImport.Except(NonPatientLevelFiles);
 
             IEnumerable<RecordSet> NewPatients = SplitInputFilesIntoRecordSets(ValidFilesForProcessing.ToList());
-            Patients.AddRange(NewPatients);
+            Patients.AddRange(NewPatients); //3.6 seconds
 
             OutputFiles.Clear();
-            IEnumerable<OutputFile> NewOutputFiles = SplitBackUpIntoFiles(Patients);
-            OutputFiles.AddRange(NewOutputFiles);
+            IEnumerable<OutputFile> NewOutputFiles = SplitBackUpIntoFiles(Patients);    //3.6 seconds
+            OutputFiles.AddRange(NewOutputFiles);   //3.6 seconds
 			OutputFiles.AddRange(NonPatientLevelFiles.Select(i => new DirectOutputFile
 			(
 				file: i,
@@ -44,9 +48,7 @@ namespace StripV3Consent.Model
             ));
 		}
 
-        public readonly ObservableRangeCollection<RecordSet> Patients = new ObservableRangeCollection<RecordSet>();
         
-        public readonly ObservableRangeCollection<OutputFile> OutputFiles = new ObservableRangeCollection<OutputFile>();
 
         
 
