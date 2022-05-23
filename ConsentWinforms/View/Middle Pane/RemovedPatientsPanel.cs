@@ -21,9 +21,9 @@ namespace StripV3Consent.View
             {
                 allRecordSets = value;
                 AllRecordSetsChanged?.Invoke(this, new EventArgs());
-                if (value != null)
-				    value.CollectionChanged += AllRecordSets_CollectionChanged;
-            }
+				if (value != null)
+					value.CollectionChanged += AllRecordSets_CollectionChanged;
+			}
         }
 
 		private void AllRecordSets_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -97,8 +97,20 @@ namespace StripV3Consent.View
         {
             IEnumerable<RecordSet> DisplayRecords = AllRecordSets.Where(specifier);
 
-
             Controls.Clear();
+
+            if (DisplayRecords.Count() > 100)
+			{
+                Controls.Add(new Label() { 
+                    Text = "There are too many patients to display in this panel",
+                    AutoSize = true,
+                    Dock = DockStyle.Fill,
+                    TextAlign = System.Drawing.ContentAlignment.TopCenter
+                });
+                return;
+			}
+
+            
             RemovedPatient[] NewRemovedPatientPanels = DisplayRecords.Select(RS => new RemovedPatient() { 
                 Patient = RS, 
                 Dock = DockStyle.Top,
@@ -112,24 +124,6 @@ namespace StripV3Consent.View
             }).ToArray();
             Controls.AddRange(NewRemovedPatientPanels);
         }
-
-        //private void AddItem(RecordSet Patient)
-        //{
-
-        //    RemovedPatient NewEntry = new RemovedPatient()
-        //    {
-        //        Patient = Patient,
-        //        Dock = DockStyle.Top,
-        //        Margin = new Padding()
-        //        {
-        //            Left = 5,
-        //            Top = 10,
-        //            Bottom = 10,
-        //            Right = 5
-        //        }
-        //    };
-        //    Controls.Add(NewEntry);
-        //}
 
     }
 }
