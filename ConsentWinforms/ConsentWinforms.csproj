@@ -40,7 +40,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="MakarovDev.ExpandCollapsePanel, Version=1.0.7197.27666, Culture=neutral, PublicKeyToken=6cb45db4006534c2, processorArchitecture=MSIL">
-      <HintPath>..\packages\MakarovDev.ExpandCollapsePanel.1.0.0\lib\net40\MakarovDev.ExpandCollapsePanel.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Libraries\MakarovDev.ExpandCollapsePanel.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.WindowsAPICodePack, Version=1.1.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\WindowsAPICodePack-Core.1.1.2\lib\Microsoft.WindowsAPICodePack.dll</HintPath>
