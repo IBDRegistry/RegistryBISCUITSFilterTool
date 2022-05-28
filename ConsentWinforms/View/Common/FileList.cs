@@ -78,16 +78,17 @@ namespace StripV3Consent.View
                 case NotifyCollectionChangedAction.Add:
                     foreach (object NewItem in e.NewItems)
 					{
-                        AddItem((DataFileType)NewItem);
+                        Invoke((Action)(() => AddItem((DataFileType)NewItem)));
                     }
                     
                     break;
                 case NotifyCollectionChangedAction.Reset:
-                    RedrawList();
+                    Invoke((Action)(() => RedrawList()));
+                    
                     break;
                 case NotifyCollectionChangedAction.Remove:
                     DataFileType FileToRemove = e.OldItems.Cast<DataFileType>().First();
-                    RemoveItem(FileToRemove);
+                    Invoke((Action)(() => RemoveItem(FileToRemove)));
                     break;
             }
         }

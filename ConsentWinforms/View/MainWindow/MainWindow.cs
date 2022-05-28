@@ -16,6 +16,8 @@ namespace StripV3Consent.View
     {
         private ConsentToolModel Model = new ConsentToolModel();
 
+        private ProgressForm progress = new ProgressForm();
+
         public MainWindow()
         {
             InitializeComponent();
@@ -26,8 +28,20 @@ namespace StripV3Consent.View
 
             LoadedFilesPanel.FileList.Files.CollectionChanged += OutputFilesChanged;
             Model.InputFilesChanged += UpdateBlankFilesRemovedLabel;
+            Model.Progress += Progress_Updated;
 
             CheckIfAdministrator();
+        }
+
+        private void Progress_Updated(object sender, ProgressEventArgs e)
+        {
+            //progress.ShowDialog();
+            //progress.MaximumValue = Enum.GetValues(typeof(ConsentToolProgress.Stages)).Length;
+            //progress.Value = Array.IndexOf(Enum.GetValues(typeof(ConsentToolProgress.Stages)), e.ProgressInfo.stage);
+            //progress.LoadingText = e.ProgressInfo.StageToString();
+
+            //if (e.ProgressInfo.stage == ConsentToolProgress.Stages.Finished)
+            //    progress.Hide();
         }
 
         private void UpdateBlankFilesRemovedLabel(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -54,7 +68,7 @@ namespace StripV3Consent.View
                 LabelText = $"{InputFilesThatDidntMakeIt.Count()} files were excluded from the output: {Environment.NewLine}{string.Join(Environment.NewLine, InputFilesThatDidntMakeIt.Select(file => $"-{file.Name}").ToArray())}";
             }
             
-            Control ExistingLabel = LoadedFilesPanel.FileList.BottomPanel.Controls.Cast<Control>().Where(ctrl => ctrl.Name == BlankFilesRemovedLabelName).FirstOrDefault();
+            Label ExistingLabel = (Label)LoadedFilesPanel.FileList.BottomPanel.Controls.Cast<Control>().Where(ctrl => ctrl.Name == BlankFilesRemovedLabelName).FirstOrDefault();
             if (ExistingLabel == null)
             {
                 Label NewLabel = new Label()
@@ -66,7 +80,7 @@ namespace StripV3Consent.View
                 LoadedFilesPanel.FileList.BottomPanel.Controls.Add(NewLabel);
             } else
             {
-                ((Label)ExistingLabel).Text = LabelText;
+               ExistingLabel.Invoke((Action)(() => ExistingLabel.Text = LabelText));
             }
 
         }

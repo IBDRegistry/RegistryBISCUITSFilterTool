@@ -33,10 +33,10 @@ namespace StripV3Consent.View
             switch (e.Action)
             {
                 case NotifyCollectionChangedAction.Add:
-                    RemovedRecords_Redraw();
+                    Invoke((Action)(() => RemovedRecords_Redraw()));
                     break;
                 case NotifyCollectionChangedAction.Reset:
-                    RemovedRecords_Redraw();
+                    Invoke((Action)(() => RemovedRecords_Redraw()));
                     break;
                 case NotifyCollectionChangedAction.Remove:
                     throw new NotImplementedException();
@@ -69,18 +69,35 @@ namespace StripV3Consent.View
             AutoScroll = true;
 
         }
-
-
         /// <summary>
         /// Redraws the panel with all the records filtered by Specifi
         /// </summary>
         private async void RemovedRecords_Redraw()
         {
-            RecordSet[] DisplayRecords = await Task.Run(() => AllRecordSets.Where(specifier).ToArray());
+            ProgressForm filteringProgressForm = new ProgressForm();
+            filteringProgressForm.LoadingText = "Filtering records for middle pane";
+            filteringProgressForm.Show();
+            List<RecordSet> DisplayRecords = new List<RecordSet>();
+            await Task.Run(
+                () => {
+                    for (int i = 0; i < AllRecordSets.Count; i++)
+                    {
+                        RecordSet r = AllRecordSets[i];
+                        filteringProgressForm.Value = i;
+                        filteringProgressForm.MaximumValue = AllRecordSets.Count;
+                        if (specifier(r))
+                        {
+                            DisplayRecords.Add(r);
+                        }
+                    }
+                }
+            );
+
+            filteringProgressForm.Close();
 
             Controls.Clear();
 
-            if (DisplayRecords.Length > 100)
+            if (DisplayRecords.Count() > 100)
 			{
                 Controls.Add(new Label() { 
                     Text = "There are too many patients to display in this panel",

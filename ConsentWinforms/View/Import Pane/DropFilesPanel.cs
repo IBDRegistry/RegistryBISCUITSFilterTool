@@ -173,7 +173,7 @@ namespace StripV3Consent.View
 			}
 
 			ImportFile[] ImportFiles = Contents.Select(content => new ImportFile(Path.GetFileName(content.Path), content.Content) { FilePath = content.Path }).ToArray();
-			FileList.AddRange(ImportFiles);
+            await System.Threading.Tasks.Task.Run(() => FileList.AddRange(ImportFiles));
 		}
 
 

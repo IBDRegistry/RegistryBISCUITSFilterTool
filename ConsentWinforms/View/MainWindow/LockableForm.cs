@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace StripV3Consent.View
 {
-    internal class ExecutionThread
+    class LockableForm
     {
+
     }
 }

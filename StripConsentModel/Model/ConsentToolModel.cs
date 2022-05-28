@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Collections.Specialized;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace StripV3Consent.Model
 {
@@ -22,27 +23,51 @@ namespace StripV3Consent.Model
         }
         public static event Action EnableNationalOptOutChanged;
 
-        private void InputFiles_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        public delegate void ProgressEventHandler(object sender, ProgressEventArgs e);
+        public event ProgressEventHandler Progress;
+
+        private async void InputFiles_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
+            if (e.Action is NotifyCollectionChangedAction.Reset)
+            {
+                return;
+            }
             Patients.Clear();
             IEnumerable<ImportFile> ValidFilesForImport = InputFiles.Where(i => i.IsValid.ValidState != ValidState.Error);
 
             IEnumerable<ImportFile> NonPatientLevelFiles = ValidFilesForImport.Where(i => i.SpecificationFile.IsPatientLevelFile == false);
             IEnumerable<ImportFile> ValidFilesForProcessing = ValidFilesForImport.Except(NonPatientLevelFiles);
 
-            IEnumerable<RecordSet> NewPatients = SplitInputFilesIntoRecordSets(ValidFilesForProcessing.ToList());
+            Progress?.Invoke(this, new ProgressEventArgs(
+                new ConsentToolProgress(ConsentToolProgress.Stages.GroupingRecords)
+                ));
+            IEnumerable<RecordSet> NewPatients = await Task.Run(() => SplitInputFilesIntoRecordSets(ValidFilesForProcessing.ToList()));
+            
             Patients.AddRange(NewPatients);
 
             OutputFiles.Clear();
-            IEnumerable<OutputFile> NewOutputFiles = SplitBackUpIntoFiles(Patients);
-            OutputFiles.AddRange(NewOutputFiles);
+            Progress?.Invoke(this, new ProgressEventArgs(
+                new ConsentToolProgress(ConsentToolProgress.Stages.SplittingBackUp)
+                ));
+            IEnumerable<OutputFile> NewOutputFiles = await Task.Run(() => SplitBackUpIntoFiles(Patients));    //slow
+            
+            Progress?.Invoke(this, new ProgressEventArgs(
+                new ConsentToolProgress(ConsentToolProgress.Stages.AddingToOutput)
+                ));
+            OutputFiles.AddRange(NewOutputFiles);   //slow
+
 			OutputFiles.AddRange(NonPatientLevelFiles.Select(i => new DirectOutputFile
 			(
 				file: i,
                 contentToOutput: i.FileContents
 			)
             ));
-		}
+
+            Progress?.Invoke(this, new ProgressEventArgs(
+                new ConsentToolProgress(ConsentToolProgress.Stages.Finished)
+                ));
+
+        }
 
         public readonly ObservableRangeCollection<RecordSet> Patients = new ObservableRangeCollection<RecordSet>();
         
@@ -125,5 +150,51 @@ namespace StripV3Consent.Model
             return Files;
         }
 
+    }
+
+    public class ConsentToolProgress
+    {
+        public enum Stages
+        {
+            GroupingRecords,
+            SplittingBackUp,
+            AddingToOutput,
+            Finished
+        }
+        public Stages stage;
+
+        public bool Finished = false;
+
+        public ConsentToolProgress(Stages stage)
+        {
+            this.stage = stage;
+        }
+        public string StageToString()
+        {
+            switch (stage)
+            {
+                case Stages.GroupingRecords:
+                    return "Grouping records into patients";
+                case Stages.SplittingBackUp:
+                    return "Splitting patients back into files";
+                case Stages.AddingToOutput:
+                    return "Adding to output";
+                case Stages.Finished:
+                    return "Finished";
+                default:
+                    return "Working";
+            }
+        }
+        
+    }
+
+    public class ProgressEventArgs : EventArgs
+    {
+        public ConsentToolProgress ProgressInfo;
+
+        public ProgressEventArgs(ConsentToolProgress progressInfo)
+        {
+            ProgressInfo = progressInfo;
+        }
     }
 }
