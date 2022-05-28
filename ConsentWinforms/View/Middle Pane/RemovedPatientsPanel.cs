@@ -6,6 +6,7 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -73,13 +74,13 @@ namespace StripV3Consent.View
         /// <summary>
         /// Redraws the panel with all the records filtered by Specifi
         /// </summary>
-        private void RemovedRecords_Redraw()
+        private async void RemovedRecords_Redraw()
         {
-            IEnumerable<RecordSet> DisplayRecords = AllRecordSets.Where(specifier);
+            RecordSet[] DisplayRecords = await Task.Run(() => AllRecordSets.Where(specifier).ToArray());
 
             Controls.Clear();
 
-            if (DisplayRecords.Count() > 100)
+            if (DisplayRecords.Length > 100)
 			{
                 Controls.Add(new Label() { 
                     Text = "There are too many patients to display in this panel",
