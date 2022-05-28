@@ -62,26 +62,6 @@ namespace StripV3Consent.View
                 RemovedRecords_Redraw();
             }
         }
-
-  //      private void SetDisplayRecords()
-  //      {
-		//	//if (!(AllRecordSets is null | Specifier is null))
-		//	//{
-		//	//	DisplayRecords = new BindingList<RecordSet>(AllRecordSets.Where(specifier).ToList<RecordSet>());
-		//	//}
-		//}
-        //private BindingList<RecordSet> displayRecords;
-
-        //public BindingList<RecordSet> DisplayRecords
-        //{
-        //    get => displayRecords;
-        //    set
-        //    {
-        //        displayRecords = value;
-        //        if (displayRecords is null) { return; }
-        //        RemovedRecords_Redraw();
-        //    }
-        //}
         
         public RemovedPatientsPanel()
         {
