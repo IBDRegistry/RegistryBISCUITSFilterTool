@@ -36,10 +36,9 @@ namespace StripV3Consent.View
             // 
             // ProgressLabel
             // 
-            this.ProgressLabel.AutoSize = true;
-            this.ProgressLabel.Location = new System.Drawing.Point(175, 45);
+            this.ProgressLabel.Location = new System.Drawing.Point(12, 45);
             this.ProgressLabel.Name = "ProgressLabel";
-            this.ProgressLabel.Size = new System.Drawing.Size(47, 13);
+            this.ProgressLabel.Size = new System.Drawing.Size(404, 30);
             this.ProgressLabel.TabIndex = 0;
             this.ProgressLabel.Text = "Working";
             this.ProgressLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -62,7 +61,6 @@ namespace StripV3Consent.View
             this.Name = "ProgressForm";
             this.Text = "Working";
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
