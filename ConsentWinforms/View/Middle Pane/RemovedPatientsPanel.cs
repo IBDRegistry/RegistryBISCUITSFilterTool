@@ -27,6 +27,8 @@ namespace StripV3Consent.View
 			}
         }
 
+        public MainWindow MainWindowReference;
+
 		private void AllRecordSets_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
 		{
             AllRecordSetsChanged?.Invoke(this, new EventArgs());
@@ -74,7 +76,11 @@ namespace StripV3Consent.View
         /// </summary>
         private async void RemovedRecords_Redraw()
         {
+            if (MainWindowReference is null)
+                throw new NullReferenceException($"{nameof(MainWindowReference)} was null");
+
             ProgressForm filteringProgressForm = new ProgressForm();
+            MainWindowReference.AddLockingForm(filteringProgressForm);
             filteringProgressForm.LoadingText = "Filtering records for middle pane";
             filteringProgressForm.Show();
             List<RecordSet> DisplayRecords = new List<RecordSet>();
@@ -94,6 +100,7 @@ namespace StripV3Consent.View
             );
 
             filteringProgressForm.Close();
+            MainWindowReference.RemoveLockingForm(filteringProgressForm);
 
             Controls.Clear();
 

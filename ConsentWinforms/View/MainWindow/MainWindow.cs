@@ -16,7 +16,7 @@ namespace StripV3Consent.View
     {
         private ConsentToolModel Model = new ConsentToolModel();
 
-        private ProgressForm progress = new ProgressForm();
+        private ProgressForm progress;
 
         public MainWindow()
         {
@@ -29,12 +29,18 @@ namespace StripV3Consent.View
             LoadedFilesPanel.FileList.Files.CollectionChanged += OutputFilesChanged;
             Model.InputFilesChanged += UpdateBlankFilesRemovedLabel;
             Model.Progress += Progress_Updated;
+            RemovedPatientsPanel.MainWindowReference = this;
 
             CheckIfAdministrator();
         }
 
         private void Progress_Updated(object sender, ProgressEventArgs e)
         {
+            if (progress is null)
+            {
+                progress = new ProgressForm();
+                AddLockingForm(progress);
+            }
             
             if (progress.InvokeRequired)
             {
@@ -44,7 +50,7 @@ namespace StripV3Consent.View
                 Invoke((Action)(() => progress.Show()));
                 UpdateProgressForm(e);
             }
-            
+
             
         }
 
@@ -56,7 +62,11 @@ namespace StripV3Consent.View
             progress.LoadingText = e.ProgressInfo.StageToString();
 
             if (e.ProgressInfo.stage == ConsentToolProgress.Stages.Finished)
+            {
                 progress.Hide();
+                RemoveLockingForm(progress);
+                progress = null;
+            }
         }
 
         private void UpdateBlankFilesRemovedLabel(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)

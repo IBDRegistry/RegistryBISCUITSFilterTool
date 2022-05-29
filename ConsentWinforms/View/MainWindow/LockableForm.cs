@@ -19,7 +19,10 @@ namespace StripV3Consent.View
         public void AddLockingForm(Form LockingForm)
         {
             LockingForms.Add(LockingForm);
-
+        }
+        public void RemoveLockingForm(Form LockingFormToRemove)
+        {
+            LockingForms.Remove(LockingFormToRemove);
         }
 
         protected void SetUpMessageFilter()
@@ -46,11 +49,13 @@ namespace StripV3Consent.View
         public bool PreFilterMessage(ref Message m)
         {
             const short WM_LBUTTONDOWN = 0x201;
+            const short WM_LBUTTONDBLCLK = 0x203;
+            const short WM_LBUTTONUP = 0x202;
 
             Control c = Control.FromHandle(m.HWnd);
             if (HasParent(c, this) | m.HWnd == this.Handle)
             {
-                if (m.Msg == WM_LBUTTONDOWN)
+                if (m.Msg == WM_LBUTTONDOWN || m.Msg == WM_LBUTTONDBLCLK || m.Msg == WM_LBUTTONUP)
                 {
                     if (LockingForms.Count() > 0)
                     {
@@ -58,7 +63,6 @@ namespace StripV3Consent.View
                     }
                 }
             }
-
             return false;
         }
 

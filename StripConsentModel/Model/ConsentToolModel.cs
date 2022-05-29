@@ -41,7 +41,8 @@ namespace StripV3Consent.Model
             Progress?.Invoke(this, new ProgressEventArgs(
                 new ConsentToolProgress(ConsentToolProgress.Stages.GroupingRecords)
                 ));
-            IEnumerable<RecordSet> NewPatients = await Task.Run(() => SplitInputFilesIntoRecordSets(ValidFilesForProcessing.ToList()));
+            IEnumerable<RecordSet> NewPatients = SplitInputFilesIntoRecordSets(ValidFilesForProcessing.ToList());
+            //IEnumerable <RecordSet> NewPatients = await Task.Run(() => SplitInputFilesIntoRecordSets(ValidFilesForProcessing.ToList()));
             
             Patients.AddRange(NewPatients);
 
@@ -49,7 +50,7 @@ namespace StripV3Consent.Model
             Progress?.Invoke(this, new ProgressEventArgs(
                 new ConsentToolProgress(ConsentToolProgress.Stages.SplittingBackUp)
                 ));
-            IEnumerable<OutputFile> NewOutputFiles = await Task.Run(() => SplitBackUpIntoFiles(Patients));    //slow
+            IEnumerable<OutputFile> NewOutputFiles = SplitBackUpIntoFiles(Patients);    //slow
             
             Progress?.Invoke(this, new ProgressEventArgs(
                 new ConsentToolProgress(ConsentToolProgress.Stages.AddingToOutput)
