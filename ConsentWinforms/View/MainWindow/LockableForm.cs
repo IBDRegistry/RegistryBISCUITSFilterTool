@@ -59,6 +59,8 @@ namespace StripV3Consent.View
                 {
                     if (LockingForms.Count() > 0)
                     {
+                        System.Media.SystemSounds.Exclamation.Play();
+                        LockingForms.Last<Form>().BringToFront();
                         return true;
                     }
                 }
