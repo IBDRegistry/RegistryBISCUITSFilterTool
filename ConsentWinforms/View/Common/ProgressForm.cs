@@ -17,7 +17,7 @@ namespace StripV3Consent.View
         {
             set
             {
-                LoadingBar.Invoke((MethodInvoker)(() => LoadingBar.Maximum = value));
+                Invoke((MethodInvoker)(() => LoadingBar.Maximum = value));
             }
         }
 
@@ -25,15 +25,21 @@ namespace StripV3Consent.View
         {
             set
             {
-                //LoadingBar.Value = value;
-                LoadingBar.Invoke((MethodInvoker)(() => LoadingBar.Value = value));
+                Invoke((MethodInvoker)(() => LoadingBar.Value = value));
             }
         }
         public string LoadingText
         {
             set
             {
-                ProgressLabel.Text = value;
+                if (InvokeRequired)
+                {
+                    Invoke((Action)(() => ProgressLabel.Text = value));
+                } else
+                {
+                    ProgressLabel.Text = value;
+                }
+                
             }
         }
 

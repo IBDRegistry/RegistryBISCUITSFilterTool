@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace StripV3Consent.View
 {
-    public partial class MainWindow : Form
+    public partial class MainWindow : LockableForm
     {
         private ConsentToolModel Model = new ConsentToolModel();
 
@@ -35,13 +35,28 @@ namespace StripV3Consent.View
 
         private void Progress_Updated(object sender, ProgressEventArgs e)
         {
-            //progress.ShowDialog();
-            //progress.MaximumValue = Enum.GetValues(typeof(ConsentToolProgress.Stages)).Length;
-            //progress.Value = Array.IndexOf(Enum.GetValues(typeof(ConsentToolProgress.Stages)), e.ProgressInfo.stage);
-            //progress.LoadingText = e.ProgressInfo.StageToString();
+            
+            if (progress.InvokeRequired)
+            {
+                Invoke((Action<ProgressEventArgs>)UpdateProgressForm, new object[] { e });
+            } else
+            {
+                Invoke((Action)(() => progress.Show()));
+                UpdateProgressForm(e);
+            }
+            
+            
+        }
 
-            //if (e.ProgressInfo.stage == ConsentToolProgress.Stages.Finished)
-            //    progress.Hide();
+        private void UpdateProgressForm(ProgressEventArgs e)
+        {
+            
+            progress.MaximumValue = Enum.GetValues(typeof(ConsentToolProgress.Stages)).Length;
+            progress.Value = Array.IndexOf(Enum.GetValues(typeof(ConsentToolProgress.Stages)), e.ProgressInfo.stage);
+            progress.LoadingText = e.ProgressInfo.StageToString();
+
+            if (e.ProgressInfo.stage == ConsentToolProgress.Stages.Finished)
+                progress.Hide();
         }
 
         private void UpdateBlankFilesRemovedLabel(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
