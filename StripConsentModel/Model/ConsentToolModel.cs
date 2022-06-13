@@ -42,7 +42,8 @@ namespace StripV3Consent.Model
         public bool EnableNationalOptOut { get => enableNationalOptOut;
             set { 
                 enableNationalOptOut = value;
-                ProcessInputFiles();
+                if (InputFiles.Count > 0)
+                    ProcessInputFiles();
             }
         }
 
