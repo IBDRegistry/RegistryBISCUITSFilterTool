@@ -110,6 +110,9 @@ namespace StripV3Consent.View
 
         }
 
+        /// <summary>
+        /// Checks if the program is being run with administrative privileges as this can cause drag and drop to not work correctly
+        /// </summary>
         private void CheckIfAdministrator()
         {
             if (IsAdministrator())
