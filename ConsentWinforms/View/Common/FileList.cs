@@ -137,11 +137,11 @@ namespace StripV3Consent.View
             }
         }
 
-        private void ItemCloseButton_Click(object sender, EventArgs e)
+        private async void ItemCloseButton_Click(object sender, EventArgs e)
         {
             Button CloseButtonClicked = (Button)sender;
             IFileItem<DataFileType> Entry = (AbstractFileItem<DataFileType>)CloseButtonClicked.Parent;
-            Files.Remove(Entry.File);
+            await System.Threading.Tasks.Task.Run(() => Files.Remove(Entry.File));
         }
 
         public override string ToString()
