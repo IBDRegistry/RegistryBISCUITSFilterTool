@@ -12,6 +12,10 @@ namespace StripV3Consent.Model
     {
         public readonly ObservableRangeCollection<ImportFile> InputFiles = new ObservableRangeCollection<ImportFile>();
 
+        public readonly ObservableRangeCollection<RecordSet> Patients = new ObservableRangeCollection<RecordSet>();
+
+        public readonly ObservableRangeCollection<OutputFile> OutputFiles = new ObservableRangeCollection<OutputFile>();
+
         public event NotifyCollectionChangedEventHandler InputFilesChanged;
 
         private static bool enableNationalOptOut;
@@ -26,7 +30,7 @@ namespace StripV3Consent.Model
         public delegate void ProgressEventHandler(object sender, ProgressEventArgs e);
         public event ProgressEventHandler Progress;
 
-        private async void InputFiles_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void InputFiles_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.Action is NotifyCollectionChangedAction.Reset)
             {
@@ -42,7 +46,6 @@ namespace StripV3Consent.Model
                 new ConsentToolProgress(ConsentToolProgress.Stages.GroupingRecords)
                 ));
             IEnumerable<RecordSet> NewPatients = SplitInputFilesIntoRecordSets(ValidFilesForProcessing.ToList());
-            //IEnumerable <RecordSet> NewPatients = await Task.Run(() => SplitInputFilesIntoRecordSets(ValidFilesForProcessing.ToList()));
             
             Patients.AddRange(NewPatients);
 
@@ -70,11 +73,12 @@ namespace StripV3Consent.Model
 
         }
 
-        public readonly ObservableRangeCollection<RecordSet> Patients = new ObservableRangeCollection<RecordSet>();
-        
-        public readonly ObservableRangeCollection<OutputFile> OutputFiles = new ObservableRangeCollection<OutputFile>();
+        private void ProcessFiles()
+        {
 
-        
+        }
+
+
 
         public ConsentToolModel()
         {
