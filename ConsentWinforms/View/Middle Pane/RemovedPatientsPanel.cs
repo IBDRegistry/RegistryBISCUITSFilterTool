@@ -15,6 +15,11 @@ namespace StripV3Consent.View
     class RemovedPatientsPanel: Panel
     {
         private RecordSet[] allRecordSets;
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [Bindable(false)]
+        [Browsable(false)]
         public RecordSet[] AllRecordSets
         {
             get => allRecordSets;
@@ -22,7 +27,9 @@ namespace StripV3Consent.View
             {
                 allRecordSets = value;
                 AllRecordSetsChanged?.Invoke(this, new EventArgs());
-			}
+                RemovedRecords_Redraw();
+
+            }
         }
 
         public MainWindow MainWindowReference;
@@ -63,6 +70,7 @@ namespace StripV3Consent.View
                 throw new NullReferenceException($"{nameof(MainWindowReference)} was null");
 
             ProgressForm filteringProgressForm = new ProgressForm();
+
             MainWindowReference.AddLockingForm(filteringProgressForm);
             filteringProgressForm.LoadingText = "Filtering records for middle pane";
             filteringProgressForm.Show();

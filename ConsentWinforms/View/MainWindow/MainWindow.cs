@@ -24,7 +24,7 @@ namespace StripV3Consent.View
             
             DropFilesHerePanel.FileList.Files = Model.InputFiles;
 
-            Model.PatientsChanged += (s) => { RemovedPatientsPanel.AllRecordSets = s.Patients; };
+            Model.PatientsChanged += (s) => { Invoke((Action)(() => RemovedPatientsPanel.AllRecordSets = s.Patients)); };
 
             Model.OutputFilesChanged += (ConsentToolModel m) =>
             {
