@@ -21,16 +21,27 @@ namespace StripV3Consent.View
         {
             LockingForms.Add(LockingForm);
 
+            Lock();
+        }
+
+        private void Lock()
+        {
             IEnumerable<Control> AllControlsOnLockedForm = GetAllChildControls(this);
             ControlsWithDragDropEnabled.AddRange(AllControlsOnLockedForm.Where(c => c.AllowDrop));
 
-            foreach(Control c in this.ControlsWithDragDropEnabled)
+            foreach (Control c in this.ControlsWithDragDropEnabled)
             {
                 c.Invoke((Action)(() => c.AllowDrop = false));
             }
+        }
 
-
-
+        private void Unlock()
+        {
+            foreach (Control c in this.ControlsWithDragDropEnabled)
+            {
+                c.AllowDrop = true;
+            }
+            ControlsWithDragDropEnabled.Clear();
         }
         
         private List<Control> GetAllChildControls(Control container, List<Control> AllControlsList = null)
@@ -50,11 +61,8 @@ namespace StripV3Consent.View
         {
             LockingForms.Remove(LockingFormToRemove);
 
-            foreach (Control c in this.ControlsWithDragDropEnabled)
-            {
-                c.AllowDrop = true;
-            }
-            ControlsWithDragDropEnabled.Clear();
+            if (LockingForms.Count == 0)
+                Unlock();
         }
 
         protected void SetUpMessageFilter()
