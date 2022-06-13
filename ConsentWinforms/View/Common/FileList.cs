@@ -16,7 +16,7 @@ namespace StripV3Consent.View
     {
 
         #region files
-        private ObservableRangeCollection<DataFileType> _files = new ObservableRangeCollection<DataFileType>();
+        public ObservableRangeCollection<DataFileType> _files = new ObservableRangeCollection<DataFileType>();
         public ObservableRangeCollection<DataFileType> Files
 		{
             get => _files;
@@ -35,6 +35,7 @@ namespace StripV3Consent.View
             WrapContents = false;
             BorderStyle = BorderStyle.FixedSingle;
 
+            Files.CollectionChanged += Files_CollectionChanged;
             Controls.Add(BottomPanel);
         }
 

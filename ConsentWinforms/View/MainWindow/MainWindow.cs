@@ -40,7 +40,7 @@ namespace StripV3Consent.View
             } ;
 
 
-            Model.InputFiles.CollectionChanged += (s, e) => { Invoke((Action)UpdateBlankFilesRemovedLabel); };
+            Model.OutputFilesChanged += (m) => { Invoke((Action)UpdateBlankFilesRemovedLabel); };
 
             Model.Progress += Progress_Updated;
             RemovedPatientsPanel.MainWindowReference = this;
