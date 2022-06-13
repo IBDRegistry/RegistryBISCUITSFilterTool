@@ -23,11 +23,28 @@ namespace StripV3Consent.View
             InitializeComponent();
             
             DropFilesHerePanel.FileList.Files = Model.InputFiles;
-            RemovedPatientsPanel.AllRecordSets = Model.Patients;
-            LoadedFilesPanel.FileList.Files = Model.OutputFiles;
 
-            LoadedFilesPanel.FileList.Files.CollectionChanged += OutputFilesChanged;
-            Model.InputFilesChanged += UpdateBlankFilesRemovedLabel;
+            Model.PatientsChanged += (s) => { RemovedPatientsPanel.AllRecordSets = s.Patients; };
+
+            Model.OutputFilesChanged += (ConsentToolModel m) =>
+            {
+                LoadedFilesPanel.FileList.Files.Clear();
+                LoadedFilesPanel.FileList.Files.AddRange(m.OutputFiles);
+            };
+
+
+            Model.OutputFilesChanged += (m) => { 
+                Invoke((Action)( 
+                    () => CheckIfSaveButtonCanBeEnabled(m.OutputFiles)
+                )); 
+            } ;
+
+
+            Model.InputFiles.CollectionChanged += (s, e) => {
+                                                                Invoke((Action)(
+                                                                    () => { UpdateBlankFilesRemovedLabel(); }
+                                                                ));
+                                                            };
             Model.Progress += Progress_Updated;
             RemovedPatientsPanel.MainWindowReference = this;
 
@@ -69,7 +86,7 @@ namespace StripV3Consent.View
             }
         }
 
-        private void UpdateBlankFilesRemovedLabel(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private void UpdateBlankFilesRemovedLabel()
         {
             IEnumerable<Specification.File> SpecificationFilesInInput = Model.InputFiles.GroupBy
                 <ImportFile, Specification.File, Specification.File>
@@ -80,6 +97,7 @@ namespace StripV3Consent.View
             IEnumerable<Specification.File> SpecificationFilesInOutput = Model.OutputFiles.Select(OutFile => OutFile.SpecificationFile);
 
             List<Specification.File> SpecificationFilesThatDidntMakeIt = SpecificationFilesInInput.Except(SpecificationFilesInOutput).ToList();
+
             SpecificationFilesThatDidntMakeIt.RemoveAll(element => element is null);
 
             List<ImportFile> InputFilesThatDidntMakeIt = Model.InputFiles.Where(inputFile => SpecificationFilesThatDidntMakeIt.Contains(inputFile.SpecificationFile)).ToList();
@@ -134,11 +152,11 @@ You can contact your IT support for help with this issue",
             return principal.IsInRole(WindowsBuiltInRole.Administrator);
         }
 
-        private bool CheckNationalOptOut()
+        private bool ConfirmNationalOptOutChoice()
 		{
             const string NOOFileNameInSpec = ".dat";
             //enter if either true & false or false & true
-            bool NOOChecked = ConsentToolModel.EnableNationalOptOut;
+            bool NOOChecked = Model.EnableNationalOptOut;
             bool NOOFilePresent = Model.InputFiles.Where(i => {
                 if (i.SpecificationFile == null)    //would like to use bool? but not supported in .NET Framework
 				{
@@ -231,7 +249,7 @@ You can contact your IT support for help with this issue",
 
         private void SaveButton_Click(object sender, EventArgs e)
         {
-            if (CheckNationalOptOut() != true)
+            if (ConfirmNationalOptOutChoice() != true)
 			{
                 return;
 			}
@@ -312,11 +330,9 @@ You can contact your IT support for help with this issue",
             System.Diagnostics.Process.Start(startInfo);
         }
 
-        private void OutputFilesChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private void CheckIfSaveButtonCanBeEnabled(OutputFile[] OutputFiles)
         {
-            ObservableCollection<OutputFile> OutputFiles = sender as ObservableCollection<OutputFile>;
-
-            if (OutputFiles.Count > 0)
+            if (OutputFiles.Length > 0)
             {
                 SaveButton.Enabled = true;
             }
@@ -328,13 +344,16 @@ You can contact your IT support for help with this issue",
 
         private void RemovedPatientsPanel_AllRecordSetsChanged(object sender, EventArgs e)
         {
-            ObservableCollection<RecordSet> AllRecordSetsGrouped = ((RemovedPatientsPanel)sender).AllRecordSets;
-
-            if (AllRecordSetsGrouped != null)
+            CheckIfPatientsPaneFilterCheckboxesCanBeEnabled();
+        }
+        private void CheckIfPatientsPaneFilterCheckboxesCanBeEnabled()
+        {
+            if (RemovedPatientsPanel.AllRecordSets != null)
             {
                 DisplayKeptPatientsCheckbox.Enabled = true;
                 DisplayRemovedPatientsCheckbox.Enabled = true;
-            } else
+            }
+            else
             {
                 DisplayKeptPatientsCheckbox.Enabled = false;
                 DisplayRemovedPatientsCheckbox.Enabled = false;
@@ -358,7 +377,10 @@ You can contact your IT support for help with this issue",
 
         private void DisplayCheckboxesChanged(object sender, EventArgs e)
         {
-            //Swap from Func<RecordSet, bool> to Predicate<RecordSet>
+            SetMiddlePaneFilterFromUI();
+        }
+        private void SetMiddlePaneFilterFromUI()
+        {
             List<Tuple<CheckBox, Predicate<RecordSet>>> CheckboxSpecifiers = new List<Tuple<CheckBox, Predicate<RecordSet>>>()
             {
                 new Tuple<CheckBox, Predicate<RecordSet>>(DisplayKeptPatientsCheckbox, rs => rs.IsConsentValid == true ),
@@ -374,7 +396,10 @@ You can contact your IT support for help with this issue",
 
         private void MainWindow_Load(object sender, EventArgs e)
         {
-            ConsentToolModel.EnableNationalOptOut = CheckOptOutFile.Checked;   //Set designer value as default value, currently this is true
+            Model.EnableNationalOptOut = CheckOptOutFile.Checked;   //Set designer value as default value, currently this is true
+
+            SetMiddlePaneFilterFromUI();
+            CheckIfPatientsPaneFilterCheckboxesCanBeEnabled();
 
             Version AssemblyVersion = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
             Text = Text + $" v{AssemblyVersion.Major}.{AssemblyVersion.Minor}{(AssemblyVersion.MinorRevision != 0 ? "." + AssemblyVersion.MinorRevision.ToString() : "")}";
@@ -383,7 +408,7 @@ You can contact your IT support for help with this issue",
 
         private void CheckOptOutFile_CheckedChanged(object sender, EventArgs e)
         {
-            ConsentToolModel.EnableNationalOptOut = CheckOptOutFile.Checked;
+            Model.EnableNationalOptOut = CheckOptOutFile.Checked;
         }
 
 		private void GetManualLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

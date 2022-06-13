@@ -12,9 +12,9 @@ namespace StripV3Consent.Model
 	{
 		public List<Record> Records;
 
-		public RecordSet()
+		public RecordSet(bool ShouldNationalOptOutBeChecked)
 		{
-
+			EnableNationalOptOut = ShouldNationalOptOutBeChecked;
 		}
 
 		/// <summary>
@@ -101,13 +101,11 @@ namespace StripV3Consent.Model
 			//If consentv3 but no consent then false
 		}
 
-
+		private bool? EnableNationalOptOut = null;
 		public ConsentValidState IsConsentValid
 		{
 			get
 			{
-				
-
 				IEnumerable<Record> AllConsentRecords = Records.Where(IsConsentRecord);
 
 
@@ -116,21 +114,23 @@ namespace StripV3Consent.Model
 				{
 					//National Opt-Out
 					IEnumerable<Record> NationalOptOutRecords = Records.Where(r => r.OriginalFile.SpecificationFile is Specification.NationalOptOutFile);
-					if (ConsentToolModel.EnableNationalOptOut == true && NationalOptOutRecords.Count() == 0)
+					if (EnableNationalOptOut == true && NationalOptOutRecords.Count() == 0)
 					{
 						return new ConsentValidState()
 						{
 							IsValid = false,
 							IsValidReason = "Patient removed to ensure compliance with national data opt-out"
 						};
-					} else 
-					{ 
+					}
+					else
+					{
 						return new ConsentValidState()
 						{
 							IsValid = true,
 							IsValidReason = "No consent record so patient flows via s251"
 						};
 					}
+
 				}
 
 
@@ -148,7 +148,7 @@ namespace StripV3Consent.Model
 				}
 
 
-				if (AllConsentRecords.Count() > 0 & ValidConsentRecords.Count() == 0 )
+				if (AllConsentRecords.Count() > 0 & ValidConsentRecords.Count() == 0)
 				{
 					return new ConsentValidState()
 					{
@@ -159,7 +159,6 @@ namespace StripV3Consent.Model
 
 
 				return HasIndividualRecordConsented(ConsentRecord);
-
 			}
 		}
 

@@ -12,20 +12,39 @@ namespace StripV3Consent.Model
     {
         public readonly ObservableRangeCollection<ImportFile> InputFiles = new ObservableRangeCollection<ImportFile>();
 
-        public readonly ObservableRangeCollection<RecordSet> Patients = new ObservableRangeCollection<RecordSet>();
-
-        public readonly ObservableRangeCollection<OutputFile> OutputFiles = new ObservableRangeCollection<OutputFile>();
-
-        public event NotifyCollectionChangedEventHandler InputFilesChanged;
-
-        private static bool enableNationalOptOut;
-        public static bool EnableNationalOptOut { get => enableNationalOptOut;
-            set { 
-                enableNationalOptOut = value;
-                EnableNationalOptOutChanged.Invoke();
+        private RecordSet[] patients;
+        public RecordSet[] Patients {
+            get { return patients; }
+            private set
+            {
+                patients = value;
+                PatientsChanged.Invoke(this);
             }
         }
-        public static event Action EnableNationalOptOutChanged;
+        public event ConsentToolModelEventHandler PatientsChanged;
+
+        private OutputFile[] outputFiles;
+        public OutputFile[] OutputFiles
+        {
+            get { return outputFiles; }
+            private set
+            {
+                outputFiles = value;
+                OutputFilesChanged.Invoke(this);
+            }
+        }
+        public event ConsentToolModelEventHandler OutputFilesChanged;
+
+        public delegate void ConsentToolModelEventHandler(ConsentToolModel sender);
+
+
+        private bool enableNationalOptOut;
+        public bool EnableNationalOptOut { get => enableNationalOptOut;
+            set { 
+                enableNationalOptOut = value;
+                ProcessInputFiles();
+            }
+        }
 
         public delegate void ProgressEventHandler(object sender, ProgressEventArgs e);
         public event ProgressEventHandler Progress;
@@ -36,74 +55,56 @@ namespace StripV3Consent.Model
             {
                 return;
             }
-            Patients.Clear();
-            IEnumerable<ImportFile> ValidFilesForImport = InputFiles.Where(i => i.IsValid.ValidState != ValidState.Error);
 
-            IEnumerable<ImportFile> NonPatientLevelFiles = ValidFilesForImport.Where(i => i.SpecificationFile.IsPatientLevelFile == false);
-            IEnumerable<ImportFile> ValidFilesForProcessing = ValidFilesForImport.Except(NonPatientLevelFiles);
-
-            Progress?.Invoke(this, new ProgressEventArgs(
-                new ConsentToolProgress(ConsentToolProgress.Stages.GroupingRecords)
-                ));
-            IEnumerable<RecordSet> NewPatients = SplitInputFilesIntoRecordSets(ValidFilesForProcessing.ToList());
-            
-            Patients.AddRange(NewPatients);
-
-            OutputFiles.Clear();
-            Progress?.Invoke(this, new ProgressEventArgs(
-                new ConsentToolProgress(ConsentToolProgress.Stages.SplittingBackUp)
-                ));
-            IEnumerable<OutputFile> NewOutputFiles = SplitBackUpIntoFiles(Patients);    //slow
-            
-            Progress?.Invoke(this, new ProgressEventArgs(
-                new ConsentToolProgress(ConsentToolProgress.Stages.AddingToOutput)
-                ));
-            OutputFiles.AddRange(NewOutputFiles);   //slow
-
-			OutputFiles.AddRange(NonPatientLevelFiles.Select(i => new DirectOutputFile
-			(
-				file: i,
-                contentToOutput: i.FileContents
-			)
-            ));
-
-            Progress?.Invoke(this, new ProgressEventArgs(
-                new ConsentToolProgress(ConsentToolProgress.Stages.Finished)
-                ));
-
+            ProcessInputFiles();
         }
 
-        private void ProcessFiles()
+        private void ProcessInputFiles()
         {
+            IEnumerable<ImportFile> ValidFilesForImport = InputFiles.Where(i => i.IsValid.ValidState != ValidState.Error);
 
+            IEnumerable<ImportFile> PatientLevelImportFiles = ValidFilesForImport.Where(i => i.SpecificationFile.IsPatientLevelFile == true);
+
+            Progress?.Invoke(this, new ProgressEventArgs(new ConsentToolProgress(ConsentToolProgress.Stages.GroupingRecords)));
+
+            IEnumerable<RecordSet> NewPatients = SplitInputFilesIntoRecordSets(PatientLevelImportFiles.ToList(), EnableNationalOptOut);
+
+            Patients = NewPatients.ToArray();
+
+            Progress?.Invoke(this, new ProgressEventArgs(new ConsentToolProgress(ConsentToolProgress.Stages.SplittingBackUp)));
+
+            IEnumerable<RepackingOutputFile> NewOutputFiles = SplitBackUpIntoFiles(patients);    //slow
+
+            Progress?.Invoke(this, new ProgressEventArgs(new ConsentToolProgress(ConsentToolProgress.Stages.AddingToOutput)));
+
+            IEnumerable<ImportFile> NonPatientLevelImportFiles = ValidFilesForImport.Except(PatientLevelImportFiles);
+            IEnumerable<DirectOutputFile> DirectOutputFiles = NonPatientLevelImportFiles.Select(importFile => new DirectOutputFile
+             (
+                 file: importFile,
+                 contentToOutput: importFile.FileContents
+             )
+            ).ToArray();
+
+            IEnumerable<OutputFile> AllOutputFiles = NewOutputFiles.Union<OutputFile>(DirectOutputFiles);
+            OutputFiles = AllOutputFiles.ToArray();
+
+            Progress?.Invoke(this, new ProgressEventArgs(new ConsentToolProgress(ConsentToolProgress.Stages.Finished)));
         }
 
 
 
         public ConsentToolModel()
         {
-            InputFiles.CollectionChanged += InputFiles_SubCollectionChanged;
-            InputFilesChanged += InputFiles_CollectionChanged;
-            EnableNationalOptOutChanged += ConsentToolModel_EnableNationalOptOutChanged;
+            InputFiles.CollectionChanged += InputFiles_CollectionChanged;
         }
 
-        private void InputFiles_SubCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            InputFilesChanged?.Invoke(sender, e);
-        }
-
-        private void ConsentToolModel_EnableNationalOptOutChanged()
-        {
-            //Reload other file lists to take into account NOO (or not)
-            InputFilesChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
-        }
 
         /// <summary>
         /// Splits ImportFile objects into Records, and then groups them by identifier to make RecordSets
         /// </summary>
         /// <param name="Files"></param>
         /// <returns></returns>
-        public static IEnumerable<RecordSet> SplitInputFilesIntoRecordSets(IEnumerable<ImportFile> Files)
+        public static IEnumerable<RecordSet> SplitInputFilesIntoRecordSets(IEnumerable<ImportFile> Files, bool EnableNationalOptOut)
         {
             List<Record> AllRecords = Files
                                             .Select(File => File.SplitInto2DArray().Content         //Transform DataFile into string[][] resulting in IEnumerable<string[][]>
@@ -116,7 +117,7 @@ namespace StripV3Consent.Model
             IEnumerable<RecordSet> GroupedRecords = AllRecords.GroupBy
                                                                         <Record, string, RecordSet>(//Take in Record, group by String, Output RecordSet
                                                                         r => r.CompositeIdentifier,
-                                                                        (NHSNumber, RecordsIEnumerable) => new RecordSet()
+                                                                        (NHSNumber, RecordsIEnumerable) => new RecordSet(ShouldNationalOptOutBeChecked: EnableNationalOptOut)
                                                                         {
                                                                             Records = RecordsIEnumerable.ToList<Record>()
                                                                         }
@@ -125,7 +126,7 @@ namespace StripV3Consent.Model
             return GroupedRecords;
         }
 
-        private IEnumerable<IEnumerable<Record>> FlattenAndGroupRecordsBySpecificationFiles(IEnumerable<RecordSet> RecordSets)
+        private static IEnumerable<IEnumerable<Record>> FlattenAndGroupRecordsBySpecificationFiles(IEnumerable<RecordSet> RecordSets)
         {
             IEnumerable<Record> RecordsFlattened = RecordSets.Select(rs => rs.Records).SelectMany<IEnumerable<Record>, Record>(x => x);
 
@@ -139,7 +140,7 @@ namespace StripV3Consent.Model
             return RecordsGroupedByOriginalFiles;
         }
 
-        private IEnumerable<OutputFile> SplitBackUpIntoFiles(IEnumerable<RecordSet> RecordSets)
+        private static IEnumerable<RepackingOutputFile> SplitBackUpIntoFiles(IEnumerable<RecordSet> RecordSets)
         {
             IEnumerable<IEnumerable<Record>> AllConsentedRecordsGroupedByFile = FlattenAndGroupRecordsBySpecificationFiles(RecordSets.Where(RS => RS.IsConsentValid == true));
 
@@ -147,7 +148,7 @@ namespace StripV3Consent.Model
             List<IEnumerable<Record>> AllRecordsGroupedByFile = FlattenAndGroupRecordsBySpecificationFiles(RecordSets).ToList<IEnumerable<Record>>();
 
 
-            IEnumerable<OutputFile> Files = AllConsentedRecordsGroupedByFile.Select(FileOutputRecords => new RepackingOutputFile(
+            IEnumerable<RepackingOutputFile> Files = AllConsentedRecordsGroupedByFile.Select(FileOutputRecords => new RepackingOutputFile(
                                                                                                                                     file: FileOutputRecords.First().OriginalFile,
                                                                                                                                     outputRecords: FileOutputRecords,    ///Match each set of records to a new OutputFile object
                                                                                                                                     allRecordsOriginallyInFile: AllRecordsGroupedByFile.Find(FileAllRecords => FileAllRecords.First().OriginalFile.SpecificationFile == FileOutputRecords.First().OriginalFile.SpecificationFile) //Find the full set (consented and non-consented) of records by looking through AllRecordsGroupedByFile for one with the same OriginalFile attribute

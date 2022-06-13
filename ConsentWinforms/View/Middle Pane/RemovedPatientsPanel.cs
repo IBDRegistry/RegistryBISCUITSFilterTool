@@ -14,43 +14,25 @@ namespace StripV3Consent.View
 {
     class RemovedPatientsPanel: Panel
     {
-        private ObservableRangeCollection<RecordSet> allRecordSets;
-        public ObservableRangeCollection<RecordSet> AllRecordSets
+        private RecordSet[] allRecordSets;
+        public RecordSet[] AllRecordSets
         {
             get => allRecordSets;
             set
             {
                 allRecordSets = value;
                 AllRecordSetsChanged?.Invoke(this, new EventArgs());
-				if (value != null)
-					value.CollectionChanged += AllRecordSets_CollectionChanged;
 			}
         }
 
         public MainWindow MainWindowReference;
 
-		private void AllRecordSets_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-		{
-            AllRecordSetsChanged?.Invoke(this, new EventArgs());
-            switch (e.Action)
-            {
-                case NotifyCollectionChangedAction.Add:
-                    Invoke((Action)(() => RemovedRecords_Redraw()));
-                    break;
-                case NotifyCollectionChangedAction.Reset:
-                    Invoke((Action)(() => RemovedRecords_Redraw()));
-                    break;
-                case NotifyCollectionChangedAction.Remove:
-                    throw new NotImplementedException();
-            }
-        }
-
         /// <summary>
-        /// This event notifies when either the AllRecordSetsCollection is replaced or changed, to change the checkboxes at the bottom of the list
+        /// This event notifies when either the AllRecordSetsCollection is replaced or changed, to change the filter checkboxes at the bottom of the list
         /// </summary>
         public event EventHandler AllRecordSetsChanged;
 
-        private Func<RecordSet, bool> specifier = RecordSet => RecordSet.IsConsentValid == false;
+        private Func<RecordSet, bool> specifier;
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -62,7 +44,8 @@ namespace StripV3Consent.View
             set
             {
                 specifier = new Func<RecordSet, bool>(value);
-                RemovedRecords_Redraw();
+                if (AllRecordSets != null)
+                    RemovedRecords_Redraw();
             }
         }
         
@@ -74,7 +57,7 @@ namespace StripV3Consent.View
         /// <summary>
         /// Redraws the panel with all the records filtered by Specifi
         /// </summary>
-        private async void RemovedRecords_Redraw()
+        public async void RemovedRecords_Redraw()
         {
             if (MainWindowReference is null)
                 throw new NullReferenceException($"{nameof(MainWindowReference)} was null");
@@ -86,11 +69,11 @@ namespace StripV3Consent.View
             List<RecordSet> DisplayRecords = new List<RecordSet>();
             await Task.Run(
                 () => {
-                    for (int i = 0; i < AllRecordSets.Count; i++)
+                    for (int i = 0; i < AllRecordSets.Length; i++)
                     {
                         RecordSet r = AllRecordSets[i];
                         filteringProgressForm.Value = i;
-                        filteringProgressForm.MaximumValue = AllRecordSets.Count;
+                        filteringProgressForm.MaximumValue = AllRecordSets.Length;
                         if (specifier(r))
                         {
                             DisplayRecords.Add(r);
