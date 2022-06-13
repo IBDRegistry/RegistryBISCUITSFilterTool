@@ -40,11 +40,8 @@ namespace StripV3Consent.View
             } ;
 
 
-            Model.InputFiles.CollectionChanged += (s, e) => {
-                                                                Invoke((Action)(
-                                                                    () => { UpdateBlankFilesRemovedLabel(); }
-                                                                ));
-                                                            };
+            Model.InputFiles.CollectionChanged += (s, e) => { Invoke((Action)UpdateBlankFilesRemovedLabel); };
+
             Model.Progress += Progress_Updated;
             RemovedPatientsPanel.MainWindowReference = this;
 
@@ -64,7 +61,7 @@ namespace StripV3Consent.View
                 Invoke((Action<ProgressEventArgs>)UpdateProgressForm, new object[] { e });
             } else
             {
-                Invoke((Action)(() => progress.Show()));
+                Invoke((Action)progress.Show);
                 UpdateProgressForm(e);
             }
 
@@ -344,7 +341,7 @@ You can contact your IT support for help with this issue",
 
         private void RemovedPatientsPanel_AllRecordSetsChanged(object sender, EventArgs e)
         {
-            CheckIfPatientsPaneFilterCheckboxesCanBeEnabled();
+            Invoke((Action)CheckIfPatientsPaneFilterCheckboxesCanBeEnabled);
         }
         private void CheckIfPatientsPaneFilterCheckboxesCanBeEnabled()
         {
