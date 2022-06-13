@@ -11,6 +11,7 @@ namespace StripV3Consent.View
     {
         private List<Form> LockingForms = new List<Form>();
 
+        private List<Control> ControlsWithDragDropEnabled = new List<Control>();
         public LockableForm()
         {
             SetUpMessageFilter();
@@ -19,10 +20,41 @@ namespace StripV3Consent.View
         public void AddLockingForm(Form LockingForm)
         {
             LockingForms.Add(LockingForm);
+
+            IEnumerable<Control> AllControlsOnLockedForm = GetAllChildControls(this);
+            ControlsWithDragDropEnabled.AddRange(AllControlsOnLockedForm.Where(c => c.AllowDrop));
+
+            foreach(Control c in this.ControlsWithDragDropEnabled)
+            {
+                c.Invoke((Action)(() => c.AllowDrop = false));
+            }
+
+
+
+        }
+        
+        private List<Control> GetAllChildControls(Control container, List<Control> AllControlsList = null)
+        {
+            if (AllControlsList is null)
+                AllControlsList = new List<Control>();
+
+            foreach (Control c in container.Controls)
+            {
+                GetAllChildControls(c, AllControlsList);
+                AllControlsList.Add(c);
+            }
+
+            return AllControlsList;
         }
         public void RemoveLockingForm(Form LockingFormToRemove)
         {
             LockingForms.Remove(LockingFormToRemove);
+
+            foreach (Control c in this.ControlsWithDragDropEnabled)
+            {
+                c.AllowDrop = true;
+            }
+            ControlsWithDragDropEnabled.Clear();
         }
 
         protected void SetUpMessageFilter()
@@ -39,7 +71,7 @@ namespace StripV3Consent.View
         {
             if (child == null) return false;
             Control p = child.Parent;
-            while (p!= null)
+            while (p != null)
             {
                 if (p == parent) return true;
                 p = parent;
@@ -53,11 +85,13 @@ namespace StripV3Consent.View
             0x203,  //WM_LBUTTONDBLCLK
             0x202   //WM_LBUTTONUP
         };
+
         public bool PreFilterMessage(ref Message m)
         {
             Control c = Control.FromHandle(m.HWnd);
             if (HasParent(c, this) | m.HWnd == this.Handle)
             {
+                //Block any click action
                 if (FilteredWindowMessages.Contains(m.Msg))
                 {
                     if (LockingForms.Count() > 0)
@@ -66,6 +100,11 @@ namespace StripV3Consent.View
                         LockingForms.Last<Form>().BringToFront();
                         return true;
                     }
+                }
+
+                if (c.AllowDrop)
+                {
+
                 }
             }
             return false;
