@@ -406,9 +406,9 @@ You can contact your IT support for help with this issue",
         }
 
 
-        private void CheckOptOutFile_CheckedChanged(object sender, EventArgs e)
+        private async void CheckOptOutFile_CheckedChanged(object sender, EventArgs e)
         {
-            Model.EnableNationalOptOut = CheckOptOutFile.Checked;
+            await Task.Run(() => Model.EnableNationalOptOut = CheckOptOutFile.Checked);
         }
 
 		private void GetManualLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
