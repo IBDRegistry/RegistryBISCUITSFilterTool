@@ -179,6 +179,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ibdregistry.ico" />
+    <None Include="Resources\60990.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
