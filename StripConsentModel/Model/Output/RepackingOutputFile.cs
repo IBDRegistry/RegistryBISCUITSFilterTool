@@ -19,9 +19,11 @@ namespace StripV3Consent.Model
 		private const string ColumnSeparator = ",";
 		private const string RowSeparator = "\r\n";
 
-		private string RemoveConflictingChars(string StringToClean)
+		public static string RemoveConflictingChars(string StringToClean, string[] ExtraValuesToRemove = null)
 		{
 			string[] ValuesToRemove = { "\n", "\r", "," };
+
+			ValuesToRemove = ValuesToRemove ?? ValuesToRemove.Union(ExtraValuesToRemove).ToArray();
 
 			foreach (string value in ValuesToRemove)
 			{

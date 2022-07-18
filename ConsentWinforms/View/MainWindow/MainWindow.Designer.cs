@@ -47,6 +47,7 @@ namespace StripV3Consent.View
 			this.CheckOptOutMessage = new System.Windows.Forms.Label();
 			this.CheckOptOutFile = new System.Windows.Forms.CheckBox();
 			this.autoResizingLabel1 = new StripV3Consent.View.AutoResizingLabel();
+			this.CopyStatusLabel = new System.Windows.Forms.Label();
 			this.TableLayoutPanel.SuspendLayout();
 			this.ProcessingControlPanel.SuspendLayout();
 			this.LeftControlPanel.SuspendLayout();
@@ -155,6 +156,7 @@ namespace StripV3Consent.View
 			// 
 			// ProcessingControlPanel
 			// 
+			this.ProcessingControlPanel.Controls.Add(this.CopyStatusLabel);
 			this.ProcessingControlPanel.Controls.Add(this.CopyToClipboardButton);
 			this.ProcessingControlPanel.Controls.Add(this.DisplayRemovedPatientsCheckbox);
 			this.ProcessingControlPanel.Controls.Add(this.DisplayKeptPatientsCheckbox);
@@ -260,6 +262,16 @@ namespace StripV3Consent.View
 			this.autoResizingLabel1.Text = "Drop files here";
 			this.autoResizingLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
+			// CopyStatusLabel
+			// 
+			this.CopyStatusLabel.AutoSize = true;
+			this.CopyStatusLabel.Location = new System.Drawing.Point(56, 75);
+			this.CopyStatusLabel.Name = "CopyStatusLabel";
+			this.CopyStatusLabel.Size = new System.Drawing.Size(101, 13);
+			this.CopyStatusLabel.TabIndex = 3;
+			this.CopyStatusLabel.Text = "Copied to clipboard!";
+			this.CopyStatusLabel.Visible = false;
+			// 
 			// MainWindow
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -300,6 +312,7 @@ namespace StripV3Consent.View
 		private System.Windows.Forms.Panel LeftControlPanel;
 		private System.Windows.Forms.LinkLabel GetManualLabel;
 		private System.Windows.Forms.Button CopyToClipboardButton;
+		private System.Windows.Forms.Label CopyStatusLabel;
 	}
 }
 

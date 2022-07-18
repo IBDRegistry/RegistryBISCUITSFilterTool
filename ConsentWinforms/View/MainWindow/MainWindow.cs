@@ -342,6 +342,7 @@ You can contact your IT support for help with this issue",
         private void RemovedPatientsPanel_AllRecordSetsChanged(object sender, EventArgs e)
         {
             Invoke((Action)CheckIfPatientsPaneFilterCheckboxesCanBeEnabled);
+            Invoke((Action)(() => CopyStatusLabel.Visible = false));
         }
         private void CheckIfPatientsPaneFilterCheckboxesCanBeEnabled()
         {
@@ -349,11 +350,13 @@ You can contact your IT support for help with this issue",
             {
                 DisplayKeptPatientsCheckbox.Enabled = true;
                 DisplayRemovedPatientsCheckbox.Enabled = true;
+                CopyToClipboardButton.Enabled = true;
             }
             else
             {
                 DisplayKeptPatientsCheckbox.Enabled = false;
                 DisplayRemovedPatientsCheckbox.Enabled = false;
+                CopyToClipboardButton.Enabled = false;
             }
         }
 
@@ -422,13 +425,24 @@ You can contact your IT support for help with this issue",
             const string ColumnDelimiter = "\t";
             const string RowDelimiter = "\r\n";
 
-            IEnumerable<IEnumerable<string>> TableToExport = RecordSetsToExport.Select(rs => FieldsToInclude.Select(dataItemCode => rs.GetFieldValue(dataItemCode)));
+            //get the field values to include (NHS Number, Forename, etc...) from each RecordSet and remove the conflicting characters from each value
+            IEnumerable<IEnumerable<string>> TableToExport = RecordSetsToExport.Select(rs => FieldsToInclude.Select(
+                dataItemCode => RepackingOutputFile.RemoveConflictingChars(rs.GetFieldValue(dataItemCode), new string[] { ColumnDelimiter })));
 
             IEnumerable<string> LinesToExport = TableToExport.Select(columns => string.Join(ColumnDelimiter, columns));
 
             string CombinedOutput = string.Join(RowDelimiter, LinesToExport);
 
             Clipboard.SetText(CombinedOutput);
+
+            CopyStatusLabel.Visible = true;
+
+            Timer TimeOutTimer = new Timer();
+            TimeOutTimer.Interval = 5000;
+            TimeOutTimer.Enabled = true;
+            TimeOutTimer.Tick += (object SendingTimer, EventArgs TimerEventArgs) => {
+                CopyStatusLabel.Visible = false;
+            };
         }
 	}
 }
