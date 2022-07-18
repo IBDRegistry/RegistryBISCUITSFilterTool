@@ -28,7 +28,6 @@ namespace StripV3Consent.View
                 allRecordSets = value;
                 AllRecordSetsChanged?.Invoke(this, new EventArgs());
                 RemovedRecords_Redraw();
-
             }
         }
 
@@ -59,13 +58,12 @@ namespace StripV3Consent.View
         public RemovedPatientsPanel()
         {
             AutoScroll = true;
-
         }
-        /// <summary>
-        /// Redraws the panel with all the records filtered by Specifi
-        /// </summary>
-        public async void RemovedRecords_Redraw()
-        {
+
+        public List<RecordSet> FilteredRecords { get; private set; }
+
+        private async Task<List<RecordSet>> FilterRecords()
+		{
             if (MainWindowReference is null)
                 throw new NullReferenceException($"{nameof(MainWindowReference)} was null");
 
@@ -93,9 +91,18 @@ namespace StripV3Consent.View
             filteringProgressForm.Close();
             MainWindowReference.RemoveLockingForm(filteringProgressForm);
 
+            return DisplayRecords;
+        }
+        /// <summary>
+        /// Redraws the panel with all the records filtered by Specifi
+        /// </summary>
+        public async void RemovedRecords_Redraw()
+        {
+            FilteredRecords = await FilterRecords();
+
             Controls.Clear();
 
-            if (DisplayRecords.Count() > 100)
+            if (FilteredRecords.Count() > 100)
 			{
                 Controls.Add(new Label() { 
                     Text = "There are too many patients to display in this panel",
@@ -107,7 +114,7 @@ namespace StripV3Consent.View
 			}
 
             
-            RemovedPatient[] NewRemovedPatientPanels = DisplayRecords.Select(RS => new RemovedPatient() { 
+            RemovedPatient[] NewRemovedPatientPanels = FilteredRecords.Select(RS => new RemovedPatient() { 
                 Patient = RS, 
                 Dock = DockStyle.Top,
                 Margin = new Padding()
@@ -120,6 +127,7 @@ namespace StripV3Consent.View
             }).ToArray();
             Controls.AddRange(NewRemovedPatientPanels);
         }
+
 
     }
 }

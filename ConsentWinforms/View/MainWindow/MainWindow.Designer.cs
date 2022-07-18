@@ -39,6 +39,7 @@ namespace StripV3Consent.View
 			this.ProcessingPaneLabel = new System.Windows.Forms.Label();
 			this.OutputPaneLabel = new System.Windows.Forms.Label();
 			this.ProcessingControlPanel = new System.Windows.Forms.Panel();
+			this.CopyToClipboardButton = new System.Windows.Forms.Button();
 			this.DisplayRemovedPatientsCheckbox = new System.Windows.Forms.CheckBox();
 			this.DisplayKeptPatientsCheckbox = new System.Windows.Forms.CheckBox();
 			this.LeftControlPanel = new System.Windows.Forms.Panel();
@@ -73,7 +74,7 @@ namespace StripV3Consent.View
 			this.TableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
 			this.TableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 80F));
 			this.TableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-			this.TableLayoutPanel.Size = new System.Drawing.Size(915, 558);
+			this.TableLayoutPanel.Size = new System.Drawing.Size(915, 559);
 			this.TableLayoutPanel.TabIndex = 0;
 			// 
 			// DropFilesHerePanel
@@ -83,7 +84,7 @@ namespace StripV3Consent.View
 			this.DropFilesHerePanel.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.DropFilesHerePanel.Location = new System.Drawing.Point(3, 23);
 			this.DropFilesHerePanel.Name = "DropFilesHerePanel";
-			this.DropFilesHerePanel.Size = new System.Drawing.Size(264, 424);
+			this.DropFilesHerePanel.Size = new System.Drawing.Size(264, 425);
 			this.DropFilesHerePanel.TabIndex = 0;
 			// 
 			// LoadedFilesPanel
@@ -92,7 +93,7 @@ namespace StripV3Consent.View
 			this.LoadedFilesPanel.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.LoadedFilesPanel.Location = new System.Drawing.Point(628, 23);
 			this.LoadedFilesPanel.Name = "LoadedFilesPanel";
-			this.LoadedFilesPanel.Size = new System.Drawing.Size(284, 424);
+			this.LoadedFilesPanel.Size = new System.Drawing.Size(284, 425);
 			this.LoadedFilesPanel.TabIndex = 1;
 			// 
 			// RemovedPatientsPanel
@@ -102,7 +103,7 @@ namespace StripV3Consent.View
 			this.RemovedPatientsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.RemovedPatientsPanel.Location = new System.Drawing.Point(273, 23);
 			this.RemovedPatientsPanel.Name = "RemovedPatientsPanel";
-			this.RemovedPatientsPanel.Size = new System.Drawing.Size(349, 424);
+			this.RemovedPatientsPanel.Size = new System.Drawing.Size(349, 425);
 			this.RemovedPatientsPanel.TabIndex = 3;
 			this.RemovedPatientsPanel.AllRecordSetsChanged += new System.EventHandler(this.RemovedPatientsPanel_AllRecordSetsChanged);
 			// 
@@ -111,7 +112,7 @@ namespace StripV3Consent.View
 			this.SaveButton.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.SaveButton.Enabled = false;
 			this.SaveButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.SaveButton.Location = new System.Drawing.Point(628, 453);
+			this.SaveButton.Location = new System.Drawing.Point(628, 454);
 			this.SaveButton.Name = "SaveButton";
 			this.SaveButton.Size = new System.Drawing.Size(284, 102);
 			this.SaveButton.TabIndex = 4;
@@ -154,13 +155,25 @@ namespace StripV3Consent.View
 			// 
 			// ProcessingControlPanel
 			// 
+			this.ProcessingControlPanel.Controls.Add(this.CopyToClipboardButton);
 			this.ProcessingControlPanel.Controls.Add(this.DisplayRemovedPatientsCheckbox);
 			this.ProcessingControlPanel.Controls.Add(this.DisplayKeptPatientsCheckbox);
 			this.ProcessingControlPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.ProcessingControlPanel.Location = new System.Drawing.Point(273, 453);
+			this.ProcessingControlPanel.Location = new System.Drawing.Point(273, 454);
 			this.ProcessingControlPanel.Name = "ProcessingControlPanel";
 			this.ProcessingControlPanel.Size = new System.Drawing.Size(349, 102);
 			this.ProcessingControlPanel.TabIndex = 8;
+			// 
+			// CopyToClipboardButton
+			// 
+			this.CopyToClipboardButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			this.CopyToClipboardButton.Location = new System.Drawing.Point(4, 70);
+			this.CopyToClipboardButton.Name = "CopyToClipboardButton";
+			this.CopyToClipboardButton.Size = new System.Drawing.Size(46, 23);
+			this.CopyToClipboardButton.TabIndex = 2;
+			this.CopyToClipboardButton.Text = "Copy";
+			this.CopyToClipboardButton.UseVisualStyleBackColor = true;
+			this.CopyToClipboardButton.Click += new System.EventHandler(this.CopyToClipboardButton_Click);
 			// 
 			// DisplayRemovedPatientsCheckbox
 			// 
@@ -194,7 +207,7 @@ namespace StripV3Consent.View
 			this.LeftControlPanel.Controls.Add(this.CheckOptOutMessage);
 			this.LeftControlPanel.Controls.Add(this.CheckOptOutFile);
 			this.LeftControlPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.LeftControlPanel.Location = new System.Drawing.Point(3, 453);
+			this.LeftControlPanel.Location = new System.Drawing.Point(3, 454);
 			this.LeftControlPanel.Name = "LeftControlPanel";
 			this.LeftControlPanel.Size = new System.Drawing.Size(264, 102);
 			this.LeftControlPanel.TabIndex = 9;
@@ -251,7 +264,7 @@ namespace StripV3Consent.View
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(915, 558);
+			this.ClientSize = new System.Drawing.Size(915, 559);
 			this.Controls.Add(this.TableLayoutPanel);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MinimumSize = new System.Drawing.Size(931, 597);
@@ -286,6 +299,7 @@ namespace StripV3Consent.View
 		private System.Windows.Forms.Label CheckOptOutMessage;
 		private System.Windows.Forms.Panel LeftControlPanel;
 		private System.Windows.Forms.LinkLabel GetManualLabel;
+		private System.Windows.Forms.Button CopyToClipboardButton;
 	}
 }
 

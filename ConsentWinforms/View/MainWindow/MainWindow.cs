@@ -412,5 +412,23 @@ You can contact your IT support for help with this issue",
 		{
             System.Diagnostics.Process.Start("https://ibdregistry.org.uk/extract-filter-guide");
 		}
+
+		private void CopyToClipboardButton_Click(object sender, EventArgs e)
+		{
+            List<RecordSet> RecordSetsToExport = RemovedPatientsPanel.FilteredRecords;
+
+            string[] FieldsToInclude = { DataItemCodes.NHSNumber };
+
+            const string ColumnDelimiter = "\t";
+            const string RowDelimiter = "\r\n";
+
+            IEnumerable<IEnumerable<string>> TableToExport = RecordSetsToExport.Select(rs => FieldsToInclude.Select(dataItemCode => rs.GetFieldValue(dataItemCode)));
+
+            IEnumerable<string> LinesToExport = TableToExport.Select(columns => string.Join(ColumnDelimiter, columns));
+
+            string CombinedOutput = string.Join(RowDelimiter, LinesToExport);
+
+            Clipboard.SetText(CombinedOutput);
+        }
 	}
 }
