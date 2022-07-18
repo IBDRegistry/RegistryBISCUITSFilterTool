@@ -66,13 +66,27 @@
     <Compile Include="Libraries\FileIcon_Src\IconListManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="View\Common\FileItem.cs" />
-    <Compile Include="View\Common\FileList.cs" />
-    <Compile Include="View\Import Pane\AutoResizingLabel.cs" />
-    <Compile Include="View\Import Pane\DropFilesPanel.cs" />
-    <Compile Include="View\Import Pane\ExecuteButton.cs" />
-    <Compile Include="View\Import Pane\ImportFileItem.cs" />
-    <Compile Include="View\MainWindow\LockableForm.cs" />
+    <Compile Include="View\Common\FileItem.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="View\Common\FileList.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="View\Import Pane\AutoResizingLabel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="View\Import Pane\DropFilesPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="View\Import Pane\ExecuteButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="View\Import Pane\ImportFileItem.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="View\MainWindow\LockableForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="View\MainWindow\MainWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -82,10 +96,18 @@
     <Compile Include="View\Middle Pane\RemovedPatient.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="View\Middle Pane\RemovedPatientsPanel.cs" />
-    <Compile Include="View\Output Pane\NonPatientOutputFileItem.cs" />
-    <Compile Include="View\Output Pane\PatientOutputFileItem.cs" />
-    <Compile Include="View\Output Pane\OutputFilesPanel.cs" />
+    <Compile Include="View\Middle Pane\RemovedPatientsPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="View\Output Pane\NonPatientOutputFileItem.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="View\Output Pane\PatientOutputFileItem.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="View\Output Pane\OutputFilesPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="View\Common\ProgressForm.cs">
       <SubType>Form</SubType>
     </Compile>

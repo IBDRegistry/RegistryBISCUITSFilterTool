@@ -47,6 +47,9 @@ namespace StripV3Consent.Model
             }
         }
 
+        public delegate void ProgressEventHandler(object sender, ProgressEventArgs e);
+        public event ProgressEventHandler Progress;
+
         private void InputFiles_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.Action is NotifyCollectionChangedAction.Reset)
