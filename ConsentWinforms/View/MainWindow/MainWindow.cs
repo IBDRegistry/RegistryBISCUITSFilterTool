@@ -12,25 +12,78 @@ using System.Threading.Tasks;
 
 namespace StripV3Consent.View
 {
-    public partial class MainWindow : Form
+    public partial class MainWindow : LockableForm
     {
         private ConsentToolModel Model = new ConsentToolModel();
+
+        private ProgressForm progress;
 
         public MainWindow()
         {
             InitializeComponent();
             
             DropFilesHerePanel.FileList.Files = Model.InputFiles;
-            RemovedPatientsPanel.AllRecordSets = Model.Patients;
-            LoadedFilesPanel.FileList.Files = Model.OutputFiles;
 
-            LoadedFilesPanel.FileList.Files.CollectionChanged += OutputFilesChanged;
-            Model.InputFilesChanged += UpdateBlankFilesRemovedLabel;
+            Model.PatientsChanged += (s) => { Invoke((Action)(() => RemovedPatientsPanel.AllRecordSets = s.Patients)); };
+
+            Model.OutputFilesChanged += (ConsentToolModel m) =>
+            {
+                LoadedFilesPanel.FileList.Files.Clear();
+                LoadedFilesPanel.FileList.Files.AddRange(m.OutputFiles);
+            };
+
+
+            Model.OutputFilesChanged += (m) => { 
+                Invoke((Action)( 
+                    () => CheckIfSaveButtonCanBeEnabled(m.OutputFiles)
+                )); 
+            } ;
+
+
+            Model.OutputFilesChanged += (m) => { Invoke((Action)UpdateBlankFilesRemovedLabel); };
+
+            Model.Progress += Progress_Updated;
+            RemovedPatientsPanel.MainWindowReference = this;
 
             CheckIfAdministrator();
         }
 
-        private void UpdateBlankFilesRemovedLabel(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private void Progress_Updated(object sender, ProgressEventArgs e)
+        {
+            if (progress is null)
+            {
+                progress = new ProgressForm();
+                AddLockingForm(progress);
+            }
+            
+            if (progress.InvokeRequired)
+            {
+                Invoke((Action<ProgressEventArgs>)UpdateProgressForm, new object[] { e });
+            } else
+            {
+                Invoke((Action)progress.Show);
+                UpdateProgressForm(e);
+            }
+
+            
+        }
+
+        private void UpdateProgressForm(ProgressEventArgs e)
+        {
+            
+            progress.MaximumValue = Enum.GetValues(typeof(ConsentToolProgress.Stages)).Length;
+            progress.Value = Array.IndexOf(Enum.GetValues(typeof(ConsentToolProgress.Stages)), e.ProgressInfo.stage);
+            progress.LoadingText = e.ProgressInfo.StageToString();
+
+            if (e.ProgressInfo.stage == ConsentToolProgress.Stages.Finished)
+            {
+                progress.Hide();
+                RemoveLockingForm(progress);
+                progress = null;
+            }
+        }
+
+        private void UpdateBlankFilesRemovedLabel()
         {
             IEnumerable<Specification.File> SpecificationFilesInInput = Model.InputFiles.GroupBy
                 <ImportFile, Specification.File, Specification.File>
@@ -41,6 +94,7 @@ namespace StripV3Consent.View
             IEnumerable<Specification.File> SpecificationFilesInOutput = Model.OutputFiles.Select(OutFile => OutFile.SpecificationFile);
 
             List<Specification.File> SpecificationFilesThatDidntMakeIt = SpecificationFilesInInput.Except(SpecificationFilesInOutput).ToList();
+
             SpecificationFilesThatDidntMakeIt.RemoveAll(element => element is null);
 
             List<ImportFile> InputFilesThatDidntMakeIt = Model.InputFiles.Where(inputFile => SpecificationFilesThatDidntMakeIt.Contains(inputFile.SpecificationFile)).ToList();
@@ -54,7 +108,7 @@ namespace StripV3Consent.View
                 LabelText = $"{InputFilesThatDidntMakeIt.Count()} files were excluded from the output: {Environment.NewLine}{string.Join(Environment.NewLine, InputFilesThatDidntMakeIt.Select(file => $"-{file.Name}").ToArray())}";
             }
             
-            Control ExistingLabel = LoadedFilesPanel.FileList.BottomPanel.Controls.Cast<Control>().Where(ctrl => ctrl.Name == BlankFilesRemovedLabelName).FirstOrDefault();
+            Label ExistingLabel = (Label)LoadedFilesPanel.FileList.BottomPanel.Controls.Cast<Control>().Where(ctrl => ctrl.Name == BlankFilesRemovedLabelName).FirstOrDefault();
             if (ExistingLabel == null)
             {
                 Label NewLabel = new Label()
@@ -66,11 +120,14 @@ namespace StripV3Consent.View
                 LoadedFilesPanel.FileList.BottomPanel.Controls.Add(NewLabel);
             } else
             {
-                ((Label)ExistingLabel).Text = LabelText;
+               ExistingLabel.Invoke((Action)(() => ExistingLabel.Text = LabelText));
             }
 
         }
 
+        /// <summary>
+        /// Checks if the program is being run with administrative privileges as this can cause drag and drop to not work correctly
+        /// </summary>
         private void CheckIfAdministrator()
         {
             if (IsAdministrator())
@@ -92,11 +149,11 @@ You can contact your IT support for help with this issue",
             return principal.IsInRole(WindowsBuiltInRole.Administrator);
         }
 
-        private bool CheckNationalOptOut()
+        private bool ConfirmNationalOptOutChoice()
 		{
             const string NOOFileNameInSpec = ".dat";
             //enter if either true & false or false & true
-            bool NOOChecked = ConsentToolModel.EnableNationalOptOut;
+            bool NOOChecked = Model.EnableNationalOptOut;
             bool NOOFilePresent = Model.InputFiles.Where(i => {
                 if (i.SpecificationFile == null)    //would like to use bool? but not supported in .NET Framework
 				{
@@ -189,7 +246,7 @@ You can contact your IT support for help with this issue",
 
         private void SaveButton_Click(object sender, EventArgs e)
         {
-            if (CheckNationalOptOut() != true)
+            if (ConfirmNationalOptOutChoice() != true)
 			{
                 return;
 			}
@@ -270,11 +327,9 @@ You can contact your IT support for help with this issue",
             System.Diagnostics.Process.Start(startInfo);
         }
 
-        private void OutputFilesChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private void CheckIfSaveButtonCanBeEnabled(OutputFile[] OutputFiles)
         {
-            ObservableCollection<OutputFile> OutputFiles = sender as ObservableCollection<OutputFile>;
-
-            if (OutputFiles.Count > 0)
+            if (OutputFiles.Length > 0)
             {
                 SaveButton.Enabled = true;
             }
@@ -286,13 +341,16 @@ You can contact your IT support for help with this issue",
 
         private void RemovedPatientsPanel_AllRecordSetsChanged(object sender, EventArgs e)
         {
-            ObservableCollection<RecordSet> AllRecordSetsGrouped = ((RemovedPatientsPanel)sender).AllRecordSets;
-
-            if (AllRecordSetsGrouped != null)
+            Invoke((Action)CheckIfPatientsPaneFilterCheckboxesCanBeEnabled);
+        }
+        private void CheckIfPatientsPaneFilterCheckboxesCanBeEnabled()
+        {
+            if (RemovedPatientsPanel.AllRecordSets != null)
             {
                 DisplayKeptPatientsCheckbox.Enabled = true;
                 DisplayRemovedPatientsCheckbox.Enabled = true;
-            } else
+            }
+            else
             {
                 DisplayKeptPatientsCheckbox.Enabled = false;
                 DisplayRemovedPatientsCheckbox.Enabled = false;
@@ -316,7 +374,10 @@ You can contact your IT support for help with this issue",
 
         private void DisplayCheckboxesChanged(object sender, EventArgs e)
         {
-            //Swap from Func<RecordSet, bool> to Predicate<RecordSet>
+            SetMiddlePaneFilterFromUI();
+        }
+        private void SetMiddlePaneFilterFromUI()
+        {
             List<Tuple<CheckBox, Predicate<RecordSet>>> CheckboxSpecifiers = new List<Tuple<CheckBox, Predicate<RecordSet>>>()
             {
                 new Tuple<CheckBox, Predicate<RecordSet>>(DisplayKeptPatientsCheckbox, rs => rs.IsConsentValid == true ),
@@ -332,16 +393,19 @@ You can contact your IT support for help with this issue",
 
         private void MainWindow_Load(object sender, EventArgs e)
         {
-            ConsentToolModel.EnableNationalOptOut = CheckOptOutFile.Checked;   //Set designer value as default value, currently this is true
+            Model.EnableNationalOptOut = CheckOptOutFile.Checked;   //Set designer value as default value, currently this is true
+
+            SetMiddlePaneFilterFromUI();
+            CheckIfPatientsPaneFilterCheckboxesCanBeEnabled();
 
             Version AssemblyVersion = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
-            this.Text = this.Text + $" v{AssemblyVersion.Major}.{AssemblyVersion.Minor}.{(AssemblyVersion.MinorRevision != 0 ? AssemblyVersion.MinorRevision.ToString() : "")}";
+            Text = Text + $" v{AssemblyVersion.Major}.{AssemblyVersion.Minor}{(AssemblyVersion.MinorRevision != 0 ? "." + AssemblyVersion.MinorRevision.ToString() : "")}";
         }
 
 
-        private void CheckOptOutFile_CheckedChanged(object sender, EventArgs e)
+        private async void CheckOptOutFile_CheckedChanged(object sender, EventArgs e)
         {
-            ConsentToolModel.EnableNationalOptOut = CheckOptOutFile.Checked;
+            await Task.Run(() => Model.EnableNationalOptOut = CheckOptOutFile.Checked);
         }
 
 		private void GetManualLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

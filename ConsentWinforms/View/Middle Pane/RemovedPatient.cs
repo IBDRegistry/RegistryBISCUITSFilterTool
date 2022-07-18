@@ -48,6 +48,7 @@ namespace StripV3Consent.View
             
         }
 
+
         private void RemovedPatient_ExpandCollapse(object sender, ExpandCollapseEventArgs e)
         {
             if (e.IsExpanded)

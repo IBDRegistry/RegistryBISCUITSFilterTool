@@ -16,7 +16,7 @@ namespace StripV3Consent.View
     {
 
         #region files
-        private ObservableRangeCollection<DataFileType> _files = new ObservableRangeCollection<DataFileType>();
+        public ObservableRangeCollection<DataFileType> _files = new ObservableRangeCollection<DataFileType>();
         public ObservableRangeCollection<DataFileType> Files
 		{
             get => _files;
@@ -35,6 +35,7 @@ namespace StripV3Consent.View
             WrapContents = false;
             BorderStyle = BorderStyle.FixedSingle;
 
+            Files.CollectionChanged += Files_CollectionChanged;
             Controls.Add(BottomPanel);
         }
 
@@ -78,16 +79,17 @@ namespace StripV3Consent.View
                 case NotifyCollectionChangedAction.Add:
                     foreach (object NewItem in e.NewItems)
 					{
-                        AddItem((DataFileType)NewItem);
+                        Invoke((Action)(() => AddItem((DataFileType)NewItem)));
                     }
                     
                     break;
                 case NotifyCollectionChangedAction.Reset:
-                    RedrawList();
+                    Invoke((Action)(() => RedrawList()));
+                    
                     break;
                 case NotifyCollectionChangedAction.Remove:
                     DataFileType FileToRemove = e.OldItems.Cast<DataFileType>().First();
-                    RemoveItem(FileToRemove);
+                    Invoke((Action)(() => RemoveItem(FileToRemove)));
                     break;
             }
         }
@@ -136,11 +138,11 @@ namespace StripV3Consent.View
             }
         }
 
-        private void ItemCloseButton_Click(object sender, EventArgs e)
+        private async void ItemCloseButton_Click(object sender, EventArgs e)
         {
             Button CloseButtonClicked = (Button)sender;
             IFileItem<DataFileType> Entry = (AbstractFileItem<DataFileType>)CloseButtonClicked.Parent;
-            Files.Remove(Entry.File);
+            await System.Threading.Tasks.Task.Run(() => Files.Remove(Entry.File));
         }
 
         public override string ToString()

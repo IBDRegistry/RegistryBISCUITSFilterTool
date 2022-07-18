@@ -6,6 +6,7 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -13,41 +14,32 @@ namespace StripV3Consent.View
 {
     class RemovedPatientsPanel: Panel
     {
-        private ObservableRangeCollection<RecordSet> allRecordSets;
-        public ObservableRangeCollection<RecordSet> AllRecordSets
+        private RecordSet[] allRecordSets;
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [Bindable(false)]
+        [Browsable(false)]
+        public RecordSet[] AllRecordSets
         {
             get => allRecordSets;
             set
             {
                 allRecordSets = value;
                 AllRecordSetsChanged?.Invoke(this, new EventArgs());
-				if (value != null)
-					value.CollectionChanged += AllRecordSets_CollectionChanged;
-			}
-        }
+                RemovedRecords_Redraw();
 
-		private void AllRecordSets_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-		{
-            AllRecordSetsChanged?.Invoke(this, new EventArgs());
-            switch (e.Action)
-            {
-                case NotifyCollectionChangedAction.Add:
-                    RemovedRecords_Redraw();
-                    break;
-                case NotifyCollectionChangedAction.Reset:
-                    RemovedRecords_Redraw();
-                    break;
-                case NotifyCollectionChangedAction.Remove:
-                    throw new NotImplementedException();
             }
         }
 
+        public MainWindow MainWindowReference;
+
         /// <summary>
-        /// This event notifies when either the AllRecordSetsCollection is replaced or changed, to change the checkboxes at the bottom of the list
+        /// This event notifies when either the AllRecordSetsCollection is replaced or changed, to change the filter checkboxes at the bottom of the list
         /// </summary>
         public event EventHandler AllRecordSetsChanged;
 
-        private Func<RecordSet, bool> specifier = RecordSet => RecordSet.IsConsentValid == false;
+        private Func<RecordSet, bool> specifier;
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -59,43 +51,47 @@ namespace StripV3Consent.View
             set
             {
                 specifier = new Func<RecordSet, bool>(value);
-                RemovedRecords_Redraw();
+                if (AllRecordSets != null)
+                    RemovedRecords_Redraw();
             }
         }
-
-  //      private void SetDisplayRecords()
-  //      {
-		//	//if (!(AllRecordSets is null | Specifier is null))
-		//	//{
-		//	//	DisplayRecords = new BindingList<RecordSet>(AllRecordSets.Where(specifier).ToList<RecordSet>());
-		//	//}
-		//}
-        //private BindingList<RecordSet> displayRecords;
-
-        //public BindingList<RecordSet> DisplayRecords
-        //{
-        //    get => displayRecords;
-        //    set
-        //    {
-        //        displayRecords = value;
-        //        if (displayRecords is null) { return; }
-        //        RemovedRecords_Redraw();
-        //    }
-        //}
         
         public RemovedPatientsPanel()
         {
             AutoScroll = true;
 
         }
-
-
         /// <summary>
         /// Redraws the panel with all the records filtered by Specifi
         /// </summary>
-        private void RemovedRecords_Redraw()
+        public async void RemovedRecords_Redraw()
         {
-            IEnumerable<RecordSet> DisplayRecords = AllRecordSets.Where(specifier);
+            if (MainWindowReference is null)
+                throw new NullReferenceException($"{nameof(MainWindowReference)} was null");
+
+            ProgressForm filteringProgressForm = new ProgressForm();
+
+            MainWindowReference.AddLockingForm(filteringProgressForm);
+            filteringProgressForm.LoadingText = "Filtering records for middle pane";
+            filteringProgressForm.Show();
+            List<RecordSet> DisplayRecords = new List<RecordSet>();
+            await Task.Run(
+                () => {
+                    for (int i = 0; i < AllRecordSets.Length; i++)
+                    {
+                        RecordSet r = AllRecordSets[i];
+                        filteringProgressForm.Value = i;
+                        filteringProgressForm.MaximumValue = AllRecordSets.Length;
+                        if (specifier(r))
+                        {
+                            DisplayRecords.Add(r);
+                        }
+                    }
+                }
+            );
+
+            filteringProgressForm.Close();
+            MainWindowReference.RemoveLockingForm(filteringProgressForm);
 
             Controls.Clear();
 

@@ -97,7 +97,6 @@ namespace StripV3Consent.View
 			// 
 			// RemovedPatientsPanel
 			// 
-			this.RemovedPatientsPanel.AllRecordSets = null;
 			this.RemovedPatientsPanel.AutoScroll = true;
 			this.RemovedPatientsPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.RemovedPatientsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
