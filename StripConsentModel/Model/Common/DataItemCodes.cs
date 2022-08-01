@@ -13,5 +13,6 @@ namespace StripV3Consent.Model
         public static readonly string ConsentForRegistryFieldID = "IBD16";
         public static readonly string NationalOptOut = "NHS01";
         public static readonly string DateOfConsent = "IBD15";
+        public static readonly string DateOfBirth = "IBD02";
     }
 }
