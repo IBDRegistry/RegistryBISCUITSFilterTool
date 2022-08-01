@@ -24,15 +24,23 @@ namespace StripV3Consent.Model
 		/// <returns></returns>
 		public string GetFieldValue(string SpecifiedDataItemCode)
 		{
-			Record RecordWithValue = Records.Where(r => r.OriginalFile.SpecificationFile.Fields
+			IEnumerable<Record> RecordsWithValue = Records.Where(r => r.OriginalFile.SpecificationFile.Fields
 																.Where(Field => Field.DataItemCode == SpecifiedDataItemCode)
 																.Count() > 0
-											 ).FirstOrDefault();
+																);
 
-			if (RecordWithValue is null)
-				return null;
+			Func<Record, int> GetIndexOfInRecord = (Record r) => r.OriginalFile.SpecificationFile.Fields.FindIndex(f => f.DataItemCode == SpecifiedDataItemCode);
 
-			return RecordWithValue[RecordWithValue.OriginalFile.SpecificationFile.Fields.FindIndex(f => f.DataItemCode == SpecifiedDataItemCode)];
+			Func<Record, bool> isRecordValid = (Record r) => GetIndexOfInRecord(r) < r.DataRecord.Length - 1;
+
+			IEnumerable<Record> ValidRecordsWithValue = RecordsWithValue.Where(isRecordValid);
+
+			Record RecordWithValue = ValidRecordsWithValue.FirstOrDefault();
+
+			if (RecordWithValue == null)
+				return "";
+
+			return RecordWithValue[GetIndexOfInRecord(RecordWithValue)];
 		}
 
 		internal const string ConsentFileNameInSpec = "consent";

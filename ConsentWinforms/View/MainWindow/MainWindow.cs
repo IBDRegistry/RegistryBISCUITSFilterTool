@@ -420,6 +420,16 @@ You can contact your IT support for help with this issue",
 		{
             List<RecordSet> RecordSetsToExport = RemovedPatientsPanel.FilteredRecords;
 
+
+            List<Func<RecordSet, string>> Outputs = new List<Func<RecordSet, string>>() { 
+                (RecordSet rs) => rs.GetFieldValue(DataItemCodes.NHSNumber),
+                (RecordSet rs) => rs.GetFieldValue(DataItemCodes.DateOfBirth),
+                (RecordSet rs) => rs.IsConsentValid.IsValid ? "Kept" : "Removed",
+                (RecordSet rs) => rs.IsConsentValid.IsValidReason
+            };
+
+            
+
             string[] FieldsToInclude = { DataItemCodes.NHSNumber, DataItemCodes.DateOfBirth };
 
             const string ColumnDelimiter = "\t";
@@ -427,8 +437,8 @@ You can contact your IT support for help with this issue",
 
             //get the field values to include (NHS Number, Forename, etc...) from each RecordSet and remove the conflicting characters from each value
             IEnumerable<IEnumerable<string>> TableToExport = RecordSetsToExport
-                                                                .Select(rs => FieldsToInclude.Select(dataItemCode => rs.GetFieldValue(dataItemCode))
-                                                                .Select(fieldValue => RepackingOutputFile.RemoveConflictingChars(fieldValue, new string[] { ColumnDelimiter }))));
+                                                                .Select(rs => Outputs.Select(rsProcessor => rsProcessor(rs))
+                                                                .Select(fieldValue => RepackingOutputFile.RemoveConflictingChars(fieldValue, new string[] { ColumnDelimiter })));
 
             IEnumerable<string> LinesToExport = TableToExport.Select(columns => string.Join(ColumnDelimiter, columns));
 
