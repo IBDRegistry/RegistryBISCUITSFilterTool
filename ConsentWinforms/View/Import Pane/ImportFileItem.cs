@@ -88,7 +88,7 @@ namespace StripV3Consent.View
             }
 
             Icon ValidImage = null;
-            switch (Model.ValidState)
+            switch (Model.ErrorLevel)
             {
                 case ValidState.Good:
                     ValidImage = ConsentWinforms.Properties.Resources.good;
@@ -104,8 +104,12 @@ namespace StripV3Consent.View
             LittleIcon.Image = ValidImage?.ToBitmap();
 
 
-
-            new ToolTip() { ShowAlways = true }.SetToolTip(this, Model.Message);
+            Control[] SetValidationToolTipOn = { this, LittleIcon };
+            foreach(Control ctrl in SetValidationToolTipOn)
+			{
+                new ToolTip() { ShowAlways = true }.SetToolTip(ctrl, string.Join(Environment.NewLine, Model.Messages));
+            }
+            
         }
         
     }

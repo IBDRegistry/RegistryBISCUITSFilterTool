@@ -62,7 +62,7 @@ namespace StripV3Consent.Model
 
         private void ProcessInputFiles()
         {
-            IEnumerable<ImportFile> ValidFilesForImport = InputFiles.Where(i => i.IsValid.ValidState != ValidState.Error);
+            IEnumerable<ImportFile> ValidFilesForImport = InputFiles.Where(i => i.IsValid.ErrorLevel != ValidState.Error);
 
             IEnumerable<ImportFile> PatientLevelImportFiles = ValidFilesForImport.Where(i => i.SpecificationFile.IsPatientLevelFile == true);
 

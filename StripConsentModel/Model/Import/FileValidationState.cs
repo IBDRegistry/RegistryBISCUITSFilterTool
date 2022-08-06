@@ -21,8 +21,21 @@ namespace StripV3Consent.Model
 
     public class FileValidationState
     {
-        public ValidState ValidState;
+		public ValidState ErrorLevel;
+
+        /// <summary>
+        /// Replaced "Nothing" with "Good" and "Good" with "Error" but not "Warning" with "Good"
+        /// </summary>
+        /// <param name="ProspectiveNewErrorLevel"></param>
+        public void IncreaseErrorLevelIfStronger(ValidState ProspectiveNewErrorLevel)
+		{
+            if (ErrorLevel < ProspectiveNewErrorLevel)
+                ErrorLevel = ProspectiveNewErrorLevel;
+        }
+
         public FileOrganisation Organisation;
-        public string Message;
-    }
+        public List<string> Messages = new List<string>();
+
+		
+	}
 }

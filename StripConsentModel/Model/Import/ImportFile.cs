@@ -30,36 +30,47 @@ namespace StripV3Consent.Model
             {
                 FileValidationState ReturnValue = new FileValidationState();
 
+                if (!IsCommaDelimited())
+                {
+                    ReturnValue.IncreaseErrorLevelIfStronger(ValidState.Error);
+                    ReturnValue.Messages.Add("CSV file not comma separated");
+                }
+
                 if (SpecificationFile is Specification.RegistryFile)
                 {
                     ReturnValue.Organisation = FileOrganisation.Registry;
+                    ReturnValue.Messages.Add("Registry Upload File");
+                    ReturnValue.IncreaseErrorLevelIfStronger(ValidState.Good);
 
                 } else if (SpecificationFile is Specification.NationalOptOutFile)
                 {
                     ReturnValue.Organisation = FileOrganisation.NHS;
-                    ReturnValue.ValidState = ValidState.Good;
-                    ReturnValue.Message = "National Opt-Out file";
+                    ReturnValue.Messages.Add("National Opt-Out file");
+                    var RowsAndColumns = SplitIntoBoxed2DArrayWithHeaders(FileContents);
+
+                    Func<string[], bool> RowOnlyHasOneColumn = row => row.Length == 1;
+                    Func<string[], bool> RowHasMultipleColumns = row => !RowOnlyHasOneColumn(row);
+                    if (RowsAndColumns.Content.All(RowOnlyHasOneColumn))
+					{
+                        ReturnValue.IncreaseErrorLevelIfStronger(ValidState.Good);
+                        
+
+                    } else if(RowsAndColumns.Content.Any(RowHasMultipleColumns))
+					{
+                        ReturnValue.IncreaseErrorLevelIfStronger(ValidState.Warning);
+                        ReturnValue.Messages.Add("Opt-Out file has incorrect number of columns - this could cause issues. Try to ensure your opt-out file only has 1 column containing the NHS Numbers of patients that have not opted-out ");
+                    }
                 } else
                 {
                     ReturnValue.Organisation = FileOrganisation.Unknown;
-                    ReturnValue.ValidState = ValidState.Error;
-                    ReturnValue.Message = "Unknown file type";
+                    ReturnValue.IncreaseErrorLevelIfStronger(ValidState.Error);
+                    ReturnValue.Messages.Add("Unknown file type");
 
                     return ReturnValue;
                 }
 
 
-                if (IsCommaDelimited() == true)
-                {
-                    ReturnValue.ValidState = ValidState.Good;
-                    ReturnValue.Message = "File passed validation checks";
-                }
-                else
-                {
-                    ReturnValue.ValidState = ValidState.Error;
-                    ReturnValue.Message = "CSV file not comma separated";
-
-                }
+                
                 
                 
                 return ReturnValue;
