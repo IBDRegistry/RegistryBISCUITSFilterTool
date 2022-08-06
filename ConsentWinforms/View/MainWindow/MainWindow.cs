@@ -420,6 +420,11 @@ You can contact your IT support for help with this issue",
 		{
             List<RecordSet> RecordSetsToExport = RemovedPatientsPanel.FilteredRecords;
 
+            if (RecordSetsToExport.Count == 0)
+			{
+                return;
+			}
+
 
             List<Func<RecordSet, string>> Outputs = new List<Func<RecordSet, string>>() { 
                 (RecordSet rs) => rs.GetFieldValue(DataItemCodes.NHSNumber),
