@@ -428,11 +428,11 @@ You can contact your IT support for help with this issue",
 			}
 
 
-            List<Func<RecordSet, string>> Outputs = new List<Func<RecordSet, string>>() { 
-                (RecordSet rs) => rs.GetFieldValue(DataItemCodes.NHSNumber),
-                (RecordSet rs) => rs.GetFieldValue(DataItemCodes.DateOfBirth),
-                (RecordSet rs) => rs.IsConsentValid.IsValid ? "Kept" : "Removed",
-                (RecordSet rs) => rs.IsConsentValid.IsValidReason
+            var Outputs = new List<(string Header, Func<RecordSet, string> CellValueGenerator)>() { 
+                ("NHS Number", (RecordSet rs) => rs.GetFieldValue(DataItemCodes.NHSNumber)),
+                ("Date of Birth", (RecordSet rs) => rs.GetFieldValue(DataItemCodes.DateOfBirth)),
+                ("Kept/Removed", (RecordSet rs) => rs.IsConsentValid.IsValid ? "Kept" : "Removed"),
+                ("Reason", (RecordSet rs) => rs.IsConsentValid.IsValidReason)
             };
 
             
@@ -444,10 +444,12 @@ You can contact your IT support for help with this issue",
 
             //get the field values to include (NHS Number, Forename, etc...) from each RecordSet and remove the conflicting characters from each value
             IEnumerable<IEnumerable<string>> TableToExport = RecordSetsToExport
-                                                                .Select(rs => Outputs.Select(rsProcessor => rsProcessor(rs))
+                                                                .Select(rs => Outputs.Select(rsProcessor => rsProcessor.CellValueGenerator(rs))
                                                                 .Select(fieldValue => RepackingOutputFile.RemoveConflictingChars(fieldValue, new string[] { ColumnDelimiter })));
 
-            IEnumerable<string> LinesToExport = TableToExport.Select(columns => string.Join(ColumnDelimiter, columns));
+            List<string> LinesToExport = TableToExport.Select(columns => string.Join(ColumnDelimiter, columns)).ToList();
+            string Headers = string.Join(ColumnDelimiter, Outputs.Select(x => x.Header));
+            LinesToExport.Insert(0, Headers);
 
             string CombinedOutput = string.Join(RowDelimiter, LinesToExport);
 
