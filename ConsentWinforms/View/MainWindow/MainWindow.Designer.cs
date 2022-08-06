@@ -39,6 +39,7 @@ namespace StripV3Consent.View
 			this.ProcessingPaneLabel = new System.Windows.Forms.Label();
 			this.OutputPaneLabel = new System.Windows.Forms.Label();
 			this.ProcessingControlPanel = new System.Windows.Forms.Panel();
+			this.CopyStatusLabel = new System.Windows.Forms.Label();
 			this.CopyToClipboardButton = new System.Windows.Forms.Button();
 			this.DisplayRemovedPatientsCheckbox = new System.Windows.Forms.CheckBox();
 			this.DisplayKeptPatientsCheckbox = new System.Windows.Forms.CheckBox();
@@ -47,7 +48,6 @@ namespace StripV3Consent.View
 			this.CheckOptOutMessage = new System.Windows.Forms.Label();
 			this.CheckOptOutFile = new System.Windows.Forms.CheckBox();
 			this.autoResizingLabel1 = new StripV3Consent.View.AutoResizingLabel();
-			this.CopyStatusLabel = new System.Windows.Forms.Label();
 			this.TableLayoutPanel.SuspendLayout();
 			this.ProcessingControlPanel.SuspendLayout();
 			this.LeftControlPanel.SuspendLayout();
@@ -166,6 +166,15 @@ namespace StripV3Consent.View
 			this.ProcessingControlPanel.Size = new System.Drawing.Size(349, 102);
 			this.ProcessingControlPanel.TabIndex = 8;
 			// 
+			// CopyStatusLabel
+			// 
+			this.CopyStatusLabel.AutoSize = true;
+			this.CopyStatusLabel.Location = new System.Drawing.Point(56, 75);
+			this.CopyStatusLabel.Name = "CopyStatusLabel";
+			this.CopyStatusLabel.Size = new System.Drawing.Size(246, 13);
+			this.CopyStatusLabel.TabIndex = 3;
+			this.CopyStatusLabel.Text = "Copies contents of processing pane onto clipboard";
+			// 
 			// CopyToClipboardButton
 			// 
 			this.CopyToClipboardButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -261,16 +270,6 @@ namespace StripV3Consent.View
 			this.autoResizingLabel1.TabIndex = 0;
 			this.autoResizingLabel1.Text = "Drop files here";
 			this.autoResizingLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-			// 
-			// CopyStatusLabel
-			// 
-			this.CopyStatusLabel.AutoSize = true;
-			this.CopyStatusLabel.Location = new System.Drawing.Point(56, 75);
-			this.CopyStatusLabel.Name = "CopyStatusLabel";
-			this.CopyStatusLabel.Size = new System.Drawing.Size(101, 13);
-			this.CopyStatusLabel.TabIndex = 3;
-			this.CopyStatusLabel.Text = "Copied to clipboard!";
-			this.CopyStatusLabel.Visible = false;
 			// 
 			// MainWindow
 			// 

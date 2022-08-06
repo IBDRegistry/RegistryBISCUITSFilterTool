@@ -9,6 +9,7 @@ using Microsoft.WindowsAPICodePack.Dialogs;
 using System.Collections.ObjectModel;
 using System.Security.Principal;
 using System.Threading.Tasks;
+using System.Timers;
 
 namespace StripV3Consent.View
 {
@@ -342,7 +343,6 @@ You can contact your IT support for help with this issue",
         private void RemovedPatientsPanel_AllRecordSetsChanged(object sender, EventArgs e)
         {
             Invoke((Action)CheckIfPatientsPaneFilterCheckboxesCanBeEnabled);
-            Invoke((Action)(() => CopyStatusLabel.Visible = false));
         }
         private void CheckIfPatientsPaneFilterCheckboxesCanBeEnabled()
         {
@@ -351,12 +351,14 @@ You can contact your IT support for help with this issue",
                 DisplayKeptPatientsCheckbox.Enabled = true;
                 DisplayRemovedPatientsCheckbox.Enabled = true;
                 CopyToClipboardButton.Enabled = true;
+                CopyStatusLabel.Enabled = true;
             }
             else
             {
                 DisplayKeptPatientsCheckbox.Enabled = false;
                 DisplayRemovedPatientsCheckbox.Enabled = false;
                 CopyToClipboardButton.Enabled = false;
+                CopyStatusLabel.Enabled = false;
             }
         }
 
@@ -451,13 +453,28 @@ You can contact your IT support for help with this issue",
 
             Clipboard.SetText(CombinedOutput);
 
-            CopyStatusLabel.Visible = true;
+            string DefaultText = "Copies contents of processing pane onto clipboard";
+            const string CopyText = "Copied to clipboard!";
 
-            Timer TimeOutTimer = new Timer();
+            CopyStatusLabel.Text = CopyText;
+            System.Drawing.Font ItalicisedLabelFont = new System.Drawing.Font(DefaultFont, DefaultFont.Style | System.Drawing.FontStyle.Italic);
+            CopyStatusLabel.Font = ItalicisedLabelFont;
+
+            System.Timers.Timer TimeOutTimer = new System.Timers.Timer();
             TimeOutTimer.Interval = 5000;
             TimeOutTimer.Enabled = true;
-            TimeOutTimer.Tick += (object SendingTimer, EventArgs TimerEventArgs) => {
-                CopyStatusLabel.Visible = false;
+            TimeOutTimer.Elapsed += (object SendingTimer, ElapsedEventArgs TimerEventArgs) => {
+
+                CopyStatusLabel.Invoke((Action)(() =>
+                {
+                    CopyStatusLabel.Text = DefaultText;
+
+                    CopyStatusLabel.Font = Label.DefaultFont;
+                }));
+                
+
+                var CastSendingTimer = (System.Timers.Timer)SendingTimer;
+                CastSendingTimer.Enabled = false;
             };
         }
 	}
