@@ -21,10 +21,16 @@ namespace StripV3Consent.View
             }
         }
 
+        private int value;
         public int Value
         {
+            get
+			{
+                return value;
+			}
             set
             {
+                this.value = value;
                 Invoke((MethodInvoker)(() => LoadingBar.Value = value));
             }
         }

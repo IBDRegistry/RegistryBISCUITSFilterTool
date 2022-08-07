@@ -418,7 +418,7 @@ You can contact your IT support for help with this issue",
             System.Diagnostics.Process.Start("https://ibdregistry.org.uk/extract-filter-guide");
 		}
 
-		private void CopyToClipboardButton_Click(object sender, EventArgs e)
+		private async void CopyToClipboardButton_Click(object sender, EventArgs e)
 		{
             List<RecordSet> RecordSetsToExport = RemovedPatientsPanel.FilteredRecords;
 
@@ -428,32 +428,52 @@ You can contact your IT support for help with this issue",
 			}
 
 
-            var Outputs = new List<(string Header, Func<RecordSet, string> CellValueGenerator)>() { 
-                ("NHS Number", (RecordSet rs) => rs.GetFieldValue(DataItemCodes.NHSNumber)),
-                ("Date of Birth", (RecordSet rs) => rs.GetFieldValue(DataItemCodes.DateOfBirth)),
-                ("Kept/Removed", (RecordSet rs) => rs.IsConsentValid.IsValid ? "Kept" : "Removed"),
-                ("Reason", (RecordSet rs) => rs.IsConsentValid.IsValidReason)
-            };
+            ProgressForm copyToCliboardProgressForm = new ProgressForm();
 
+            this.AddLockingForm(copyToCliboardProgressForm);
+            copyToCliboardProgressForm.LoadingText = "Copying middle pane to clipboard";
+            copyToCliboardProgressForm.Show();
+            
+            await Task.Run(
+                () => {
+                        var Outputs = new List<(string Header, Func<RecordSet, string> CellValueGenerator)>() {
+                            ("NHS Number", (RecordSet rs) => rs.GetFieldValue(DataItemCodes.NHSNumber)),
+                            ("Date of Birth", (RecordSet rs) => rs.GetFieldValue(DataItemCodes.DateOfBirth)),
+                            ("Kept/Removed", (RecordSet rs) => rs.IsConsentValid.IsValid ? "Kept" : "Removed"),
+                            ("Reason", (RecordSet rs) => rs.IsConsentValid.IsValidReason)
+                        };
+
+
+
+                        string[] FieldsToInclude = { DataItemCodes.NHSNumber, DataItemCodes.DateOfBirth };
+
+                        const string ColumnDelimiter = "\t";
+                        const string RowDelimiter = "\r\n";
+                        copyToCliboardProgressForm.MaximumValue = RecordSetsToExport.Count;
+
+                        //get the field values to include (NHS Number, Forename, etc...) from each RecordSet and remove the conflicting characters from each value
+                        IEnumerable<IEnumerable<string>> TableToExport = RecordSetsToExport
+                                                                            .Select(rs => Outputs.Select(rsProcessor => rsProcessor.CellValueGenerator(rs))
+                                                                            .Select(fieldValue => RepackingOutputFile.RemoveConflictingChars(fieldValue, new string[] { ColumnDelimiter })));
+
+                        List<string> LinesToExport = TableToExport
+                                                            .AsParallel()
+                                                            .WithProgressReporting(() => copyToCliboardProgressForm.Value++)
+                                                            .Select(columns => string.Join(ColumnDelimiter, columns))
+                                                            .ToList();
+                        string Headers = string.Join(ColumnDelimiter, Outputs.Select(x => x.Header));
+                        LinesToExport.Insert(0, Headers);
+
+                        string CombinedOutput = string.Join(RowDelimiter, LinesToExport);
+
+                        this.Invoke((Action)(() => Clipboard.SetText(CombinedOutput)));
+                }
+            );
+
+            copyToCliboardProgressForm.Close();
+            this.RemoveLockingForm(copyToCliboardProgressForm);
             
 
-            string[] FieldsToInclude = { DataItemCodes.NHSNumber, DataItemCodes.DateOfBirth };
-
-            const string ColumnDelimiter = "\t";
-            const string RowDelimiter = "\r\n";
-
-            //get the field values to include (NHS Number, Forename, etc...) from each RecordSet and remove the conflicting characters from each value
-            IEnumerable<IEnumerable<string>> TableToExport = RecordSetsToExport
-                                                                .Select(rs => Outputs.Select(rsProcessor => rsProcessor.CellValueGenerator(rs))
-                                                                .Select(fieldValue => RepackingOutputFile.RemoveConflictingChars(fieldValue, new string[] { ColumnDelimiter })));
-
-            List<string> LinesToExport = TableToExport.Select(columns => string.Join(ColumnDelimiter, columns)).ToList();
-            string Headers = string.Join(ColumnDelimiter, Outputs.Select(x => x.Header));
-            LinesToExport.Insert(0, Headers);
-
-            string CombinedOutput = string.Join(RowDelimiter, LinesToExport);
-
-            Clipboard.SetText(CombinedOutput);
 
             string DefaultText = "Copies contents of processing pane onto clipboard";
             const string CopyText = "Copied to clipboard!";
@@ -479,5 +499,17 @@ You can contact your IT support for help with this issue",
                 CastSendingTimer.Enabled = false;
             };
         }
+	}
+
+    public static class Extenstions
+	{
+        public static ParallelQuery<T> WithProgressReporting<T>(this ParallelQuery<T> sequence, Action increment)
+		{
+            return sequence.Select(x =>
+            {
+                increment?.Invoke();
+                return x;
+            });
+		}
 	}
 }
