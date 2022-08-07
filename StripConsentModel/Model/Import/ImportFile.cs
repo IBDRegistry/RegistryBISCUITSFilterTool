@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace StripV3Consent.Model
@@ -30,7 +31,7 @@ namespace StripV3Consent.Model
             {
                 FileValidationState ReturnValue = new FileValidationState();
 
-                if (!IsCommaDelimited())
+                if (Name.EndsWith(".csv") && !IsCommaDelimited())
                 {
                     ReturnValue.IncreaseErrorLevelIfStronger(ValidState.Error);
                     ReturnValue.Messages.Add("CSV file not comma separated");
@@ -62,11 +63,23 @@ namespace StripV3Consent.Model
                     }
                 } else
                 {
-                    ReturnValue.Organisation = FileOrganisation.Unknown;
-                    ReturnValue.IncreaseErrorLevelIfStronger(ValidState.Error);
-                    ReturnValue.Messages.Add("Unknown file type");
+                    Func<string, bool> CouldFileBePoorlyNamedNOOFile = FileName =>
+                    {
+                        Regex PossibleMatchesRegex = new Regex(".*(opt|s251).*");
+                        return PossibleMatchesRegex.Match(FileName).Success;
+                    };
 
-                    return ReturnValue;
+                    if (CouldFileBePoorlyNamedNOOFile(Name)) {
+                        ReturnValue.Organisation = FileOrganisation.NHS;
+                        ReturnValue.IncreaseErrorLevelIfStronger(ValidState.Error);
+                        ReturnValue.Messages.Add("You have added a file that looks like it might be a national data opt-out file but is incorrectly formatted. Please review the guidance to fix this.");
+                    } else
+					{
+                        ReturnValue.Organisation = FileOrganisation.Unknown;
+                        ReturnValue.IncreaseErrorLevelIfStronger(ValidState.Error);
+                        ReturnValue.Messages.Add("Unknown file type");
+                    }
+                    
                 }
 
 
