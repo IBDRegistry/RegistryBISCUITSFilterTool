@@ -64,7 +64,7 @@ namespace StripV3Consent.Model
         public string GetValueByDataItemCode(string DataItemCode)
         {
             int FieldIndex = OriginalFile.SpecificationFile.Fields.FindIndex(f => f.DataItemCode == DataItemCode);
-            if (FieldIndex <= this.DataRecord.Length)
+            if (FieldIndex < this.DataRecord.Length)
 			{
                 return this[FieldIndex];
             } else
