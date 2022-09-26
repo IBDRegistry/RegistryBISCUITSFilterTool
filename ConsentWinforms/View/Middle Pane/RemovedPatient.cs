@@ -125,6 +125,10 @@ namespace StripV3Consent.View
             }
         }
 
+        public override string ToString()
+        {
+            return patient.GetFieldValue(DataItemCodes.NHSNumber);
+        }
 
     }
 }

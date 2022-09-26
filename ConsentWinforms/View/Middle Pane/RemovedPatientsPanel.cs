@@ -113,8 +113,14 @@ namespace StripV3Consent.View
                 return;
 			}
 
-            
-            RemovedPatient[] NewRemovedPatientPanels = FilteredRecords.Select(RS => new RemovedPatient() { 
+            //Arranging elements using DockStyle.Top causes them to come out in reverse order, this is a patch to ensure they come out in the correct order
+            RecordSet[] RecordsToReverse = new RecordSet[FilteredRecords.Count()];
+            FilteredRecords.CopyTo(RecordsToReverse);
+            List<RecordSet> DisplayRecords = RecordsToReverse.ToList();
+            DisplayRecords.Reverse();
+
+
+            RemovedPatient[] NewRemovedPatientPanels = DisplayRecords.Select(RS => new RemovedPatient() { 
                 Patient = RS, 
                 Dock = DockStyle.Top,
                 Margin = new Padding()
@@ -126,6 +132,8 @@ namespace StripV3Consent.View
                 }
             }).ToArray();
             Controls.AddRange(NewRemovedPatientPanels);
+
+            
         }
 
 

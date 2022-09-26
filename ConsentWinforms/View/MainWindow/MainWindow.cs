@@ -458,6 +458,7 @@ You can contact your IT support for help with this issue",
 
                         List<string> LinesToExport = TableToExport
                                                             .AsParallel()
+                                                            .AsOrdered()
                                                             .WithProgressReporting(() => copyToCliboardProgressForm.Value++)
                                                             .Select(columns => string.Join(ColumnDelimiter, columns))
                                                             .ToList();
