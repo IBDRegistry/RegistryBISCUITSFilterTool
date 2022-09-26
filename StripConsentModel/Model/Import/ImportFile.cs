@@ -49,7 +49,7 @@ namespace StripV3Consent.Model
                     ReturnValue.Messages.Add("National Opt-Out file");
                     var RowsAndColumns = SplitIntoBoxed2DArrayWithHeaders(FileContents);
 
-                    Func<string[], bool> RowOnlyHasOneColumn = row => row.Length == 1;
+                    Func<string[], bool> RowOnlyHasOneColumn = row => row.Length == 1 || (row.Length == 2 && string.IsNullOrEmpty(row[1]));
                     Func<string[], bool> RowHasMultipleColumns = row => !RowOnlyHasOneColumn(row);
                     if (RowsAndColumns.Content.All(RowOnlyHasOneColumn))
 					{
