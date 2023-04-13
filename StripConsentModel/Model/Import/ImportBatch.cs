@@ -14,7 +14,7 @@ namespace StripConsentModel.Model.Import
         }
 
         public string BatchFolderPath { get; private set; }
-        public List<ImportFile> Files { get; private set; }
+        public List<ImportFile> Files { get; private set; } = new List<ImportFile>();
 
         public void Add(ImportFile file) => Files.Add(file);
         public void Remove(ImportFile file) => Files.Remove(file);
