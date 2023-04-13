@@ -41,7 +41,8 @@ namespace StripV3Consent.Model
                 var existingBatch = GetExistingBatchForFile(this, newImportFile);
                 if (existingBatch != null)
                 {
-                    existingBatch.Files.Add(newImportFile);
+                    existingBatch.Add(newImportFile);
+                    newImportFile.Batch = existingBatch;
                 }
                 else
                 {

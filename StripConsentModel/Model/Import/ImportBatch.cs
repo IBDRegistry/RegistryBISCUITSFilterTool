@@ -27,15 +27,14 @@ namespace StripConsentModel.Model.Import
                     .Select(r => r.GetValueByDataItemCode(DataItemCode))
                     .Where(x => !string.IsNullOrEmpty(x));
 
-            IEnumerable<string> LocalUnitCodes = GetFieldFromRecords(AllRecords, DataItemCodes.LocalUnitCode);
             IEnumerable<string> IBDAuditCodes = GetFieldFromRecords(AllRecords, DataItemCodes.IBDAuditCode);
 
-            if (LocalUnitCodes.AnyExceptionsInList() || IBDAuditCodes.AnyExceptionsInList())
+            if (IBDAuditCodes.AnyExceptionsInList())
             {
-                throw new Exception("Mismatched IBD Audit code or Local Unit Code");
+                throw new Exception("Mismatched IBD Audit code");
             }
 
-            return new TrustInfo(IBDAuditCodes.First(), LocalUnitCodes.First());
+            return new TrustInfo(IBDAuditCodes.First());
         }
     }
 
@@ -48,12 +47,10 @@ namespace StripConsentModel.Model.Import
     public class TrustInfo
     {
         public string IBDAuditCode;
-        public string LocalUnitCode;
 
-        public TrustInfo(string ibdAuditCode, string localUnitCode)
+        public TrustInfo(string ibdAuditCode)
         {
             IBDAuditCode = ibdAuditCode;
-            LocalUnitCode = localUnitCode;
         }
     }
 }

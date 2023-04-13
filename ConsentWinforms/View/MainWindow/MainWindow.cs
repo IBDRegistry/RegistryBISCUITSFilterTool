@@ -294,20 +294,26 @@ You can contact your IT support for help with this issue",
                     //Remove wildcard and append _Processed to filename
                     string FileName = OutFile.SpecificationFile.Name.Replace(@".*\", "").Replace(".csv", "_Processed.csv");
                     string OutPath = Path.Combine(OutputDirectory.FullName, FileName);
-                    try
+#if (!DEBUG)
+ try
                     {
-                        var DirectoryExistsBeforeUse = Directory.Exists(OutputFolder);
+#endif
+
+                    var DirectoryExistsBeforeUse = Directory.Exists(OutputFolder);
                         using (StreamWriter writer = new StreamWriter(OutPath))
                         {
                             writer.Write(OutFile.StringOutput());
                         }
-                    }
+#if (!DEBUG)
+}
+
                     catch (Exception ex)
 					{
                         MessageBox.Show($"{ex.Message} \n this will not have been completed", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
                         continue;
 					}
+#endif
                 }
 
                 //Open explorer window to show results

@@ -29,8 +29,9 @@ namespace StripConsentModel.Model.Output
 		protected string IBDR_Hash(Record record)
         {
 			var NhsNumber = record.GetValueByDataItemCode(DataItemCodes.NHSNumber);
-			return BCrypt.Net.BCrypt.HashPassword(NhsNumber);
-		}
+            return BCrypt.Net.BCrypt.HashPassword(NhsNumber);
+
+        }
 
 		protected string IBDR_Source => "";
 
@@ -39,23 +40,6 @@ namespace StripConsentModel.Model.Output
 		protected override string[] EnhanceRecord(RecordWithOriginalSet combinedRecord)
 		{
 			var record = combinedRecord.Record;
-
-			//IBDR_CreatedDateTime
-
-			//IBDR_CreatedByIBDAuditCode
-
-			//IBDR_UpdatedDateTime	
-
-			//IBDR_UpdatedByIBDAuditCode
-
-			//IBDR_HASH
-
-			//IBDR_Source
-
-			//IBDR_Submission
-
-
-
 
 			string[] ToAppend = new string[] { 
 				IBDR_CreatedDateTime(record), 
