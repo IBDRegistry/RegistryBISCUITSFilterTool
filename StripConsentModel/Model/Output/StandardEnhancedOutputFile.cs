@@ -81,10 +81,6 @@ namespace StripConsentModel.Model.Output
 			return OriginalHeaders.AppendArray(NewHeadersToAppend);
 
         }
-        public override string StringOutput()
-		{
-			throw new NotImplementedException();
-		}
 	}
 
 	public static class ArrayExtensions

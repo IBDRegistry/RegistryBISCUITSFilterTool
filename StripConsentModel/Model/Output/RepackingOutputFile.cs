@@ -63,8 +63,9 @@ namespace StripV3Consent.Model
 
 			return RepackIntoString(EnhancedRecords, EnhancedHeaders());
         }
+		public override string StringOutput() => EnhanceAndRepack();
 
-        public override string ToString() => EnhanceAndRepack();
+		public override string ToString() => StringOutput();
     }
 
 
