@@ -1,5 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using StripV3Consent.Model;
+using System;
 using System.Linq;
 
 namespace ModelTest
@@ -19,16 +20,16 @@ namespace ModelTest
 			string OldConsentLine = $"{NHSNumber}, {DOB},10/05/2003,N,,,,,,,V4";
 			string NewConsentLine = $"{NHSNumber}, {DOB},28/02/2022,Y,,,,,,,V4";
 
-			ImportFile PatientFile = new("patient_Trust.csv", PatientLine);
-			ImportFile OldConsentFile = new("consent_Trust.csv", OldConsentLine);
-			ImportFile NewConsentFile = new("consent_Registry.csv", NewConsentLine);
+			ImportFile PatientFile = new("patient_Trust.csv", PatientLine, DateTime.Now, @"C:\SubmissionFiles\SiteOne");
+			ImportFile OldConsentFile = new("consent_Trust.csv", OldConsentLine, DateTime.Now, @"C:\SubmissionFiles\SiteOne");
+			ImportFile NewConsentFile = new("consent_Registry.csv", NewConsentLine, DateTime.Now, @"C:\SubmissionFiles\SiteOne");
 
 			RecordSet[] Patients = ConsentToolModel.SplitInputFilesIntoRecordSets(
 				Files: new ImportFile[] { PatientFile, OldConsentFile, NewConsentFile },
 				EnableNationalOptOut: false
 				).ToArray();
 
-			RecordSet TestingRecord = Patients.Where(rs => rs.GetFieldValue(DataItemCodes.NHSNumber) == NHSNumber).First();
+			RecordSet TestingRecord = Patients.Where(rs => rs.GetFieldValue(DataItemCodes.NHSNumber).First() == NHSNumber).First();
 
 			Assert.IsTrue(TestingRecord.IsConsentValid);
 		}
@@ -45,16 +46,16 @@ namespace ModelTest
 			string OldConsentLine = $"{NHSNumber}, {DOB},10/05/2003,N,,,,,,,V4";
 			string NewConsentLine = $"{NHSNumber}, {DOB},10/05/2003,Y,,,,,,,V4";
 
-			ImportFile PatientFile = new("patient_Trust.csv", PatientLine);
-			ImportFile OldConsentFile = new("consent_Trust.csv", OldConsentLine);
-			ImportFile NewConsentFile = new("consent_Registry.csv", NewConsentLine);
+			ImportFile PatientFile = new("patient_Trust.csv", PatientLine, DateTime.Now, @"C:\SubmissionFiles\SiteOne");
+			ImportFile OldConsentFile = new("consent_Trust.csv", OldConsentLine, DateTime.Now, @"C:\SubmissionFiles\SiteOne");
+			ImportFile NewConsentFile = new("consent_Registry.csv", NewConsentLine, DateTime.Now, @"C:\SubmissionFiles\SiteOne");
 
 			RecordSet[] Patients = ConsentToolModel.SplitInputFilesIntoRecordSets(
 				Files: new ImportFile[] { PatientFile, NewConsentFile, OldConsentFile },
 				EnableNationalOptOut: false
 				).ToArray();
 
-			RecordSet TestingRecord = Patients.Where(rs => rs.GetFieldValue(DataItemCodes.NHSNumber) == NHSNumber).First();
+			RecordSet TestingRecord = Patients.Where(rs => rs.GetFieldValue(DataItemCodes.NHSNumber).First() == NHSNumber).First();
 
 			Assert.IsFalse(TestingRecord.IsConsentValid);
 		}

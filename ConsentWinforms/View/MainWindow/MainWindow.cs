@@ -23,7 +23,7 @@ namespace StripV3Consent.View
         {
             InitializeComponent();
             
-            DropFilesHerePanel.FileList.Files = Model.InputFiles;
+            DropFilesHerePanel.FileList.Files = Model.ImportFiles;
 
             Model.PatientsChanged += (s) => { Invoke((Action)(() => RemovedPatientsPanel.AllRecordSets = s.Patients)); };
 
@@ -86,7 +86,7 @@ namespace StripV3Consent.View
 
         private void UpdateBlankFilesRemovedLabel()
         {
-            IEnumerable<Specification.File> SpecificationFilesInInput = Model.InputFiles.GroupBy
+            IEnumerable<Specification.File> SpecificationFilesInInput = Model.ImportFiles.GroupBy
                 <ImportFile, Specification.File, Specification.File>
                 (file => file.SpecificationFile,    //group by specification file
                 (SpecificationFile, ImportFileIEnumerable) => SpecificationFile //output specification file from IGrouping
@@ -98,7 +98,7 @@ namespace StripV3Consent.View
 
             SpecificationFilesThatDidntMakeIt.RemoveAll(element => element is null);
 
-            List<ImportFile> InputFilesThatDidntMakeIt = Model.InputFiles.Where(inputFile => SpecificationFilesThatDidntMakeIt.Contains(inputFile.SpecificationFile)).ToList();
+            List<ImportFile> InputFilesThatDidntMakeIt = Model.ImportFiles.Where(inputFile => SpecificationFilesThatDidntMakeIt.Contains(inputFile.SpecificationFile)).ToList();
 
             
 
@@ -155,7 +155,7 @@ You can contact your IT support for help with this issue",
             const string NOOFileNameInSpec = ".dat";
             //enter if either true & false or false & true
             bool NOOChecked = Model.EnableNationalOptOut;
-            bool NOOFilePresent = Model.InputFiles.Where(i => {
+            bool NOOFilePresent = Model.ImportFiles.Where(i => {
                 if (i.SpecificationFile == null)    //would like to use bool? but not supported in .NET Framework
 				{
                     return false;
@@ -437,8 +437,8 @@ You can contact your IT support for help with this issue",
             await Task.Run(
                 () => {
                         var Outputs = new List<(string Header, Func<RecordSet, string> CellValueGenerator)>() {
-                            ("NHS Number", (RecordSet rs) => rs.GetFieldValue(DataItemCodes.NHSNumber)),
-                            ("Date of Birth", (RecordSet rs) => rs.GetFieldValue(DataItemCodes.DateOfBirth)),
+                            ("NHS Number", (RecordSet rs) => rs.GetFieldValue(DataItemCodes.NHSNumber).First()),
+                            ("Date of Birth", (RecordSet rs) => rs.GetFieldValue(DataItemCodes.DateOfBirth).First()),
                             ("Kept/Removed", (RecordSet rs) => rs.IsConsentValid.IsValid ? "Kept" : "Removed"),
                             ("Reason", (RecordSet rs) => rs.IsConsentValid.IsValidReason)
                         };

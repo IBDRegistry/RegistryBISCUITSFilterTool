@@ -1,4 +1,5 @@
-﻿using System;
+﻿using StripConsentModel.Model.Import;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -12,15 +13,33 @@ namespace StripV3Consent.Model
     {
         /// <summary>
         /// This is optional and helps with the file save dialog at the end by letting it choose the most common path of the input files
+        /// This is no longer optional as it is now used for batch calculation
         /// </summary>
-        public string FilePath;
+        public string FilePath { get; private set; }
 
-        public string FileContents;
+        public string FileContents { get; private set; }
 
-
-        public ImportFile(string FileName, string Contents) : base(FileName)
+        private Record[] _cachedRecords;
+        public Record[] Records
         {
-            FileContents = Contents;
+            get
+            {
+                if (_cachedRecords == null)
+                {
+                    _cachedRecords = SplitInto2DArray().Content.Select(Row => new Record(Row, this)).ToArray();
+                }
+
+                return _cachedRecords;
+            }
+        }
+
+        public DateTime FileCreatedTimestamp { get; private set; }
+
+        public ImportFile(string FileName, string Contents, DateTime FileCreatedTimestamp, string FilePath) : base(FileName)
+        {
+            this.FileContents = Contents;
+            this.FileCreatedTimestamp = FileCreatedTimestamp;
+            this.FilePath = FilePath;
         }
 
         
@@ -220,7 +239,7 @@ namespace StripV3Consent.Model
             return Return2DArray;
         }
 
-        public File2DArray SplitInto2DArray()
+        private File2DArray SplitInto2DArray()
         {
             return SplitIntoBoxed2DArrayWithHeaders(FileContents);
         }

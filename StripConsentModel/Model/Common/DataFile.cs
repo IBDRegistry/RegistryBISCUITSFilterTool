@@ -5,6 +5,7 @@ using System.Text;
 using System.IO;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
+using StripConsentModel.Model.Import;
 
 namespace StripV3Consent.Model
 {
@@ -12,6 +13,8 @@ namespace StripV3Consent.Model
     {
 		public string Name;
         public virtual string OutputName { get => Name; }
+
+        public ImportBatch Batch { get; set; }
 
         public DataFile(string FileName)
         {

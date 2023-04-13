@@ -12,9 +12,9 @@ namespace StripV3Consent.Model
     {
         public string[] DataRecord;
 
-        public DataFile OriginalFile;
+        public ImportFile OriginalFile;
 
-        public Record(string[] dataRecord, DataFile originalFile)
+        public Record(string[] dataRecord, ImportFile originalFile)
         {
             DataRecord = dataRecord;
             OriginalFile = originalFile;

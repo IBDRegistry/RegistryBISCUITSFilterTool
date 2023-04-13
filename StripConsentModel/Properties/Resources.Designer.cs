@@ -81,5 +81,18 @@ namespace StripConsentModel.Properties {
                 return ResourceManager.GetString("_2021_K_IBD_Registry_Submission_Dataset_V01__Nov_2021_", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ReportingCode,ReportingName,TrustCode,TrustName,SiteCode,SiteName,SiteSystem,SiteType,ReportType
+        ///7A1A4,WREXHAM MAELOR HOSPITAL,7A1,BETSI CADWALADR UNIVERSITY LHB,7A1A4,WREXHAM MAELOR HOSPITAL,WDET,Adult,Basic
+        ///7A4BV,UNIVERSITY HOSPITAL OF WALES,7A4,CARDIFF &amp; VALE UNIVERSITY LHB,7A4BV,UNIVERSITY HOSPITAL OF WALES,WDET,Mixed,Basic
+        ///7A5B1,ROYAL GLAMORGAN HOSPITAL,7A5,CWM TAF MORGANNWG UNIVERSITY LOCAL HEALTH BOARD,7A5B1,THE ROYAL GLAMORGAN HOSPITAL,EMIS,Adult,St Elsewhere
+        ///R0A03,ROYAL MANCHESTER CHILDREN&apos;S HO [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string SiteList {
+            get {
+                return ResourceManager.GetString("SiteList", resourceCulture);
+            }
+        }
     }
 }

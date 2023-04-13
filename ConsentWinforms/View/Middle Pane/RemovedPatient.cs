@@ -60,7 +60,7 @@ namespace StripV3Consent.View
 
         private void Draw()
         {
-            string PatientsNHSNumber = Patient.GetFieldValue(DataItemCodes.NHSNumber);
+            string PatientsNHSNumber = Patient.GetFieldValue(DataItemCodes.NHSNumber).First();
             string DisplayNHSNumber = PatientsNHSNumber != "" ? PatientsNHSNumber : "Unknown";
             Text = $"{(Patient.IsConsentValid.IsValid? "Kept" : "Removed")} Patient: {DisplayNHSNumber}";
 
@@ -127,7 +127,7 @@ namespace StripV3Consent.View
 
         public override string ToString()
         {
-            return patient.GetFieldValue(DataItemCodes.NHSNumber);
+            return patient.GetFieldValue(DataItemCodes.NHSNumber).First();
         }
 
     }

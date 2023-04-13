@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using StripV3Consent.Model;
 using System.Drawing;
+using System.Threading.Tasks;
 
 namespace StripV3Consent.View
 {
@@ -172,8 +173,13 @@ namespace StripV3Consent.View
 				}
 			}
 
-			ImportFile[] ImportFiles = Contents.Select(content => new ImportFile(Path.GetFileName(content.Path), content.Content) { FilePath = content.Path }).ToArray();
-            await System.Threading.Tasks.Task.Run(() => FileList.AddRange(ImportFiles));
+			ImportFile[] ImportFiles = Contents.Select(content => new ImportFile(
+				FileName: Path.GetFileName(content.Path), 
+				Contents: content.Content, 
+				FileCreatedTimestamp: File.GetLastWriteTime(content.Path),
+				FilePath: content.Path
+				)).ToArray();
+            await Task.Run(() => FileList.AddRange(ImportFiles));
 		}
 
 

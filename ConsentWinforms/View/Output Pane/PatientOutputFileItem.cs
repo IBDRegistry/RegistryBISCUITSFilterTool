@@ -49,7 +49,7 @@ namespace StripV3Consent.View
             //}
             Label RecordsRemovedLabel = new Label()
             {
-                Text = $"{File.AllRecordsOriginallyInFile.Except(File.OutputRecords).Count()} records removed",
+                Text = $"{File.AllRecordsOriginallyInFile.Except(File.OutputRecords.Select(cr => cr.Record)).Count()} records removed",
                 ForeColor = Color.Red
                 //Dock = DockStyle.Top
             };

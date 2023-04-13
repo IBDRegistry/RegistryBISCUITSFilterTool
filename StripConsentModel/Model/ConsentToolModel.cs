@@ -5,12 +5,16 @@ using System.Linq;
 using System.Collections.Specialized;
 using System.Text;
 using System.Threading.Tasks;
+using StripConsentModel.Model.Output;
+using StripConsentModel.Model.Import;
 
 namespace StripV3Consent.Model
 {
     public class ConsentToolModel
     {
-        public readonly ObservableRangeCollection<ImportFile> InputFiles = new ObservableRangeCollection<ImportFile>();
+        public readonly ImportBatchList ImportBatches = new ImportBatchList();
+
+        public readonly ObservableRangeCollection<ImportFile> ImportFiles = new ObservableRangeCollection<ImportFile>();
 
         private RecordSet[] patients;
         public RecordSet[] Patients {
@@ -42,7 +46,7 @@ namespace StripV3Consent.Model
         public bool EnableNationalOptOut { get => enableNationalOptOut;
             set { 
                 enableNationalOptOut = value;
-                if (InputFiles.Count > 0)
+                if (ImportFiles.Count > 0)
                     ProcessInputFiles();
             }
         }
@@ -62,7 +66,7 @@ namespace StripV3Consent.Model
 
         private void ProcessInputFiles()
         {
-            IEnumerable<ImportFile> ValidFilesForImport = InputFiles.Where(i => i.IsValid.ErrorLevel != ValidState.Error);
+            IEnumerable<ImportFile> ValidFilesForImport = ImportFiles.Where(i => i.IsValid.ErrorLevel != ValidState.Error);
 
             IEnumerable<ImportFile> PatientLevelImportFiles = ValidFilesForImport.Where(i => i.SpecificationFile.IsPatientLevelFile == true);
 
@@ -96,7 +100,8 @@ namespace StripV3Consent.Model
 
         public ConsentToolModel()
         {
-            InputFiles.CollectionChanged += InputFiles_CollectionChanged;
+            ImportFiles.CollectionChanged += InputFiles_CollectionChanged;
+            ImportFiles.CollectionChanged += ImportBatches.ImportFiles_CollectionChanged;
         }
 
 
@@ -108,8 +113,7 @@ namespace StripV3Consent.Model
         public static IEnumerable<RecordSet> SplitInputFilesIntoRecordSets(IEnumerable<ImportFile> Files, bool EnableNationalOptOut)
         {
             List<Record> AllRecords = Files
-                                            .Select(File => File.SplitInto2DArray().Content         //Transform DataFile into string[][] resulting in IEnumerable<string[][]>
-                                               .Select(Row => new Record(Row, File)))                             //Transform each string[] into Record resulting in IEnumerable<IEnumerable<Record>>
+                                            .Select(File => File.Records)         //Transform DataFile into string[][] resulting in IEnumerable<string[][]>
                                                 .SelectMany<IEnumerable<Record>, Record>(x => x)                //Flatten into IEnumerable<Record>
                                                 .ToList<Record>();                                            //Cast to List<Record>
                                                                                                               //Task<string[][]>[] AllTasks = Files.Select(async File => (await File.SplitInto2DArray()).Content).ToArray();
@@ -126,34 +130,47 @@ namespace StripV3Consent.Model
 
             return GroupedRecords;
         }
-
-        private static IEnumerable<IEnumerable<Record>> FlattenAndGroupRecordsBySpecificationFiles(IEnumerable<RecordSet> RecordSets)
+        public class RecordWithOriginalSet
         {
-            IEnumerable<Record> RecordsFlattened = RecordSets.Select(rs => rs.Records).SelectMany<IEnumerable<Record>, Record>(x => x);
+            public readonly Record Record;
+            public readonly RecordSet OriginalSet;
 
-            IEnumerable<Record> OutputRecords = RecordsFlattened.Where(r => r.OriginalFile.SpecificationFile.IsRegistryFile == true);
-
-            IEnumerable<IEnumerable<Record>> RecordsGroupedByOriginalFiles = OutputRecords.GroupBy
-                                                                                <Record, Specification.File, IEnumerable<Record>>(
-                                                                                r => r.OriginalFile.SpecificationFile,    //Group by original file
-                                                                                (OriginalFile, RecordsIEnumerable) => RecordsIEnumerable    //Output groupings as IEnumerable<Record>
-                                                                                );
-            return RecordsGroupedByOriginalFiles;
+            public RecordWithOriginalSet(Record record, RecordSet originalSet)
+            {
+                Record = record;
+                OriginalSet = originalSet;
+            }
         }
+        private static IEnumerable<IEnumerable<RecordWithOriginalSet>> FlattenAndGroupRecordsBySpecificationFiles(IEnumerable<RecordSet> RecordSets) =>
+            RecordSets
+                .SelectMany(rs => rs.Records.Select(r => new RecordWithOriginalSet(record: r, originalSet: rs)))   //Flatten, but preserve original Recordset for enhancement later
+
+                .Where(r => r.Record.OriginalFile.SpecificationFile.IsRegistryFile == true)       //Filter for output
+
+                .GroupBy(
+                        r => r.Record.OriginalFile.SpecificationFile,    //Group by original file
+                        (OriginalFile, RecordsIEnumerable) => RecordsIEnumerable    //Output groupings as IEnumerable<Record>
+                        );
+        
 
         private static IEnumerable<RepackingOutputFile> SplitBackUpIntoFiles(IEnumerable<RecordSet> RecordSets)
         {
-            IEnumerable<IEnumerable<Record>> AllConsentedRecordsGroupedByFile = FlattenAndGroupRecordsBySpecificationFiles(RecordSets.Where(RS => RS.IsConsentValid == true));
+            IEnumerable<IEnumerable<RecordWithOriginalSet>> AllConsentedRecordsGroupedByFile = FlattenAndGroupRecordsBySpecificationFiles(RecordSets.Where(RS => RS.IsConsentValid == true));
 
             //Have to do ToList in order to use Find() later on which isn't present in IEnumerable<T>
-            List<IEnumerable<Record>> AllRecordsGroupedByFile = FlattenAndGroupRecordsBySpecificationFiles(RecordSets).ToList<IEnumerable<Record>>();
+            List<IEnumerable<RecordWithOriginalSet>> AllRecordsGroupedByFile = FlattenAndGroupRecordsBySpecificationFiles(RecordSets).ToList();
+            Func<IEnumerable<RecordWithOriginalSet>, IEnumerable<Record>> GetOriginalRecords = (OriginalRecords) =>
+                AllRecordsGroupedByFile.Find(
+                    FileAllRecords => FileAllRecords.First().Record.OriginalFile.SpecificationFile == OriginalRecords.First().Record.OriginalFile.SpecificationFile) //Find the full set (consented and non-consented) of records by looking through AllRecordsGroupedByFile for one with the same OriginalFile attribute
+                .Select(x => x.Record);
 
 
-            IEnumerable<RepackingOutputFile> Files = AllConsentedRecordsGroupedByFile.Select(FileOutputRecords => new RepackingOutputFile(
-                                                                                                                                    file: FileOutputRecords.First().OriginalFile,
-                                                                                                                                    outputRecords: FileOutputRecords,    ///Match each set of records to a new OutputFile object
-                                                                                                                                    allRecordsOriginallyInFile: AllRecordsGroupedByFile.Find(FileAllRecords => FileAllRecords.First().OriginalFile.SpecificationFile == FileOutputRecords.First().OriginalFile.SpecificationFile) //Find the full set (consented and non-consented) of records by looking through AllRecordsGroupedByFile for one with the same OriginalFile attribute
-                                                                                                                                ));
+            IEnumerable<RepackingOutputFile> Files =
+                AllConsentedRecordsGroupedByFile.Select(FileOutputRecords => 
+                new StandardEnhancedOutputFile(
+                    file: FileOutputRecords.First().Record.OriginalFile,
+                    outputRecords: FileOutputRecords,    ///Match each set of records to a new OutputFile object
+                    allRecordsOriginallyInFile: GetOriginalRecords(FileOutputRecords)));
             return Files;
         }
 

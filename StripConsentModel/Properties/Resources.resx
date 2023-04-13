@@ -118,6 +118,9 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="SiteList" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SiteList.csv;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
   <data name="_2021_K_IBD_Registry_Submission_Dataset_V01__Nov_2021_" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\2021_K IBD Registry Submission Dataset V01 (Nov 2021).xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>

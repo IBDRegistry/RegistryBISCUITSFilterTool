@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace StripV3Consent.View
 {
-    class ImportFileItem : AbstractFileItem<ImportFile>
+    public class ImportFileItem : AbstractFileItem<ImportFile>
     {
         public IconWithSubIcon ValidationPictureBox;
 
@@ -36,7 +36,7 @@ namespace StripV3Consent.View
     }
 
 
-    class IconWithSubIcon : PictureBox
+    public class IconWithSubIcon : PictureBox
     {
         private FileValidationState model;
 

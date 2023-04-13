@@ -33,7 +33,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>ibdregistry.ico</ApplicationIcon>
+    <ApplicationIcon>biscuit.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationManifest>App.manifest</ApplicationManifest>
@@ -178,6 +178,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="biscuit.ico" />
     <Content Include="ibdregistry.ico" />
     <None Include="Resources\60990.png" />
   </ItemGroup>
