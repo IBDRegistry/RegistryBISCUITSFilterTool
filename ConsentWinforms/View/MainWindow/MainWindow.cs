@@ -508,7 +508,7 @@ You can contact your IT support for help with this issue",
         }
 	}
 
-    public static class Extenstions
+    public static class Extensions
 	{
         public static ParallelQuery<T> WithProgressReporting<T>(this ParallelQuery<T> sequence, Action increment)
 		{
