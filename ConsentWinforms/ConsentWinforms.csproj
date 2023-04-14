@@ -7,7 +7,7 @@
     <ProjectGuid>{E33340D1-056A-4019-991E-D786572DD1A6}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>ConsentWinforms</RootNamespace>
-    <AssemblyName>IBDR_Filter_Extract_Tool</AssemblyName>
+    <AssemblyName>IBDR_BISCUITS_Processing_Tool</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

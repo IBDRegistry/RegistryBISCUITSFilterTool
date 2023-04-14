@@ -3,7 +3,7 @@
 :: this script needs https://www.nuget.org/packages/ilmerge
 
 :: set your target executable name here
-SET APP_NAME="IBDR_Extract_Filter_Tool.exe"
+SET APP_NAME="IBDR_BISCUITS_Processing_Tool.exe"
 
 :: Set directory for separate files
 SET ILMERGE_BUILD=DumpBinariesHere
@@ -18,7 +18,7 @@ del %APP_NAME%
 echo Merging %APP_NAME% ...
 
 
-%ILMERGE_PATH% DumpBinariesHere\IBDR_Filter_Extract_Tool.exe  ^
+%ILMERGE_PATH% DumpBinariesHere\IBDR_BISCUITS_Processing_Tool.exe  ^
   /out:%APP_NAME% ^
   DumpBinariesHere\MakarovDev.ExpandCollapsePanel.dll ^
   DumpBinariesHere\Microsoft.WindowsAPICodePack.dll ^
@@ -26,7 +26,11 @@ echo Merging %APP_NAME% ...
   DumpBinariesHere\StripConsentModel.dll ^
   "DumpBinariesHere\XML 2021K Classes.dll" ^
   DumpBinariesHere\ExcelDataReader.dll ^
-  DumpBinariesHere\ICSharpCode.SharpZipLib.dll
+  DumpBinariesHere\ICSharpCode.SharpZipLib.dll ^
+  DumpBinariesHere\BCrypt.Net-Core.dll ^
+  DumpBinariesHere\CsvHelper.dll ^
+  DumpBinariesHere\Microsoft.Bcl.AsyncInterfaces.dll ^
+  DumpBinariesHere\Microsoft.Bcl.HashCode.dll
 
 
 :Done
