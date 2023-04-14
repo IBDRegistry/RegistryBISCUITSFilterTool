@@ -245,7 +245,7 @@ You can contact your IT support for help with this issue",
             return !task.Result.TimedOut;
         }
 
-        private void SaveButton_Click(object sender, EventArgs e)
+        private async void SaveButton_Click(object sender, EventArgs e)
         {
             if (ConfirmNationalOptOutChoice() != true)
 			{
@@ -286,24 +286,47 @@ You can contact your IT support for help with this issue",
                     }
                 }
 
-                DirectoryInfo OutputDirectory = Directory.CreateDirectory(OutputFolder);
+                
 
 
-                foreach (OutputFile OutFile in LoadedFilesPanel.FileList.Files)
-                {
-                    //Remove wildcard and append _Processed to filename
-                    string FileName = OutFile.SpecificationFile.Name.Replace(@".*\", "").Replace(".csv", "_Processed.csv");
-                    string OutPath = Path.Combine(OutputDirectory.FullName, FileName);
+                ProgressForm repackingProgressForm = new ProgressForm();
+
+                this.AddLockingForm(repackingProgressForm);
+                repackingProgressForm.LoadingText = "Repacking output files for TRE";
+                repackingProgressForm.Show();
+
+                await Task.Run(
+                    () => {
+                        var Outfiles = LoadedFilesPanel.FileList.Files;
+                        repackingProgressForm.MaximumValue = Outfiles.Count;
+
+
+                        List<(string Content, string SpecificationFileName)> RepackedFiles = Outfiles
+                                                    .AsParallel()
+                                                    .AsOrdered()
+                                                    .WithProgressReporting(() => repackingProgressForm.Value++)
+                                                    .Select(OutFile => (Content: OutFile.StringOutput(), SpecificationFileName: OutFile.SpecificationFile.Name))
+                                                    .ToList();
+
+                        DirectoryInfo OutputDirectory = Directory.CreateDirectory(OutputFolder);
+
+                        foreach ((string Content, string SpecificationFileName) RepackedOutFile in RepackedFiles)
+                        {
+                            //Remove wildcard and append _Processed to filename
+                            string FileName = RepackedOutFile.SpecificationFileName.Replace(@".*\", "").Replace(".csv", "_Processed.csv");
+                            string OutPath = Path.Combine(OutputDirectory.FullName, FileName);
 #if (!DEBUG)
  try
                     {
 #endif
 
-                    var DirectoryExistsBeforeUse = Directory.Exists(OutputFolder);
-                        using (StreamWriter writer = new StreamWriter(OutPath))
-                        {
-                            writer.Write(OutFile.StringOutput());
-                        }
+                            var DirectoryExistsBeforeUse = Directory.Exists(OutputFolder);
+
+
+                            using (StreamWriter writer = new StreamWriter(OutPath))
+                            {
+                                writer.Write(RepackedOutFile.Content);
+                            }
 #if (!DEBUG)
 }
 
@@ -314,10 +337,17 @@ You can contact your IT support for help with this issue",
                         continue;
 					}
 #endif
-                }
+                        }
 
-                //Open explorer window to show results
-                StartExplorer(OutputFolder);
+                        //Open explorer window to show results
+                        StartExplorer(OutputFolder);
+
+                    }
+                );
+
+                repackingProgressForm.Close();
+                this.RemoveLockingForm(repackingProgressForm);
+
 
             }
         }
