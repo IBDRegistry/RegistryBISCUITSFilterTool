@@ -19,7 +19,20 @@ namespace StripConsentModel.Model.Import
         public void Add(ImportFile file) => Files.Add(file);
         public void Remove(ImportFile file) => Files.Remove(file);
 
-        public TrustInfo SearchForTrustInfo()
+        private TrustInfo _trustInfo;
+
+        public TrustInfo TrustInfo {  
+            get
+            {
+                if (_trustInfo == null)
+                {
+                    _trustInfo = SearchForTrustInfo();
+                }
+                return _trustInfo;
+            } 
+        }
+
+        private TrustInfo SearchForTrustInfo()
         {
             List<Record> AllRecords = Files.SelectMany(f => f.Records).ToList();
             Func<List<Record>, string, IEnumerable<string>> GetFieldFromRecords = (Records, DataItemCode) =>
@@ -34,7 +47,15 @@ namespace StripConsentModel.Model.Import
                 throw new Exception("Mismatched IBD Audit code");
             }
 
-            return new TrustInfo(IBDAuditCodes.First());
+            if (IBDAuditCodes.Count() == 0)
+            {
+                return new TrustInfo("");
+            }
+            else
+            {
+                return new TrustInfo(IBDAuditCodes.First());
+            }
+            
         }
     }
 

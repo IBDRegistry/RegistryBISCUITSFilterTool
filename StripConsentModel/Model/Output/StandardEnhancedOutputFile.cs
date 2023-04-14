@@ -13,18 +13,18 @@ namespace StripConsentModel.Model.Output
         {
         }
 
-		protected string IBDR_CreatedDateTime(Record record) => record.OriginalFile.FileCreatedTimestamp.ToLongTimeString();
+		protected string IBDR_CreatedDateTime(Record record) => record.OriginalFile.FileCreatedTimestamp.ToString("dd-MM-yyyy HH:mm");
 
 		protected string IBDR_CreatedByIBDAuditCode(Record record) => record.OriginalFile.Batch.Files
 				.SelectMany(f => f.Records)
 				.OrderBy(r => r.OriginalFile.FileCreatedTimestamp)
 				.First()
-				.OriginalFile.Batch.SearchForTrustInfo()
+				.OriginalFile.Batch.TrustInfo
 				.IBDAuditCode;
 
-		protected string IBDR_UpdatedDateTime(Record record) => record.OriginalFile.FileCreatedTimestamp.ToLongTimeString();
+		protected string IBDR_UpdatedDateTime(Record record) => record.OriginalFile.FileCreatedTimestamp.ToString("dd-MM-yyyy HH:mm");
 
-		protected string IBDR_UpdatedByIBDAuditCode(Record record) => record.OriginalFile.Batch.SearchForTrustInfo().IBDAuditCode;
+		protected string IBDR_UpdatedByIBDAuditCode(Record record) => record.OriginalFile.Batch.TrustInfo.IBDAuditCode;
 
 		protected string IBDR_Hash(Record record)
         {

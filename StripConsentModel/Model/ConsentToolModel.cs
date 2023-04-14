@@ -166,11 +166,24 @@ namespace StripV3Consent.Model
 
 
             IEnumerable<RepackingOutputFile> Files =
-                AllConsentedRecordsGroupedByFile.Select(FileOutputRecords => 
-                new StandardEnhancedOutputFile(
-                    file: FileOutputRecords.First().Record.OriginalFile,
-                    outputRecords: FileOutputRecords,    ///Match each set of records to a new OutputFile object
-                    allRecordsOriginallyInFile: GetOriginalRecords(FileOutputRecords)));
+                AllConsentedRecordsGroupedByFile.Select(FileOutputRecords => {
+                    const string PatientFilename = "patient";
+                    if (FileOutputRecords.First().Record.OriginalFile.SpecificationFile.SimplifiedName.Contains(PatientFilename))
+                    {
+                        return new PatientEnhancedOutputFile(
+                            file: FileOutputRecords.First().Record.OriginalFile,
+                            outputRecords: FileOutputRecords,    ///Match each set of records to a new OutputFile object
+                            allRecordsOriginallyInFile: GetOriginalRecords(FileOutputRecords)
+                            );
+                    } else
+                    {
+                        return new StandardEnhancedOutputFile(
+                            file: FileOutputRecords.First().Record.OriginalFile,
+                            outputRecords: FileOutputRecords,    ///Match each set of records to a new OutputFile object
+                            allRecordsOriginallyInFile: GetOriginalRecords(FileOutputRecords));
+                    }
+                    
+                    });
             return Files;
         }
 

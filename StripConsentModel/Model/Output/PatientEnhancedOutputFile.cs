@@ -82,7 +82,7 @@ namespace StripConsentModel.Model.Output
             }
             if (SuccessfulDoBParse)
             {
-                IBDR_DerivedAge = Years(DateTime.Now, DateOfBirth).ToString(); ;
+                IBDR_DerivedAge = Years(DateOfBirth, DateTime.Now).ToString();
             }
 
             //IBDR_CurrentDiagnosis
@@ -91,7 +91,7 @@ namespace StripConsentModel.Model.Output
             var IBDR_CurrentDiagnosis = "";
             if (LatestDiagnosis != null)
             {
-                IBDR_CurrentDiagnosis = LatestDiagnosis.GetValueByDataItemCode(DataItemCodes.DateOfDiagnosis);
+                IBDR_CurrentDiagnosis = LatestDiagnosis.GetValueByDataItemCode(DataItemCodes.IBDDiagnosis);
             }
 
             //IBDR_DiseaseDuration
@@ -103,15 +103,16 @@ namespace StripConsentModel.Model.Output
                 ?.GetValueByDataItemCode(DataItemCodes.DateOfDiagnosis);
             if (SuccessfulDoBParse && DateOfDiagnosis != null)
             {
-                IBDR_DiseaseDuration = Years(DateTime.Parse(DateOfDiagnosis), DateOfBirth).ToString();
+                IBDR_DiseaseDuration = Years(DateOfBirth, DateTime.Parse(DateOfDiagnosis)).ToString();
             }
 
             //IBDR_ReportGroup
-            var IBDRAuditCode = PatientRecord.OriginalFile.Batch.SearchForTrustInfo().IBDAuditCode;
-            var IBDR_ReportGroup = SiteLookup.SiteLookup.GetLookupEntryFromAuditCode(IBDRAuditCode).SiteType;
+            var IBDRAuditCode = PatientRecord.OriginalFile.Batch.TrustInfo.IBDAuditCode;
+            var SiteType = SiteLookup.SiteLookup.GetLookupEntryFromAuditCode(IBDRAuditCode)?.SiteType;
+            var IBDR_ReportGroup = SiteType != null ? SiteType : "";
 
             //IBDR_SiteType
-            var IBDR_SiteType = SiteLookup.SiteLookup.GetLookupEntryFromAuditCode(IBDRAuditCode).SiteType;
+            var IBDR_SiteType = SiteType != null ? SiteType : "";
 
             //IBDR_ConsentGroup
 
@@ -134,6 +135,7 @@ namespace StripConsentModel.Model.Output
                 IBDR_Hash(record),
                 IBDR_Source,
                 IBDR_Submission(record),
+                IBDR_DerivedAge,
                 IBDR_CurrentDiagnosis,
                 IBDR_DiseaseDuration,
                 IBDR_ReportGroup,
