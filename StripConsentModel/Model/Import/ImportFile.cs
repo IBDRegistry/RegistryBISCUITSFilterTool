@@ -245,20 +245,5 @@ namespace StripV3Consent.Model
         }
     }
 
-    public static class StringArrayExtension
-    {
-        public static bool IsEmpty(this string[] Array)
-        {
-			if (Array.All(element => element == "")) {
-                return true; 
-            } else
-			{
-                return false;
-            }
-
-			
-        }
-    }
-
     
 }

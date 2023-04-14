@@ -37,7 +37,7 @@ namespace StripV3Consent.Model
 
 
 
-		public static string RepackIntoString(IEnumerable<string[]> records, IEnumerable<string> HeaderFields)
+		public static string RepackIntoString(IEnumerable<string[]> records, IEnumerable<string> HeaderFields, Specification.File specification)
 		{
 			List<string[]> Content = records.ToList<string[]>();
 
@@ -46,12 +46,31 @@ namespace StripV3Consent.Model
 
 
 			string[][] OutputFileRows = new string[Content.Count() + 1][];  //the 1 is for the header row
-			
+
 			OutputFileRows[0] = Headers.Select(header => RemoveConflictingChars(header)).ToArray();
 			Content.CopyTo(OutputFileRows, 1);
 
-			return string.Join(RowSeparator, OutputFileRows.Select(
+			string[][] OutputWithColumnsRemoved = RemoveColumns(OutputFileRows, specification);
+
+			return string.Join(RowSeparator, OutputWithColumnsRemoved.Select(
 								record => string.Join(ColumnSeparator, record)));
+		}
+
+		private static readonly string[] IBDAuditCodesToRemove = { DataItemCodes.NHSNumber, DataItemCodes.DateOfBirth, DataItemCodes.DateOfDeath, DataItemCodes.Postcode };
+		private static string[][] RemoveColumns(string[][] RowsAndColumns, Specification.File specification)
+        {
+			List<string[]> ColumnsAndRows = RowsAndColumns.Transpose().ToList();
+
+			IEnumerable<string> IBDAuditCodesInFile = IBDAuditCodesToRemove.Where(code => specification.Fields.FirstOrDefault(f => f.DataItemCode.Equals(code)) != null);
+
+			IEnumerable<int> ColumnPositionsToRemove = IBDAuditCodesInFile.Select(code => specification.Fields.IndexOf(specification.Fields.First(f => f.DataItemCode.Equals(code))));
+			var ColumnsToRemove = ColumnPositionsToRemove.Select(pos => ColumnsAndRows[pos]).ToArray();
+			foreach (var Column in ColumnsToRemove)
+            {
+				ColumnsAndRows.Remove(Column);
+            }
+
+			return ColumnsAndRows.ToArray().Transpose();
 		}
 
 		/// <summary>
@@ -85,7 +104,7 @@ namespace StripV3Consent.Model
 			var NormalisedRecords = OutputRecords.Select(NormaliseRecord);
 			var EnhancedRecords = NormalisedRecords.Select(EnhanceRecord).ToList();
 
-			return RepackIntoString(EnhancedRecords, EnhancedHeaders());
+			return RepackIntoString(EnhancedRecords, EnhancedHeaders(), OutputRecords.First().Record.OriginalFile.SpecificationFile);
         }
 		public override string StringOutput() => EnhanceAndRepack();
 
