@@ -160,7 +160,7 @@ namespace StripConsentModel.Model.Output
                 ConsentStrings.Add("Y - Registry via Consent");
             }
 
-            uif (rs.GetFieldValue(DataItemCodes.Consent.Linkage).Equals("Y"))
+            if (rs.GetFieldValue(DataItemCodes.Consent.Linkage).Equals("Y"))
             {
                 ConsentStrings.Add("Y - Linkage via Consent");
             }
