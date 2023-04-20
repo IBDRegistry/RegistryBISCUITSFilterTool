@@ -1,5 +1,4 @@
 ﻿using StripV3Consent.Model;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -29,8 +28,7 @@ namespace StripConsentModel.Model.Output
 		protected string IBDR_Hash(Record record)
         {
 			var NhsNumber = record.GetValueByDataItemCode(DataItemCodes.NHSNumber);
-            return BCrypt.Net.BCrypt.HashPassword(NhsNumber);
-
+			return NhsNumber.CreateMD5();
         }
 
 		protected string IBDR_Source => "";
@@ -78,4 +76,25 @@ namespace StripConsentModel.Model.Output
 			return JoinedArrays;
 		}
     }
+
+	public static class StringCryptographyExtensions
+    {
+		public static string CreateMD5(this string input)
+		{
+			// Use input string to calculate MD5 hash
+			using (System.Security.Cryptography.MD5 md5 = System.Security.Cryptography.MD5.Create())
+			{
+				byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes(input);
+				byte[] hashBytes = md5.ComputeHash(inputBytes);
+
+
+                 StringBuilder sb = new System.Text.StringBuilder();
+                for (int i = 0; i < hashBytes.Length; i++)
+                {
+                    sb.Append(hashBytes[i].ToString("X2"));
+                }
+                return sb.ToString();
+            }
+		}
+	}
 }
