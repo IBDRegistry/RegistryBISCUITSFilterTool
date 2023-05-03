@@ -111,7 +111,7 @@ namespace StripConsentModel.Model.Output
             var IBDRAuditCode = PatientRecord.OriginalFile.Batch.TrustInfo.IBDAuditCode;
             var SiteType = SiteLookup.SiteLookup.GetLookupEntryFromAuditCode(IBDRAuditCode)?.SiteType;
             var Age = int.Parse(IBDR_DerivedAge);
-            string IBDR_ReportGroup = "";
+            string IBDR_ReportGroup;
             //this piece of garbage branching is derived from the original SQL report driver (below)
             //(case WHEN(("pat"."IBDR_DerivedAge" > 15) AND("ibdr_reference"."sites"."IBDR_SiteType" <> 'Paediatric')) THEN 'Adult' 
             //WHEN(("pat"."IBDR_DerivedAge" <= 15) AND("ibdr_reference"."sites"."IBDR_SiteType" = 'Mixed')) THEN 'Paediatric'
@@ -128,6 +128,9 @@ namespace StripConsentModel.Model.Output
                 IBDR_ReportGroup = "Paediatric";
             } else if (Age <= 15 & SiteType.Equals("Adult")){
                 IBDR_ReportGroup = "Adult";
+            } else
+            {
+                IBDR_ReportGroup = "";
             }
 
             //IBDR_SiteType
