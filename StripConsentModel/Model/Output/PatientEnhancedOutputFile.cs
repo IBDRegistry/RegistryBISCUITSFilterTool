@@ -110,7 +110,25 @@ namespace StripConsentModel.Model.Output
             //IBDR_ReportGroup
             var IBDRAuditCode = PatientRecord.OriginalFile.Batch.TrustInfo.IBDAuditCode;
             var SiteType = SiteLookup.SiteLookup.GetLookupEntryFromAuditCode(IBDRAuditCode)?.SiteType;
-            var IBDR_ReportGroup = SiteType != null ? SiteType : "";
+            var Age = int.Parse(IBDR_DerivedAge);
+            string IBDR_ReportGroup = "";
+            //this piece of garbage branching is derived from the original SQL report driver (below)
+            //(case WHEN(("pat"."IBDR_DerivedAge" > 15) AND("ibdr_reference"."sites"."IBDR_SiteType" <> 'Paediatric')) THEN 'Adult' 
+            //WHEN(("pat"."IBDR_DerivedAge" <= 15) AND("ibdr_reference"."sites"."IBDR_SiteType" = 'Mixed')) THEN 'Paediatric'
+            //WHEN("ibdr_reference"."sites"."IBDR_SiteType" = 'Paediatric') THEN 'Paediatric'
+            //WHEN(("pat"."IBDR_DerivedAge" <= 15) AND("ibdr_reference"."sites"."IBDR_SiteType" = 'Adult')) THEN 'Adult' else '' end) AS "IBDR_ReportGroup"
+            if (Age > 15 & !SiteType.Equals("Paediatric"))
+            {
+                IBDR_ReportGroup = "Adult";
+            }
+            else if (Age <= 15 & SiteType.Equals("Mixed"))
+            {
+                IBDR_ReportGroup = "Paediatric";
+            } else if (SiteType.Equals("Paediatric")) { 
+                IBDR_ReportGroup = "Paediatric";
+            } else if (Age <= 15 & SiteType.Equals("Adult")){
+                IBDR_ReportGroup = "Adult";
+            }
 
             //IBDR_SiteType
             var IBDR_SiteType = SiteType != null ? SiteType : "";
