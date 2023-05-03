@@ -96,9 +96,11 @@ namespace StripV3Consent.Model
 				);
 		}
 
-		protected abstract string[] EnhanceRecord(RecordWithOriginalSet record);
+		protected abstract Record EnhanceRecord(RecordWithOriginalSet record);
 
 		protected abstract string[] EnhancedHeaders();
+
+		protected virtual IEnumerable<Record> MergeRecords(IEnumerable<Record> records) => records;
 
 		private string[] FormatHeaders(string[] EnhancedHeaders)
         {
@@ -113,8 +115,9 @@ namespace StripV3Consent.Model
         {
 			var NormalisedRecords = OutputRecords.Select(NormaliseRecord);
 			var EnhancedRecords = NormalisedRecords.Select(EnhanceRecord).ToList();
+			var MergedRecords = MergeRecords(EnhancedRecords).Select(x => x.DataRecord);
 
-			return RepackIntoString(EnhancedRecords, FormatHeaders(EnhancedHeaders()), OutputRecords.First().Record.OriginalFile.SpecificationFile);
+			return RepackIntoString(MergedRecords, FormatHeaders(EnhancedHeaders()), OutputRecords.First().Record.OriginalFile.SpecificationFile);
         }
 		public override string StringOutput() => EnhanceAndRepack();
 

@@ -15,11 +15,12 @@ namespace StripConsentModel.Model.Output
         }
 
 
-        protected override string[] EnhanceRecord(RecordWithOriginalSet PatientRecordAndRecordSet)
+        protected override Record EnhanceRecord(RecordWithOriginalSet PatientRecordAndRecordSet)
         {
             Record PatientRecord = PatientRecordAndRecordSet.Record;
 
-            if (!PatientRecord.OriginalFile.SpecificationFile.SimplifiedName.Contains("patient")) {
+            if (!PatientRecord.OriginalFile.SpecificationFile.SimplifiedName.Contains("patient"))
+            {
                 throw new Exception("Patient enhanced record not from patient file");
             }
 
@@ -121,13 +122,13 @@ namespace StripConsentModel.Model.Output
             var IBDR_TableGeneratedDateTime = "";
 
             var record = PatientRecordAndRecordSet.Record;
-            string[] ToAppend = new string[] { 
-                IBDR_MonthOfBirth, 
-                IBDR_YearOfBirth, 
-                IBDR_UKCountry, 
-                IBDR_LSOA, 
-                IBDR_MonthofDeath, 
-                IBDR_YearofDeath, 
+            string[] ToAppend = new string[] {
+                IBDR_MonthOfBirth,
+                IBDR_YearOfBirth,
+                IBDR_UKCountry,
+                IBDR_LSOA,
+                IBDR_MonthofDeath,
+                IBDR_YearofDeath,
                 IBDR_CreatedDateTime(record),
                 IBDR_CreatedByIBDAuditCode(record),
                 IBDR_UpdatedDateTime(record),
@@ -144,7 +145,7 @@ namespace StripConsentModel.Model.Output
                 IBDR_TableGeneratedDateTime
             };
 
-            return record.DataRecord.AppendArray(ToAppend);
+            return new Record(record.DataRecord.AppendArray(ToAppend), PatientRecordAndRecordSet.Record.OriginalFile);
         }
 
         private string IBDR_ConsentGroup(RecordSet rs)
@@ -190,31 +191,48 @@ namespace StripConsentModel.Model.Output
             var OriginalHeaders = OutputRecords.First().Record.OriginalFile.SpecificationFile.Fields.Select(x => x.Name).ToArray();
 
             var NewHeadersToAppend = new string[] {
-                "IBDR_MonthofBirth", 
-                "IBDR_YearOfBirth", 
-                "IBDR_UKCountry", 
-                "IBDR_LSOA", 
-                "IBDR_MonthofDeath", 
-                "IBDR_YearofDeath", 
-                "IBDR_CreatedDateTime", 
-                "IBDR_CreatedByIBDAuditCode", 
-                "IBDR_UpdatedDateTime", 
-                "IBDR_UpdatedByIBDAuditCode", 
-                "IBDR_HASH", 
-                "IBDR_Source", 
-                "IBDR_Submission", 
-                "IBDR_DerivedAge", 
-                "IBDR_CurrentDiagnosis", 
-                "IBDR_DiseaseDuration", 
-                "IBDR_ReportGroup", 
-                "IBDR_SiteType", 
-                "IBDR_ConsentGroup", 
+                "IBDR_MonthofBirth",
+                "IBDR_YearOfBirth",
+                "IBDR_UKCountry",
+                "IBDR_LSOA",
+                "IBDR_MonthofDeath",
+                "IBDR_YearofDeath",
+                "IBDR_CreatedDateTime",
+                "IBDR_CreatedByIBDAuditCode",
+                "IBDR_UpdatedDateTime",
+                "IBDR_UpdatedByIBDAuditCode",
+                "IBDR_HASH",
+                "IBDR_Source",
+                "IBDR_Submission",
+                "IBDR_DerivedAge",
+                "IBDR_CurrentDiagnosis",
+                "IBDR_DiseaseDuration",
+                "IBDR_ReportGroup",
+                "IBDR_SiteType",
+                "IBDR_ConsentGroup",
                 "IBDR_TableGeneratedDateTime"
 
             };
 
             return OriginalHeaders.AppendArray(NewHeadersToAppend);
 
+        }
+
+        protected override IEnumerable<Record> MergeRecords(IEnumerable<Record> records) => records.Distinct(new PatientRecordComparer());
+
+
+        class PatientRecordComparer : IEqualityComparer<Record>
+        {
+            public bool Equals(Record x, Record y)
+            {
+                return x.GetValueByDataItemCode(DataItemCodes.NHSNumber).Equals(y.GetValueByDataItemCode(DataItemCodes.NHSNumber)) &&
+                       x.GetValueByDataItemCode(DataItemCodes.DateOfBirth).Equals(y.GetValueByDataItemCode(DataItemCodes.DateOfBirth));
+            }
+
+            public int GetHashCode(Record obj)
+            {
+                return obj.GetValueByDataItemCode(DataItemCodes.NHSNumber).GetHashCode() ^ obj.GetValueByDataItemCode(DataItemCodes.DateOfBirth).GetHashCode();
+            }
         }
     }
 }

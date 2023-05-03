@@ -35,7 +35,7 @@ namespace StripConsentModel.Model.Output
 
 		protected string IBDR_Submission(Record record) => record.OriginalFile.FileCreatedTimestamp.ToString("MM/yyyy");
 
-		protected override string[] EnhanceRecord(RecordWithOriginalSet combinedRecord)
+		protected override Record EnhanceRecord(RecordWithOriginalSet combinedRecord)
 		{
 			var record = combinedRecord.Record;
 
@@ -49,7 +49,7 @@ namespace StripConsentModel.Model.Output
 				IBDR_Submission(record) 
 			};
 
-			return record.DataRecord.AppendArray(ToAppend);
+			return new Record(record.DataRecord.AppendArray(ToAppend), combinedRecord.Record.OriginalFile);
 		}
 
         protected override string[] EnhancedHeaders()
