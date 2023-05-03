@@ -435,6 +435,7 @@ You can contact your IT support for help with this issue",
         private void MainWindow_Load(object sender, EventArgs e)
         {
             Model.EnableNationalOptOut = CheckOptOutFile.Checked;   //Set designer value as default value, currently this is true
+            Model.EnableConsentCheck = CheckConsent.Checked;
 
             SetMiddlePaneFilterFromUI();
             CheckIfPatientsPaneFilterCheckboxesCanBeEnabled();
@@ -536,7 +537,12 @@ You can contact your IT support for help with this issue",
                 CastSendingTimer.Enabled = false;
             };
         }
-	}
+
+        private async void CheckConsent_CheckedChanged(object sender, EventArgs e)
+        {
+            await Task.Run(() => Model.EnableConsentCheck = CheckConsent.Checked);
+        }
+    }
 
     public static class Extensions
 	{

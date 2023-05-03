@@ -51,6 +51,18 @@ namespace StripV3Consent.Model
             }
         }
 
+        private bool enableConsentCheck;
+        public bool EnableConsentCheck
+        {
+            get => enableConsentCheck;
+            set
+            {
+                enableConsentCheck = value;
+                if (ImportFiles.Count > 0)
+                    ProcessInputFiles();
+            }
+        }
+
         public delegate void ProgressEventHandler(object sender, ProgressEventArgs e);
         public event ProgressEventHandler Progress;
 
@@ -78,7 +90,7 @@ namespace StripV3Consent.Model
 
             Progress?.Invoke(this, new ProgressEventArgs(new ConsentToolProgress(ConsentToolProgress.Stages.SplittingBackUp)));
 
-            IEnumerable<RepackingOutputFile> NewOutputFiles = SplitBackUpIntoFiles(patients);    //slow
+            IEnumerable<RepackingOutputFile> NewOutputFiles = SplitBackUpIntoFiles(patients, EnableConsentCheck);    //slow
 
             Progress?.Invoke(this, new ProgressEventArgs(new ConsentToolProgress(ConsentToolProgress.Stages.AddingToOutput)));
 
@@ -153,9 +165,10 @@ namespace StripV3Consent.Model
                         );
         
 
-        private static IEnumerable<RepackingOutputFile> SplitBackUpIntoFiles(IEnumerable<RecordSet> RecordSets)
+        private static IEnumerable<RepackingOutputFile> SplitBackUpIntoFiles(IEnumerable<RecordSet> RecordSets, bool CheckConsents)
         {
-            IEnumerable<IEnumerable<RecordWithOriginalSet>> AllConsentedRecordsGroupedByFile = FlattenAndGroupRecordsBySpecificationFiles(RecordSets.Where(RS => RS.IsConsentValid == true));
+            var ConsentAlwaysValid = !CheckConsents;
+            IEnumerable<IEnumerable<RecordWithOriginalSet>> AllConsentedRecordsGroupedByFile = FlattenAndGroupRecordsBySpecificationFiles(RecordSets.Where(RS => RS.IsConsentValid == true || ConsentAlwaysValid));
 
             //Have to do ToList in order to use Find() later on which isn't present in IEnumerable<T>
             List<IEnumerable<RecordWithOriginalSet>> AllRecordsGroupedByFile = FlattenAndGroupRecordsBySpecificationFiles(RecordSets).ToList();

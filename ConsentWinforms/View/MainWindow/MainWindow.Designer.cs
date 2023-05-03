@@ -48,6 +48,7 @@ namespace StripV3Consent.View
             this.CheckOptOutMessage = new System.Windows.Forms.Label();
             this.CheckOptOutFile = new System.Windows.Forms.CheckBox();
             this.autoResizingLabel1 = new StripV3Consent.View.AutoResizingLabel();
+            this.CheckConsent = new System.Windows.Forms.CheckBox();
             this.TableLayoutPanel.SuspendLayout();
             this.ProcessingControlPanel.SuspendLayout();
             this.LeftControlPanel.SuspendLayout();
@@ -76,7 +77,7 @@ namespace StripV3Consent.View
             this.TableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
             this.TableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 80F));
             this.TableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.TableLayoutPanel.Size = new System.Drawing.Size(1220, 688);
+            this.TableLayoutPanel.Size = new System.Drawing.Size(1220, 736);
             this.TableLayoutPanel.TabIndex = 0;
             // 
             // DropFilesHerePanel
@@ -87,7 +88,7 @@ namespace StripV3Consent.View
             this.DropFilesHerePanel.Location = new System.Drawing.Point(4, 29);
             this.DropFilesHerePanel.Margin = new System.Windows.Forms.Padding(4);
             this.DropFilesHerePanel.Name = "DropFilesHerePanel";
-            this.DropFilesHerePanel.Size = new System.Drawing.Size(352, 522);
+            this.DropFilesHerePanel.Size = new System.Drawing.Size(352, 560);
             this.DropFilesHerePanel.TabIndex = 0;
             // 
             // LoadedFilesPanel
@@ -97,7 +98,7 @@ namespace StripV3Consent.View
             this.LoadedFilesPanel.Location = new System.Drawing.Point(837, 29);
             this.LoadedFilesPanel.Margin = new System.Windows.Forms.Padding(4);
             this.LoadedFilesPanel.Name = "LoadedFilesPanel";
-            this.LoadedFilesPanel.Size = new System.Drawing.Size(379, 522);
+            this.LoadedFilesPanel.Size = new System.Drawing.Size(379, 560);
             this.LoadedFilesPanel.TabIndex = 1;
             // 
             // RemovedPatientsPanel
@@ -108,7 +109,7 @@ namespace StripV3Consent.View
             this.RemovedPatientsPanel.Location = new System.Drawing.Point(364, 29);
             this.RemovedPatientsPanel.Margin = new System.Windows.Forms.Padding(4);
             this.RemovedPatientsPanel.Name = "RemovedPatientsPanel";
-            this.RemovedPatientsPanel.Size = new System.Drawing.Size(465, 522);
+            this.RemovedPatientsPanel.Size = new System.Drawing.Size(465, 560);
             this.RemovedPatientsPanel.TabIndex = 3;
             this.RemovedPatientsPanel.AllRecordSetsChanged += new System.EventHandler(this.RemovedPatientsPanel_AllRecordSetsChanged);
             // 
@@ -117,10 +118,10 @@ namespace StripV3Consent.View
             this.SaveButton.Dock = System.Windows.Forms.DockStyle.Fill;
             this.SaveButton.Enabled = false;
             this.SaveButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SaveButton.Location = new System.Drawing.Point(837, 559);
+            this.SaveButton.Location = new System.Drawing.Point(837, 597);
             this.SaveButton.Margin = new System.Windows.Forms.Padding(4);
             this.SaveButton.Name = "SaveButton";
-            this.SaveButton.Size = new System.Drawing.Size(379, 125);
+            this.SaveButton.Size = new System.Drawing.Size(379, 135);
             this.SaveButton.TabIndex = 4;
             this.SaveButton.Text = "Save output";
             this.SaveButton.UseVisualStyleBackColor = true;
@@ -169,10 +170,10 @@ namespace StripV3Consent.View
             this.ProcessingControlPanel.Controls.Add(this.DisplayRemovedPatientsCheckbox);
             this.ProcessingControlPanel.Controls.Add(this.DisplayKeptPatientsCheckbox);
             this.ProcessingControlPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ProcessingControlPanel.Location = new System.Drawing.Point(364, 559);
+            this.ProcessingControlPanel.Location = new System.Drawing.Point(364, 597);
             this.ProcessingControlPanel.Margin = new System.Windows.Forms.Padding(4);
             this.ProcessingControlPanel.Name = "ProcessingControlPanel";
-            this.ProcessingControlPanel.Size = new System.Drawing.Size(465, 125);
+            this.ProcessingControlPanel.Size = new System.Drawing.Size(465, 135);
             this.ProcessingControlPanel.TabIndex = 8;
             // 
             // CopyStatusLabel
@@ -227,21 +228,22 @@ namespace StripV3Consent.View
             // 
             // LeftControlPanel
             // 
+            this.LeftControlPanel.Controls.Add(this.CheckConsent);
             this.LeftControlPanel.Controls.Add(this.GetManualLabel);
             this.LeftControlPanel.Controls.Add(this.CheckOptOutMessage);
             this.LeftControlPanel.Controls.Add(this.CheckOptOutFile);
             this.LeftControlPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.LeftControlPanel.Location = new System.Drawing.Point(4, 559);
+            this.LeftControlPanel.Location = new System.Drawing.Point(4, 597);
             this.LeftControlPanel.Margin = new System.Windows.Forms.Padding(4);
             this.LeftControlPanel.Name = "LeftControlPanel";
-            this.LeftControlPanel.Size = new System.Drawing.Size(352, 125);
+            this.LeftControlPanel.Size = new System.Drawing.Size(352, 135);
             this.LeftControlPanel.TabIndex = 9;
             // 
             // GetManualLabel
             // 
             this.GetManualLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.GetManualLabel.AutoSize = true;
-            this.GetManualLabel.Location = new System.Drawing.Point(4, 101);
+            this.GetManualLabel.Location = new System.Drawing.Point(4, 111);
             this.GetManualLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.GetManualLabel.Name = "GetManualLabel";
             this.GetManualLabel.Size = new System.Drawing.Size(205, 17);
@@ -288,11 +290,24 @@ namespace StripV3Consent.View
             this.autoResizingLabel1.Text = "Drop files here";
             this.autoResizingLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // CheckConsentCheckbox
+            // 
+            this.CheckConsent.AutoSize = true;
+            this.CheckConsent.Checked = true;
+            this.CheckConsent.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.CheckConsent.Location = new System.Drawing.Point(7, 86);
+            this.CheckConsent.Name = "CheckConsentCheckbox";
+            this.CheckConsent.Size = new System.Drawing.Size(133, 21);
+            this.CheckConsent.TabIndex = 5;
+            this.CheckConsent.Text = "Enforce consent";
+            this.CheckConsent.UseVisualStyleBackColor = true;
+            this.CheckConsent.CheckedChanged += new System.EventHandler(this.CheckConsent_CheckedChanged);
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1220, 688);
+            this.ClientSize = new System.Drawing.Size(1220, 736);
             this.Controls.Add(this.TableLayoutPanel);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4);
@@ -330,6 +345,7 @@ namespace StripV3Consent.View
 		private System.Windows.Forms.LinkLabel GetManualLabel;
 		private System.Windows.Forms.Button CopyToClipboardButton;
 		private System.Windows.Forms.Label CopyStatusLabel;
-	}
+        private System.Windows.Forms.CheckBox CheckConsent;
+    }
 }
 
