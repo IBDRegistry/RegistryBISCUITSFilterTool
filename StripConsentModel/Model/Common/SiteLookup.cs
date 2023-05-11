@@ -19,7 +19,7 @@ namespace StripConsentModel.SiteLookup
                     {
                         using (StreamWriter writer = new StreamWriter(stream))
                         {
-                            writer.Write(Properties.Resources.SiteList);
+                            writer.Write(Properties.Resources.SiteMaster);
                             writer.Flush();
                             stream.Position = 0;
 
@@ -42,17 +42,13 @@ namespace StripConsentModel.SiteLookup
             }
         }
 
-        public static string GetAuditCodeFromReportingName(string ReportingName)
-        {
-            var FoundEntry = LookupEntries.FirstOrDefault(x => x.ReportingName.Equals(ReportingName));
-
-            return FoundEntry?.ReportingCode;
-        }
-
         public static SiteLookupEntry GetLookupEntryFromAuditCode(string IBDAuditCode)
         {
-            var FoundEntry = LookupEntries.FirstOrDefault(x => x.SiteCode.Equals(IBDAuditCode));
-
+            var FoundEntry = LookupEntries.FirstOrDefault(x => x.IBDAuditCode.Equals(IBDAuditCode));
+            if (FoundEntry == null)
+            {
+                throw new System.Exception($"Site with IBD Audit Code {IBDAuditCode} was not in lookup table");
+            }
             return FoundEntry;
         }
     }

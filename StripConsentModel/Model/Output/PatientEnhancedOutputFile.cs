@@ -109,7 +109,7 @@ namespace StripConsentModel.Model.Output
 
             //IBDR_ReportGroup
             var IBDRAuditCode = PatientRecord.OriginalFile.Batch.TrustInfo.IBDAuditCode;
-            var SiteType = SiteLookup.SiteLookup.GetLookupEntryFromAuditCode(IBDRAuditCode)?.SiteType;
+            var SiteType = SiteLookup.SiteLookup.GetLookupEntryFromAuditCode(IBDRAuditCode)?.AdultPaeds;
             var Age = int.Parse(IBDR_DerivedAge);
             string IBDR_ReportGroup;
             //this piece of garbage branching is derived from the original SQL report driver (below)

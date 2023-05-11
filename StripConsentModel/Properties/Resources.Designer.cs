@@ -83,15 +83,12 @@ namespace StripConsentModel.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ReportingCode,ReportingName,TrustCode,TrustName,SiteCode,SiteName,SiteSystem,SiteType,ReportType
-        ///7A1A4,WREXHAM MAELOR HOSPITAL,7A1,BETSI CADWALADR UNIVERSITY LHB,7A1A4,WREXHAM MAELOR HOSPITAL,WDET,Adult,Basic
-        ///7A4BV,UNIVERSITY HOSPITAL OF WALES,7A4,CARDIFF &amp; VALE UNIVERSITY LHB,7A4BV,UNIVERSITY HOSPITAL OF WALES,WDET,Mixed,Basic
-        ///7A5B1,ROYAL GLAMORGAN HOSPITAL,7A5,CWM TAF MORGANNWG UNIVERSITY LOCAL HEALTH BOARD,7A5B1,THE ROYAL GLAMORGAN HOSPITAL,EMIS,Adult,St Elsewhere
-        ///R0A03,ROYAL MANCHESTER CHILDREN&apos;S HO [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to Name,Subitems,Version,Site Name,IBD Audit Code,Trust/Health Board,Trust/Health Board IBD Code,IBD Service,Service IBD Code,Source,Source - SM,Auto Number,Adult/Paeds,Country,Clinical System,WebTool Use,Grant,NDA,IBD Sub-site code,ODS code,ODS Level,Registry 2020,Agrs 2020,QA 2021-22,Postcode,Finance breakdown 20-21,Quality Accounts,QA 2019-20
+        ///#staustell,,IBDR ARCHIVED,St Austell Community Hospital,IBD929,Cornwall Partnership NHS Foundation Trust,IBD738,St Austell Community Hospital,IBD449,ARCHIVE (ABH),ADD [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string SiteList {
+        internal static string SiteMaster {
             get {
-                return ResourceManager.GetString("SiteList", resourceCulture);
+                return ResourceManager.GetString("SiteMaster", resourceCulture);
             }
         }
     }
