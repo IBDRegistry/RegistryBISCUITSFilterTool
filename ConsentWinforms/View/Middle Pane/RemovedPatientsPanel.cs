@@ -72,19 +72,17 @@ namespace StripV3Consent.View
             MainWindowReference.AddLockingForm(filteringProgressForm);
             filteringProgressForm.LoadingText = "Filtering records for middle pane";
             filteringProgressForm.Show();
+            filteringProgressForm.Value = 0;
+            filteringProgressForm.MaximumValue = AllRecordSets.Length;
             List<RecordSet> DisplayRecords = new List<RecordSet>();
             await Task.Run(
                 () => {
-                    for (int i = 0; i < AllRecordSets.Length; i++)
-                    {
-                        RecordSet r = AllRecordSets[i];
-                        filteringProgressForm.Value = i;
-                        filteringProgressForm.MaximumValue = AllRecordSets.Length;
-                        if (specifier(r))
-                        {
-                            DisplayRecords.Add(r);
-                        }
-                    }
+                    var filteredRecordSets = AllRecordSets
+                        .AsParallel()
+                        .WithProgressReporting(() => filteringProgressForm.Value++)
+                        .Where(r => specifier(r));
+                    DisplayRecords.AddRange(filteredRecordSets);
+
                 }
             );
 
