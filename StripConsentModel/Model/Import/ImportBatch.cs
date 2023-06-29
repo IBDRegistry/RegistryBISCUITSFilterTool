@@ -42,9 +42,12 @@ namespace StripConsentModel.Model.Import
 
             IEnumerable<string> IBDAuditCodes = GetFieldFromRecords(AllRecords, DataItemCodes.IBDAuditCode);
 
-            if (IBDAuditCodes.AnyExceptionsInList())
+            var Groupings = IBDAuditCodes.GroupBy(x => x).Select(grouping => grouping.Key);
+
+            if (Groupings.Count() > 1)
             {
-                throw new Exception("Mismatched IBD Audit code");
+                throw new Exception("Mismatched IBD Audit code, Trust files contained the following IBD Audit codes\n" + 
+                    string.Join(" ", Groupings));
             }
 
             if (IBDAuditCodes.Count() == 0)
