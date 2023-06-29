@@ -72,8 +72,9 @@ namespace StripV3Consent.Model
                     Func<string[], bool> RowHasMultipleColumns = row => !RowOnlyHasOneColumn(row);
                     if (RowsAndColumns.Content.All(RowOnlyHasOneColumn))
 					{
-                        ReturnValue.IncreaseErrorLevelIfStronger(ValidState.Good);
-                        
+                        //ReturnValue.IncreaseErrorLevelIfStronger(ValidState.Good);
+                        ReturnValue.IncreaseErrorLevelIfStronger(ValidState.Error);//don't accept NOO file for BISCUITS processing as it breaks some stuff
+
 
                     } else if(RowsAndColumns.Content.Any(RowHasMultipleColumns))
 					{

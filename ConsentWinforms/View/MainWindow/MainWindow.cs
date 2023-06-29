@@ -155,13 +155,13 @@ You can contact your IT support for help with this issue",
             const string NOOFileNameInSpec = ".dat";
             //enter if either true & false or false & true
             bool NOOChecked = Model.EnableNationalOptOut;
-            bool NOOFilePresent = Model.ImportFiles.Where(i => {
-                if (i.SpecificationFile == null)    //would like to use bool? but not supported in .NET Framework
+            bool NOOFilePresent = Model.ImportFiles.Where(importFile => {
+                if (importFile.SpecificationFile == null)    //would like to use bool? but not supported in .NET Framework
 				{
                     return false;
 				} else
 				{
-                    return (bool)i.SpecificationFile?.Name.Contains(NOOFileNameInSpec);
+                    return ((bool)importFile.SpecificationFile?.Name.Contains(NOOFileNameInSpec)) && importFile.IsValid.ErrorLevel == ValidState.Good;
                 }
                 
             }).Count() > 0;
