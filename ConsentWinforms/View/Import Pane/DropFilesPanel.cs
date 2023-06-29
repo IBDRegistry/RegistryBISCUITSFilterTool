@@ -121,9 +121,9 @@ namespace StripV3Consent.View
 		/// <returns></returns>
 		private void RecursivelyExpandFolders(List<string> Paths)
 		{
+			Func<string, bool> IsDirectory = path => File.GetAttributes(path).HasFlag(FileAttributes.Directory);
 			do
 			{
-				Func<string, bool> IsDirectory = path => File.GetAttributes(path).HasFlag(FileAttributes.Directory);
 
 				string[] Directories = Paths.Where(IsDirectory).ToArray();	//Cast to string[] rather than keep as IEnumerable<string> otherwise it will be lost on the next line
 				Paths.RemoveAll(new Predicate<string>(IsDirectory));
@@ -138,7 +138,7 @@ namespace StripV3Consent.View
 				});
 
 				Paths.AddRange(NewFiles);
-			} while (Paths.Select(path => File.GetAttributes(path)).Any(attr => attr == FileAttributes.Directory));
+			} while (Paths.Any(IsDirectory));
 		}
 
 		private async void DropFiles_DragDrop(object sender, DragEventArgs e)
