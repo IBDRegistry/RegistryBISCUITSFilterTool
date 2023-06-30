@@ -156,7 +156,8 @@ namespace StripV3Consent.Model
             }
             TopLeftValue = TopLeftValueBuilder.ToString();
             var HeaderPrefixes = new string[] { "HEADER_", "DataCaptureTool" };
-            if (HeaderPrefixes.Any(prefix => TopLeftValue.ToUpper().Replace(" ", "").StartsWith(prefix)))
+            Func<string, string> MakeCaseInsensitive = str => str.ToUpper().Replace(" ", "");
+            if (HeaderPrefixes.Any(prefix => MakeCaseInsensitive(TopLeftValue).StartsWith(MakeCaseInsensitive(prefix))))
             {
                 return true;
             }
