@@ -155,7 +155,8 @@ namespace StripV3Consent.Model
                 }
             }
             TopLeftValue = TopLeftValueBuilder.ToString();
-            if (TopLeftValue.ToUpper().StartsWith("HEADER_"))
+            var HeaderPrefixes = new string[] { "HEADER_", "DataCaptureTool" };
+            if (HeaderPrefixes.Any(prefix => TopLeftValue.ToUpper().Replace(" ", "").StartsWith(prefix)))
             {
                 return true;
             }
