@@ -105,7 +105,7 @@ namespace StripV3Consent.Model
             IEnumerable<OutputFile> AllOutputFiles = NewOutputFiles.Union<OutputFile>(DirectOutputFiles);
             OutputFiles = AllOutputFiles.ToArray();
 
-            Progress?.Invoke(this, new ProgressEventArgs(new ConsentToolProgress(ConsentToolProgress.Stages.Finished)));
+            Progress?.Invoke(this, new ProgressEventArgs(new ConsentToolProgress(ConsentToolProgress.Stages.Finished))); //107s
         }
 
 
@@ -155,7 +155,9 @@ namespace StripV3Consent.Model
         }
         private static IEnumerable<IEnumerable<RecordWithOriginalSet>> FlattenAndGroupRecordsBySpecificationFiles(IEnumerable<RecordSet> RecordSets) =>
             RecordSets
+                .AsParallel()
                 .SelectMany(rs => rs.Records.Select(r => new RecordWithOriginalSet(record: r, originalSet: rs)))   //Flatten, but preserve original Recordset for enhancement later
+                .AsParallel()
 
                 .Where(r => r.Record.OriginalFile.SpecificationFile.IsRegistryFile == true)       //Filter for output
 
@@ -171,7 +173,7 @@ namespace StripV3Consent.Model
             IEnumerable<IEnumerable<RecordWithOriginalSet>> AllConsentedRecordsGroupedByFile = FlattenAndGroupRecordsBySpecificationFiles(RecordSets.Where(RS => RS.IsConsentValid == true || ConsentAlwaysValid));
 
             //Have to do ToList in order to use Find() later on which isn't present in IEnumerable<T>
-            List<IEnumerable<RecordWithOriginalSet>> AllRecordsGroupedByFile = FlattenAndGroupRecordsBySpecificationFiles(RecordSets).ToList();
+            List<IEnumerable<RecordWithOriginalSet>> AllRecordsGroupedByFile = FlattenAndGroupRecordsBySpecificationFiles(RecordSets).ToList(); //slow 121s
             Func<IEnumerable<RecordWithOriginalSet>, IEnumerable<Record>> GetOriginalRecords = (OriginalRecords) =>
                 AllRecordsGroupedByFile.Find(
                     FileAllRecords => FileAllRecords.First().Record.OriginalFile.SpecificationFile == OriginalRecords.First().Record.OriginalFile.SpecificationFile) //Find the full set (consented and non-consented) of records by looking through AllRecordsGroupedByFile for one with the same OriginalFile attribute
