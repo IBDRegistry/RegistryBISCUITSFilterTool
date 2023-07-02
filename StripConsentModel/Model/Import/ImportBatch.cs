@@ -1,6 +1,7 @@
 ﻿using StripV3Consent.Model;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -34,7 +35,8 @@ namespace StripConsentModel.Model.Import
 
         private TrustInfo SearchForTrustInfo()
         {
-            List<Record> AllRecords = Files.SelectMany(f => f.Records).ToList();
+            var FilesWithIBDAuditCode = Files.Where(f => !f.SpecificationFile.Name.Contains("provenance"));
+            List<Record> AllRecords = FilesWithIBDAuditCode.SelectMany(f => f.Records).ToList();
             Func<List<Record>, string, IEnumerable<string>> GetFieldFromRecords = (Records, DataItemCode) =>
                 Records
                     .Select(r => r.GetValueByDataItemCode(DataItemCode))
@@ -46,8 +48,28 @@ namespace StripConsentModel.Model.Import
 
             if (Groupings.Count() > 1)
             {
-                throw new Exception("Mismatched IBD Audit code, Trust files contained the following IBD Audit codes\n" + 
-                    string.Join(" ", Groupings));
+                var MostCommonIBDAuditCode = Groupings.OrderByDescending(g => g.Length).FirstOrDefault();
+
+                Func<List<Record>, string, IEnumerable<(Record record, string auditCode)>> GetFieldFromRecordsAndPreserveRecordReference = (Records, DataItemCode) =>
+                    Records
+                        .Select(r => (record: r, auditCode: r.GetValueByDataItemCode(DataItemCode)))
+                        .Where(x => !string.IsNullOrEmpty(x.auditCode));
+
+                IEnumerable<(string auditCode, int lineNumber, string file)> IBDAuditCodeAndPositionInFile =
+                    GetFieldFromRecordsAndPreserveRecordReference(AllRecords, DataItemCodes.IBDAuditCode)
+                    .Select(x => (
+                        auditCode: x.auditCode,
+                        lineNumber: Array.IndexOf(x.record.OriginalFile.Records, x.record),
+                        file: Path.GetFileName(x.record.OriginalFile.SpecificationFile.SimplifiedName)
+                        ))
+                    .Where(composite => !composite.auditCode.Equals(MostCommonIBDAuditCode));
+
+                var TrustFolderName = new DirectoryInfo(Files.First().Batch.BatchFolderPath).Name;
+
+                throw new Exception($"Mismatched IBD Audit code in folder {TrustFolderName}\n Trust files contained the following IBD Audit codes\n" + 
+                    string.Join("\n", 
+                    IBDAuditCodeAndPositionInFile.Select(composite => $"{composite.auditCode} in {composite.file} at record index {composite.lineNumber}"
+                    )));
             }
 
             if (IBDAuditCodes.Count() == 0)
