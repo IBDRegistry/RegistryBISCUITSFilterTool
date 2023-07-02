@@ -108,8 +108,11 @@ namespace StripConsentModel.Model.Output
             }
 
             //IBDR_ReportGroup
-            var IBDRAuditCode = PatientRecord.OriginalFile.Batch.TrustInfo.IBDAuditCode;
-            var SiteType = SiteLookup.SiteLookup.GetLookupEntryFromAuditCode(IBDRAuditCode)?.AdultPaeds;
+            var MostRecentIBDAuditCode = IBDR_UpdatedByIBDAuditCode(PatientRecordAndRecordSet.OriginalSet);
+            string SiteType = "";
+                if (MostRecentIBDAuditCode != null)
+                SiteType = SiteLookup.SiteLookup.GetLookupEntryFromAuditCode(MostRecentIBDAuditCode)?.AdultPaeds;
+
             var Age = int.Parse(IBDR_DerivedAge);
             string IBDR_ReportGroup;
             //this piece of garbage branching is derived from the original SQL report driver (below)
@@ -151,9 +154,9 @@ namespace StripConsentModel.Model.Output
                 IBDR_MonthofDeath,
                 IBDR_YearofDeath,
                 IBDR_CreatedDateTime(record),
-                IBDR_CreatedByIBDAuditCode(record),
+                IBDR_CreatedByIBDAuditCode(PatientRecordAndRecordSet.OriginalSet),
                 IBDR_UpdatedDateTime(record),
-                IBDR_UpdatedByIBDAuditCode(record),
+                IBDR_UpdatedByIBDAuditCode(PatientRecordAndRecordSet.OriginalSet),
                 IBDR_Hash(record),
                 IBDR_Source,
                 IBDR_Submission(record),

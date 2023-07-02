@@ -176,7 +176,7 @@ namespace StripV3Consent.View
 			ImportFile[] ImportFiles = Contents.Select(content => new ImportFile(
 				FileName: Path.GetFileName(content.Path), 
 				Contents: content.Content, 
-				FileCreatedTimestamp: File.GetLastWriteTime(content.Path),
+				FileModifiedTimestamp: File.GetLastWriteTime(content.Path),
 				FilePath: content.Path
 				)).ToArray();
             await Task.Run(() => FileList.AddRange(ImportFiles));

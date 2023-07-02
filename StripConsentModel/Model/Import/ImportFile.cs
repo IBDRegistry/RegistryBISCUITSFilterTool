@@ -33,12 +33,12 @@ namespace StripV3Consent.Model
             }
         }
 
-        public DateTime FileCreatedTimestamp { get; private set; }
+        public DateTime FileModifiedTimestamp { get; private set; }
 
-        public ImportFile(string FileName, string Contents, DateTime FileCreatedTimestamp, string FilePath) : base(FileName)
+        public ImportFile(string FileName, string Contents, DateTime FileModifiedTimestamp, string FilePath) : base(FileName)
         {
             this.FileContents = Contents;
-            this.FileCreatedTimestamp = FileCreatedTimestamp;
+            this.FileModifiedTimestamp = FileModifiedTimestamp;
             this.FilePath = FilePath;
         }
 

@@ -12,18 +12,19 @@ namespace StripConsentModel.Model.Output
         {
         }
 
-		protected string IBDR_CreatedDateTime(Record record) => record.OriginalFile.FileCreatedTimestamp.ToString("dd-MM-yyyy HH:mm");
+		protected string IBDR_CreatedDateTime(Record record) => record.OriginalFile.FileModifiedTimestamp.ToString("dd-MM-yyyy HH:mm");
 
-		protected string IBDR_CreatedByIBDAuditCode(Record record) => record.OriginalFile.Batch.Files
-				.SelectMany(f => f.Records)
-				.OrderBy(r => r.OriginalFile.FileCreatedTimestamp)
-				.First()
-				.OriginalFile.Batch.TrustInfo
-				.IBDAuditCode;
+		protected string IBDR_CreatedByIBDAuditCode(RecordSet rs) => rs.Records
+				.OrderBy(r => r.OriginalFile.FileModifiedTimestamp)
+				.FirstOrDefault()
+				?.GetValueByDataItemCode(DataItemCodes.IBDAuditCode);
 
-		protected string IBDR_UpdatedDateTime(Record record) => record.OriginalFile.FileCreatedTimestamp.ToString("dd-MM-yyyy HH:mm");
+		protected string IBDR_UpdatedByIBDAuditCode(RecordSet rs) => rs.Records
+														.OrderByDescending(r => r.OriginalFile.FileModifiedTimestamp)
+														.FirstOrDefault()
+														?.GetValueByDataItemCode(DataItemCodes.IBDAuditCode);
 
-		protected string IBDR_UpdatedByIBDAuditCode(Record record) => record.OriginalFile.Batch.TrustInfo.IBDAuditCode;
+		protected string IBDR_UpdatedDateTime(Record record) => record.OriginalFile.FileModifiedTimestamp.ToString("dd-MM-yyyy HH:mm");
 
 		protected string IBDR_Hash(Record record)
         {
@@ -33,7 +34,7 @@ namespace StripConsentModel.Model.Output
 
 		protected string IBDR_Source => "";
 
-		protected string IBDR_Submission(Record record) => record.OriginalFile.FileCreatedTimestamp.ToString("MM/yyyy");
+		protected string IBDR_Submission(Record record) => record.OriginalFile.FileModifiedTimestamp.ToString("MM/yyyy");
 
 		protected override Record EnhanceRecord(RecordWithOriginalSet combinedRecord)
 		{
@@ -41,9 +42,9 @@ namespace StripConsentModel.Model.Output
 
 			string[] ToAppend = new string[] { 
 				IBDR_CreatedDateTime(record), 
-				IBDR_CreatedByIBDAuditCode(record), 
+				IBDR_CreatedByIBDAuditCode(combinedRecord.OriginalSet), 
 				IBDR_UpdatedDateTime(record), 
-				IBDR_UpdatedByIBDAuditCode(record), 
+				IBDR_UpdatedByIBDAuditCode(combinedRecord.OriginalSet), 
 				IBDR_Hash(record), 
 				IBDR_Source, 
 				IBDR_Submission(record) 
