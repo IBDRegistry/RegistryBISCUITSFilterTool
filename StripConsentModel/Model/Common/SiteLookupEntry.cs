@@ -1,67 +1,108 @@
-using CsvHelper.Configuration.Attributes;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Linq;
 
-namespace StripConsentModel.SiteLookup
+namespace StripConsentModel.Model.Common
 {
-    public class SiteLookupEntry
+    public class SiteLookupEntry : LookupEntry
     {
-        [Index(0)]
-        public string Name { get; set; }
-        [Index(1)]
-        public string Subitems { get; set; }
-        [Index(2)]
-        public string Version { get; set; }
-        [Index(3)]
-        public string SiteName { get; set; }
-        [Index(4)]
-        public string IBDAuditCode { get; set; }
-        [Index(5)]
-        public string TrustHealthBoard { get; set; }
-        [Index(6)]
-        public string TrustHealthBoardIBDCode { get; set; }
-        [Index(7)]
-        public string IBDService { get; set; }
-        [Index(8)]
-        public string ServiceIBDCode { get; set; }
-        [Index(9)]
-        public string Source { get; set; }
-        [Index(10)]
-        public string SourceSM { get; set; }
-        [Index(11)]
-        public string AutoNumber { get; set; }
-        [Index(12)]
-        public string AdultPaeds { get; set; }
-        [Index(13)]
-        public string Country { get; set; }
-        [Index(14)]
-        public string ClinicalSystem { get; set; }
-        [Index(15)]
-        public string WebToolUse { get; set; }
-        [Index(16)]
-        public string Grant { get; set; }
-        [Index(17)]
-        public string NDA { get; set; }
-        [Index(18)]
-        public string IBDSubSiteCode { get; set; }
-        [Index(19)]
-        public string ODScode { get; set; }
-        [Index(20)]
-        public string ODSLevel { get; set; }
-        [Index(21)]
-        public string Registry2020 { get; set; }
-        [Index(22)]
-        public string Agrs2020 { get; set; }
-        [Index(23)]
-        public string QA202122 { get; set; }
-        [Index(24)]
-        public string Postcode { get; set; }
-        [Index(25)]
-        public string Financebreakdown2021	 { get; set; }
-        [Index(26)]
-        public string QualityAccounts { get; set; }
-        [Index(27)]
-        public string QA201920 { get; set; }
+        public SiteLookupEntry(string ibdAuditCode, string name, AdultPaed adultPaeds) : base(ibdAuditCode, name)
+        {
+            AdultPaeds = adultPaeds;
+        }
+        public override AdultPaed AdultPaeds { get; }
+    }
+    class TrustLookupEntry : LookupEntry
+    {
+        public TrustLookupEntry(string ibdAuditCode, string name, List<SiteLookupEntry> sites) : base(ibdAuditCode, name)
+        {
+            Sites = sites;
+        }
+        public List<SiteLookupEntry> Sites { get; }
 
+        public override AdultPaed AdultPaeds
+        {
+            get
+            {
+                var groupings = Sites.GroupBy(x => x.AdultPaeds);
+                if (groupings.Count() == 1)
+                {
+                    return groupings.First().Key;
+                } else
+                {
+                    return AdultPaed.Mixed;
+                }
+            }
+        }
+    }
 
+    public class ServiceLookupEntry : LookupEntry
+    {
+        public ServiceLookupEntry(string ibdAuditCode, string name, List<SiteLookupEntry> sites) : base(ibdAuditCode, name)
+        {
+            Sites = sites;
+        }
+        public List<SiteLookupEntry> Sites { get; }
+
+        public override AdultPaed AdultPaeds
+        {
+            get
+            {
+                var groupings = Sites.GroupBy(x => x.AdultPaeds);
+                if (groupings.Count() == 1)
+                {
+                    return groupings.First().Key;
+                }
+                else
+                {
+                    return AdultPaed.Mixed;
+                }
+            }
+        }
+    }
+
+    public abstract class LookupEntry : ILookupEntry
+    {
+        public LookupEntry(string ibdAuditCode, string name)
+        {
+            IBDAuditCode = ibdAuditCode;
+            Name = name;
+        }
+
+        public string IBDAuditCode { get; private set; }
+
+        public string Name { get; private set; }
+
+        public abstract AdultPaed AdultPaeds { get; }
+    }
+
+    public interface ILookupEntry
+    {
+        string IBDAuditCode { get; }
+        AdultPaed AdultPaeds { get; }
     }
 }
 
+public enum AuditType
+{
+    Trust,
+    Service,
+    Site,
+    Subsite
+}
+
+public enum AdultPaed
+{
+    Adult,
+    Paediatric,
+    Mixed
+}
+
+public enum Country
+{
+    England,
+    Wales,
+    Scotland,
+    NorthernIreland
+}

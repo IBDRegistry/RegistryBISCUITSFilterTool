@@ -102,16 +102,14 @@ namespace StripConsentModel.Model.Output
                 .OrderBy(r => r.GetValueByDataItemCode(DataItemCodes.DateOfDiagnosis))
                 .FirstOrDefault()
                 ?.GetValueByDataItemCode(DataItemCodes.DateOfDiagnosis);
-            if (SuccessfulDoBParse && DateOfDiagnosis != null)
+            if (SuccessfulDoBParse && !string.IsNullOrEmpty(DateOfDiagnosis))
             {
                 IBDR_DiseaseDuration = Years(DateOfBirth, DateTime.Parse(DateOfDiagnosis)).ToString();
             }
 
             //IBDR_ReportGroup
             var MostRecentIBDAuditCode = IBDR_UpdatedByIBDAuditCode(PatientRecordAndRecordSet.OriginalSet);
-            string SiteType = "";
-                if (MostRecentIBDAuditCode != null)
-                SiteType = SiteLookup.SiteLookup.GetLookupEntryFromAuditCode(MostRecentIBDAuditCode)?.AdultPaeds;
+            var SiteType = SiteLookup.SiteLookup.GetLookupEntryFromAuditCode(MostRecentIBDAuditCode)?.AdultPaeds;
 
             var Age = int.Parse(IBDR_DerivedAge);
             string IBDR_ReportGroup;
@@ -120,16 +118,17 @@ namespace StripConsentModel.Model.Output
             //WHEN(("pat"."IBDR_DerivedAge" <= 15) AND("ibdr_reference"."sites"."IBDR_SiteType" = 'Mixed')) THEN 'Paediatric'
             //WHEN("ibdr_reference"."sites"."IBDR_SiteType" = 'Paediatric') THEN 'Paediatric'
             //WHEN(("pat"."IBDR_DerivedAge" <= 15) AND("ibdr_reference"."sites"."IBDR_SiteType" = 'Adult')) THEN 'Adult' else '' end) AS "IBDR_ReportGroup"
-            if (Age > 15 & !SiteType.Equals("Paediatric"))
+            if (Age > 15 & SiteType != AdultPaed.Paediatric)
             {
                 IBDR_ReportGroup = "Adult";
             }
-            else if (Age <= 15 & SiteType.Equals("Mixed"))
+            else if (Age <= 15 & SiteType == AdultPaed.Mixed)
             {
                 IBDR_ReportGroup = "Paediatric";
-            } else if (SiteType.Equals("Paediatric")) { 
+            } else if (SiteType == AdultPaed.Paediatric) { 
                 IBDR_ReportGroup = "Paediatric";
-            } else if (Age <= 15 & SiteType.Equals("Adult")){
+            } else if (Age <= 15 & SiteType == AdultPaed.Adult)
+            {
                 IBDR_ReportGroup = "Adult";
             } else
             {
@@ -137,7 +136,20 @@ namespace StripConsentModel.Model.Output
             }
 
             //IBDR_SiteType
-            var IBDR_SiteType = SiteType != null ? SiteType : "";
+            string IBDR_SiteType = "";
+            switch (SiteType)
+            {
+                case AdultPaed.Adult:
+                    IBDR_SiteType = "Adult";
+                    break;
+                case AdultPaed.Paediatric:
+                    IBDR_SiteType = "Paediatric";
+                    break;
+                case AdultPaed.Mixed:
+                    IBDR_SiteType = "Mixed";
+                    break;
+            }
+                
 
             //IBDR_ConsentGroup
 
