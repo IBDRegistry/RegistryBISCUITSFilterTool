@@ -98,18 +98,15 @@ namespace StripV3Consent.Model
 
 		protected abstract Record EnhanceRecord(RecordWithOriginalSet record);
 
-		protected abstract string[] EnhancedHeaders();
-
-		protected virtual IEnumerable<Record> MergeRecords(IEnumerable<Record> records) => records;
-
-		private string[] FormatHeaders(string[] EnhancedHeaders)
-        {
-			return EnhancedHeaders
+		protected string[] OriginalHeaders() => OutputRecords.First().Record.OriginalFile.SpecificationFile.Fields.Select(x => x.Name)
 				.Select(x => x.RemoveLeadingAsterix())
 				.Select(x => x.ToPascalCase())
 				.Select(x => x.Replace(" ", ""))
-				.ToArray();
-        }
+			.ToArray();
+
+		protected abstract string[] EnhancedHeaders();
+
+		protected virtual IEnumerable<Record> MergeRecords(IEnumerable<Record> records) => records;
 
 		private string EnhanceAndRepack()
         {
@@ -117,7 +114,7 @@ namespace StripV3Consent.Model
 			var EnhancedRecords = NormalisedRecords.Select(EnhanceRecord).ToList();
 			var MergedRecords = MergeRecords(EnhancedRecords).Select(x => x.DataRecord);
 
-			return RepackIntoString(MergedRecords, FormatHeaders(EnhancedHeaders()), OutputRecords.First().Record.OriginalFile.SpecificationFile);
+			return RepackIntoString(MergedRecords, EnhancedHeaders(), OutputRecords.First().Record.OriginalFile.SpecificationFile);
         }
 		public override string StringOutput() => EnhanceAndRepack();
 
@@ -156,6 +153,8 @@ namespace StripV3Consent.Model
 				.Select(w => lowerCaseNextToNumber.Replace(w, m => m.Value.ToUpper()))
 				// lower second and next upper case letters except the last if it follows by any lower (ABcDEf -> AbcDef)
 				.Select(w => upperCaseInside.Replace(w, m => m.Value.ToLower()));
+				//Replace Ibdr with IBDR_
+				//.Select(x => x.Replace("Ibdr", "IBDR_"));
 
 			return string.Concat(pascalCase);
 		}

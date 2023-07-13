@@ -224,7 +224,6 @@ namespace StripConsentModel.Model.Output
 
         protected override string[] EnhancedHeaders()
         {
-            var OriginalHeaders = OutputRecords.First().Record.OriginalFile.SpecificationFile.Fields.Select(x => x.Name).ToArray();
 
             var NewHeadersToAppend = new string[] {
                 "IBDR_MonthofBirth",
@@ -250,7 +249,7 @@ namespace StripConsentModel.Model.Output
 
             };
 
-            return OriginalHeaders.AppendArray(NewHeadersToAppend);
+            return OriginalHeaders().AppendArray(NewHeadersToAppend);
 
         }
 

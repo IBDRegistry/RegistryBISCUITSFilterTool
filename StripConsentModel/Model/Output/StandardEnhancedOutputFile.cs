@@ -55,13 +55,12 @@ namespace StripConsentModel.Model.Output
 
         protected override string[] EnhancedHeaders()
         {
-			var OriginalHeaders = OutputRecords.First().Record.OriginalFile.SpecificationFile.Fields.Select(x => x.Name).ToArray();
 
 			var NewHeadersToAppend = new string[] {
 				"IBDR_CreatedDateTime", "IBDR_CreatedByIBDAuditCode", "IBDR_UpdatedDateTime", "IBDR_UpdatedByIBDAuditCode", "IBDR_HASH", "IBDR_Source", "IBDR_Submission"
 			};
 
-			return OriginalHeaders.AppendArray(NewHeadersToAppend);
+			return OriginalHeaders().AppendArray(NewHeadersToAppend);
 
         }
 	}
