@@ -1,6 +1,6 @@
 using CsvHelper.Configuration.Attributes;
 
-namespace StripConsentModel.SiteLookup
+namespace StripConsentModel
 {
     public class MondayRecord
     {

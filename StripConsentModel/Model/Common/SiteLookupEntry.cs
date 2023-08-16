@@ -75,12 +75,19 @@ namespace StripConsentModel.Model.Common
         public string Name { get; private set; }
 
         public abstract AdultPaed AdultPaeds { get; }
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 
     public interface ILookupEntry
     {
         string IBDAuditCode { get; }
         AdultPaed AdultPaeds { get; }
+        string Name { get; }
+
     }
 }
 

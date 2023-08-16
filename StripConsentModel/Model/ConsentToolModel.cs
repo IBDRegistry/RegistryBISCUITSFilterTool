@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using StripConsentModel.Model.Output;
 using StripConsentModel.Model.Import;
+using StripConsentModel.Model.Common;
 
 namespace StripV3Consent.Model
 {
@@ -15,6 +16,8 @@ namespace StripV3Consent.Model
         public readonly ImportBatchList ImportBatches = new ImportBatchList();
 
         public readonly ObservableRangeCollection<ImportFile> ImportFiles = new ObservableRangeCollection<ImportFile>();
+
+        public List<Error> Errors = ErrorLogger.Errors;
 
         private RecordSet[] patients;
         public RecordSet[] Patients {
@@ -183,14 +186,17 @@ namespace StripV3Consent.Model
             IEnumerable<RepackingOutputFile> Files =
                 AllConsentedRecordsGroupedByFile.Select(FileOutputRecords => {
                     const string PatientFilename = "patient";
-                    if (FileOutputRecords.First().Record.OriginalFile.SpecificationFile.SimplifiedName.Contains(PatientFilename))
+                    const string BiologicsFilename = "biologic";
+                    var simplifiedName = FileOutputRecords.First().Record.OriginalFile.SpecificationFile.SimplifiedName;
+                    if (simplifiedName.Contains(PatientFilename))
                     {
                         return new PatientEnhancedOutputFile(
                             file: FileOutputRecords.First().Record.OriginalFile,
                             outputRecords: FileOutputRecords,    ///Match each set of records to a new OutputFile object
                             allRecordsOriginallyInFile: GetOriginalRecords(FileOutputRecords)
                             );
-                    } else
+                    }
+                    else
                     {
                         return new StandardEnhancedOutputFile(
                             file: FileOutputRecords.First().Record.OriginalFile,

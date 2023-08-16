@@ -1,9 +1,7 @@
-﻿using StripConsentModel.SiteLookup;
-using StripV3Consent.Model;
+﻿using StripV3Consent.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using static StripV3Consent.Model.ConsentToolModel;
 
 namespace StripConsentModel.Model.Output
@@ -109,7 +107,7 @@ namespace StripConsentModel.Model.Output
 
             //IBDR_ReportGroup
             var MostRecentIBDAuditCode = IBDR_UpdatedByIBDAuditCode(PatientRecordAndRecordSet.OriginalSet);
-            var SiteType = SiteLookup.SiteLookup.GetLookupEntryFromAuditCode(MostRecentIBDAuditCode)?.AdultPaeds;
+            var SiteType = SiteLookup.GetLookupEntryFromAuditCode(MostRecentIBDAuditCode)?.AdultPaeds;
 
             var Age = int.Parse(IBDR_DerivedAge);
             string IBDR_ReportGroup;

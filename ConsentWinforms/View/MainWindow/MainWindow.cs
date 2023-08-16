@@ -10,6 +10,7 @@ using System.Collections.ObjectModel;
 using System.Security.Principal;
 using System.Threading.Tasks;
 using System.Timers;
+using ConsentWinforms.View.MainWindow;
 
 namespace StripV3Consent.View
 {
@@ -18,6 +19,7 @@ namespace StripV3Consent.View
         private ConsentToolModel Model = new ConsentToolModel();
 
         private ProgressForm progress;
+
 
         public MainWindow()
         {
@@ -339,14 +341,22 @@ You can contact your IT support for help with this issue",
 #endif
                         }
 
-                        //Open explorer window to show results
-                        StartExplorer(OutputFolder);
+                        
 
                     }
                 );
 
                 repackingProgressForm.Close();
                 this.RemoveLockingForm(repackingProgressForm);
+
+                if (Model.Errors.Count() != 0)
+                {
+                    ErrorsWindow ErrorsWindow = new ErrorsWindow(Model.Errors);
+                    ErrorsWindow.ShowDialog();
+                }
+
+                //Open explorer window to show results
+                StartExplorer(OutputFolder);
 
 
             }

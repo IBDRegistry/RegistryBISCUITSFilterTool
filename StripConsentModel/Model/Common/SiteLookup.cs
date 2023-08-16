@@ -6,7 +6,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 
-namespace StripConsentModel.SiteLookup
+namespace StripConsentModel
 {
     public static class SiteLookup
     {
@@ -94,11 +94,9 @@ namespace StripConsentModel.SiteLookup
 
         public static ILookupEntry GetLookupEntryFromAuditCode(string IBDAuditCode)
         {
-            var FoundEntry = LookupEntries.FirstOrDefault(x => x.IBDAuditCode.Equals(IBDAuditCode));
-            if (FoundEntry == null)
-            {
-                throw new System.Exception($"Site with IBD Audit Code {IBDAuditCode} was not in lookup table");
-            }
+            string CleanedIBDAuditCode = IBDAuditCode.Replace(" ", "");
+            var FoundEntry = LookupEntries.FirstOrDefault(x => x.IBDAuditCode == CleanedIBDAuditCode);
+
             return FoundEntry;
         }
     }

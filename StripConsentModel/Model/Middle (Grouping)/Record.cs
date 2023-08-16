@@ -1,4 +1,6 @@
-﻿using System;
+﻿using StripConsentModel;
+using StripConsentModel.Model.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -56,6 +58,41 @@ namespace StripV3Consent.Model
             }
         }
 
+        public ILookupEntry SiteLookup { 
+            get
+            {
+                string LocalUnitCode = GetValueByDataItemCode(DataItemCodes.LocalUnitCode);
+                if (!string.IsNullOrEmpty(LocalUnitCode)) {
+                    var lookup = StripConsentModel.SiteLookup.GetLookupEntryFromAuditCode(LocalUnitCode);
+                    if (lookup != null)
+                    {
+                        return lookup;
+                    } else
+                    {
+                        ErrorLogger.Add(OriginalFile.FilePath, $"Could not look up Local Unit Code with value {LocalUnitCode}");
+                    }
+                        
+                }
+
+                string IBDAuditCode = GetValueByDataItemCode(DataItemCodes.IBDAuditCode);
+                if (!string.IsNullOrEmpty(IBDAuditCode))
+                {
+                    var lookup = StripConsentModel.SiteLookup.GetLookupEntryFromAuditCode(IBDAuditCode);
+                    if (lookup != null)
+                    { 
+                        return lookup;
+                    }
+                    else
+                    {
+                        ErrorLogger.Add(OriginalFile.FilePath, $"Could not look up IBD Audit Code with value {IBDAuditCode}");
+                    }
+                }
+
+                //if nothing found return null
+                return null;
+
+            }
+        }
         /// <summary>
         /// Returns a value from the record corresponding to it's Data Item Code in 2021K
         /// </summary>

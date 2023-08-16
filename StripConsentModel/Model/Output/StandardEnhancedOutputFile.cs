@@ -1,4 +1,6 @@
-﻿using StripV3Consent.Model;
+﻿using StripConsentModel.Model.Common;
+using StripV3Consent.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,15 +16,42 @@ namespace StripConsentModel.Model.Output
 
 		protected string IBDR_CreatedDateTime(Record record) => record.OriginalFile.FileModifiedTimestamp.ToString("dd-MM-yyyy HH:mm");
 
-		protected string IBDR_CreatedByIBDAuditCode(RecordSet rs) => rs.Records
+		protected string IBDR_CreatedByIBDAuditCode(RecordSet rs)
+		{
+			return rs.Records
 				.OrderBy(r => r.OriginalFile.FileModifiedTimestamp)
+				.Where(r => r.SiteLookup != null)
 				.FirstOrDefault()
-				?.GetValueByDataItemCode(DataItemCodes.IBDAuditCode);
+				.SiteLookup.IBDAuditCode;
+		}
+		//private string LocalUnitCodeOverAuditCode(Record r)
+  //      {
+		//	if (r == null)
+		//	{
+		//		return null;
+		//	}
 
-		protected string IBDR_UpdatedByIBDAuditCode(RecordSet rs) => rs.Records
-														.OrderByDescending(r => r.OriginalFile.FileModifiedTimestamp)
-														.FirstOrDefault()
-														?.GetValueByDataItemCode(DataItemCodes.IBDAuditCode);
+		//	var LocalUnitCode = r.GetValueByDataItemCode(DataItemCodes.LocalUnitCode);
+		//	if (!string.IsNullOrEmpty(LocalUnitCode) && LocalUnitCode != "IBD000" && LocalUnitCode != "NA")
+		//	{
+		//		if (!LocalUnitCode.StartsWith("IBD"))
+  //              {
+		//			throw new System.Exception();
+  //              }
+		//		return LocalUnitCode;
+		//	}
+
+		//	var IBDAuditCode = r.GetValueByDataItemCode(DataItemCodes.IBDAuditCode);
+		//		return IBDAuditCode;
+		//}
+
+
+		protected string IBDR_UpdatedByIBDAuditCode(RecordSet rs) =>  rs.Records
+				.OrderByDescending(r => r.OriginalFile.FileModifiedTimestamp)
+				.Where(r => r.SiteLookup != null)
+				.FirstOrDefault()
+				.SiteLookup.IBDAuditCode;
+														
 
 		protected string IBDR_UpdatedDateTime(Record record) => record.OriginalFile.FileModifiedTimestamp.ToString("dd-MM-yyyy HH:mm");
 
@@ -36,9 +65,34 @@ namespace StripConsentModel.Model.Output
 
 		protected string IBDR_Submission(Record record) => record.OriginalFile.FileModifiedTimestamp.ToString("MM/yyyy");
 
+		private Record ProcessDateFields(Record record)
+		{
+			var specificationFields = record.OriginalFile.SpecificationFile.Fields;
+
+			if (specificationFields.Select(x => x.DataItemCode).Intersect(DataItemCodes.DateFields).Count() == 0)
+				return record;
+
+			for (int i=0; i < record.DataRecord.Length; i++)
+            {
+				if (DataItemCodes.DateFields.Contains(specificationFields[i].DataItemCode))
+                {
+					string possibleDateValue = record[i];
+
+					DateTime parsed;
+					bool didParseCorrectly = DateTime.TryParse(possibleDateValue, out parsed);
+
+					if (didParseCorrectly)
+						record[i] = parsed.ToString("yyyy-MM-dd");
+                }
+            }
+
+			return record;
+		}
+
 		protected override Record EnhanceRecord(RecordWithOriginalSet combinedRecord)
 		{
 			var record = combinedRecord.Record;
+			var ProcessedRecord = ProcessDateFields(record);
 
 			string[] ToAppend = new string[] { 
 				IBDR_CreatedDateTime(record), 
@@ -52,6 +106,8 @@ namespace StripConsentModel.Model.Output
 
 			return new Record(record.DataRecord.AppendArray(ToAppend), combinedRecord.Record.OriginalFile);
 		}
+
+
 
         protected override string[] EnhancedHeaders()
         {
@@ -74,6 +130,12 @@ namespace StripConsentModel.Model.Output
 			ToAppend.CopyTo(JoinedArrays, record.Length);
 
 			return JoinedArrays;
+		}
+
+		public static void EditValueByDataItemCode(this Record record, string dataItemCode, string value)
+        {
+			int FieldIndex = record.OriginalFile.SpecificationFile.Fields.FindIndex(f => f.DataItemCode == dataItemCode);
+			record[FieldIndex] = value;
 		}
     }
 

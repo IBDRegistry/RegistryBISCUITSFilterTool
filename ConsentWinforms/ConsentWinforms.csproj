@@ -109,6 +109,12 @@
     <Compile Include="View\Import Pane\ImportFileItem.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="View\MainWindow\Errors.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\MainWindow\Errors.Designer.cs">
+      <DependentUpon>Errors.cs</DependentUpon>
+    </Compile>
     <Compile Include="View\MainWindow\LockableForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -149,6 +155,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="View\MainWindow\Errors.resx">
+      <DependentUpon>Errors.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="View\MainWindow\MainWindow.resx">
       <DependentUpon>MainWindow.cs</DependentUpon>
       <SubType>Designer</SubType>
