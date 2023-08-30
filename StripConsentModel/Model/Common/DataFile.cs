@@ -14,7 +14,7 @@ namespace StripV3Consent.Model
 		public string Name;
         public virtual string OutputName { get => Name; }
 
-        public ImportBatch Batch { get; set; }
+
 
         public DataFile(string FileName)
         {

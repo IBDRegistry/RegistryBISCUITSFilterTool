@@ -18,40 +18,36 @@ namespace StripConsentModel.Model.Output
 
 		protected string IBDR_CreatedByIBDAuditCode(RecordSet rs)
 		{
-			return rs.Records
+			var mostRecentRecord = rs.Records
 				.OrderBy(r => r.OriginalFile.FileModifiedTimestamp)
 				.Where(r => r.SiteLookup != null)
-				.FirstOrDefault()
-				.SiteLookup.IBDAuditCode;
+				.FirstOrDefault();
+
+			if (mostRecentRecord == null)
+            {
+				string NHSNumber = rs.GetRecordsWithDataItemCode(DataItemCodes.NHSNumber).FirstOrDefault().GetValueByDataItemCode(DataItemCodes.NHSNumber);
+				ErrorLogger.Add(string.Join(", ", rs.Records.Select(x => x.OriginalFile.FilePath)), $"Patient {NHSNumber} was not part of any Trust or Site");
+            }
+
+			return mostRecentRecord?.SiteLookup.IBDAuditCode;
 		}
-		//private string LocalUnitCodeOverAuditCode(Record r)
-  //      {
-		//	if (r == null)
-		//	{
-		//		return null;
-		//	}
-
-		//	var LocalUnitCode = r.GetValueByDataItemCode(DataItemCodes.LocalUnitCode);
-		//	if (!string.IsNullOrEmpty(LocalUnitCode) && LocalUnitCode != "IBD000" && LocalUnitCode != "NA")
-		//	{
-		//		if (!LocalUnitCode.StartsWith("IBD"))
-  //              {
-		//			throw new System.Exception();
-  //              }
-		//		return LocalUnitCode;
-		//	}
-
-		//	var IBDAuditCode = r.GetValueByDataItemCode(DataItemCodes.IBDAuditCode);
-		//		return IBDAuditCode;
-		//}
 
 
-		protected string IBDR_UpdatedByIBDAuditCode(RecordSet rs) =>  rs.Records
+		protected string IBDR_UpdatedByIBDAuditCode(RecordSet rs)
+		{
+			var mostRecentRecord = rs.Records
 				.OrderByDescending(r => r.OriginalFile.FileModifiedTimestamp)
 				.Where(r => r.SiteLookup != null)
-				.FirstOrDefault()
-				.SiteLookup.IBDAuditCode;
-														
+				.FirstOrDefault();
+
+			if (mostRecentRecord == null)
+			{
+				string NHSNumber = rs.GetRecordsWithDataItemCode(DataItemCodes.NHSNumber).FirstOrDefault().GetValueByDataItemCode(DataItemCodes.NHSNumber);
+				ErrorLogger.Add(string.Join(", ", rs.Records.Select(x => x.OriginalFile.FilePath)), $"Patient {NHSNumber} was not part of any Trust or Site");
+			}
+
+			return mostRecentRecord?.SiteLookup.IBDAuditCode;
+		}
 
 		protected string IBDR_UpdatedDateTime(Record record) => record.OriginalFile.FileModifiedTimestamp.ToString("dd-MM-yyyy HH:mm");
 

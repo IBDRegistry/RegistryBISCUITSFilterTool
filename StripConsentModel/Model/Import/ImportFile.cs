@@ -19,6 +19,8 @@ namespace StripV3Consent.Model
 
         public string FileContents { get; private set; }
 
+        public ImportBatch Batch { get; set; }
+
         private Record[] _cachedRecords;
         public Record[] Records
         {

@@ -58,11 +58,13 @@ namespace StripV3Consent.Model
             }
         }
 
+        //REDCap does the NA thing
+        public bool IsNullOrEmpty(string value) => string.IsNullOrEmpty(value) || value == "NA";
         public ILookupEntry SiteLookup { 
             get
             {
                 string LocalUnitCode = GetValueByDataItemCode(DataItemCodes.LocalUnitCode);
-                if (!string.IsNullOrEmpty(LocalUnitCode)) {
+                if (!IsNullOrEmpty(LocalUnitCode)) {
                     var lookup = StripConsentModel.SiteLookup.GetLookupEntryFromAuditCode(LocalUnitCode);
                     if (lookup != null)
                     {
@@ -75,7 +77,7 @@ namespace StripV3Consent.Model
                 }
 
                 string IBDAuditCode = GetValueByDataItemCode(DataItemCodes.IBDAuditCode);
-                if (!string.IsNullOrEmpty(IBDAuditCode))
+                if (!IsNullOrEmpty(IBDAuditCode))
                 {
                     var lookup = StripConsentModel.SiteLookup.GetLookupEntryFromAuditCode(IBDAuditCode);
                     if (lookup != null)
@@ -89,6 +91,53 @@ namespace StripV3Consent.Model
                 }
 
                 //if nothing found return null
+
+                var provenanceFile = OriginalFile.Batch.Files.FirstOrDefault(x => x.SpecificationFile.SimplifiedName.Contains("provenance"));
+                if (provenanceFile == null)
+                {
+                    ErrorLogger.Add(OriginalFile.Batch.BatchFolderPath, "Patient did not have IBD Audit Code and submission batch did not contain a provenance file");
+                    return null;
+                }
+                    
+
+                var provenanceRecord = provenanceFile.Records.FirstOrDefault();
+                if (provenanceRecord == null)
+                {
+                    ErrorLogger.Add(provenanceFile.FilePath, "Provenance file did not contain any records"); 
+                    return null;
+                }
+
+
+
+                string provenanceRecordLocalUnitCode = provenanceRecord.GetValueByDataItemCode(DataItemCodes.IBDAuditCode);
+                if (!IsNullOrEmpty(provenanceRecordLocalUnitCode))
+                {
+                    var lookup = StripConsentModel.SiteLookup.GetLookupEntryFromAuditCode(provenanceRecordLocalUnitCode);
+                    if (lookup != null)
+                    {
+                        return lookup;
+                    }
+                    else
+                    {
+                        ErrorLogger.Add(provenanceFile.FilePath, $"Could not look up Local Unit Code with value {LocalUnitCode}");
+                    }
+
+                }
+
+                string provenanceRecordIBDAuditCode = provenanceRecord.GetValueByDataItemCode(DataItemCodes.IBDAuditCode);
+                if (!IsNullOrEmpty(IBDAuditCode))
+                {
+                    var lookup = StripConsentModel.SiteLookup.GetLookupEntryFromAuditCode(provenanceRecordIBDAuditCode);
+                    if (lookup != null)
+                    {
+                        return lookup;
+                    }
+                    else
+                    {
+                        ErrorLogger.Add(provenanceFile.FilePath, $"Could not look up IBD Audit Code with value {IBDAuditCode}");
+                    }
+                }
+
                 return null;
 
             }

@@ -94,6 +94,9 @@ namespace StripConsentModel
 
         public static ILookupEntry GetLookupEntryFromAuditCode(string IBDAuditCode)
         {
+            if (IBDAuditCode == null)
+                return null;
+
             string CleanedIBDAuditCode = IBDAuditCode.Replace(" ", "");
             var FoundEntry = LookupEntries.FirstOrDefault(x => x.IBDAuditCode == CleanedIBDAuditCode);
 
