@@ -18,7 +18,8 @@ namespace StripV3Consent
                 if (cached2021k is null)
                 {
                     XmlSerializer Deserialiser = new System.Xml.Serialization.XmlSerializer(typeof(DataSubmissionSpecification));
-                    using (TextReader reader = new StringReader(StripConsentModel.Properties.Resources._2021_K_IBD_Registry_Submission_Dataset_V01__Nov_2021_))
+                    var resource = StripConsentModel.Properties.Resources._2021_K_IBD_Registry_Submission_Dataset_V01__Nov_2021_;
+                    using (TextReader reader = new StringReader(resource))
                     {
                         cached2021k = (DataSubmissionSpecification)Deserialiser.Deserialize(reader);
                     }
