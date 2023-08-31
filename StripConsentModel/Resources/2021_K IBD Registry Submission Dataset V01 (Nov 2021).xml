@@ -220,6 +220,18 @@ Care</Group>
           <Version>2021_K</Version>
           <Group>DISEASE: Diagnosis</Group>
         </Field>
+				<Field>
+					<Name>Diagnosis during non-elective admission</Name>
+					<DataItemCode>IBD500</DataItemCode>
+					<Version>2022_L</Version>
+					<Group>DISEASE: Diagnosis</Group>
+				</Field>
+				<Field>
+					<Name>First treatment during non-elective admission</Name>
+					<DataItemCode>IBD501</DataItemCode>
+					<Version>2022_L</Version>
+					<Group>DISEASE: Diagnosis</Group>
+				</Field>
       </Fields>
       <IsRegistryFile>true</IsRegistryFile>
     </File>
@@ -732,6 +744,39 @@ Colonoscopy</Group>
           <Group>OUTCOME:
 Colonoscopy</Group>
         </Field>
+				<Field>
+					<Name>Vaping Status</Name>
+					<DataItemCode>IBD321</DataItemCode>
+					<Version>2021_K</Version>
+					<Group>
+						Patient: Health related
+					</Group>
+				</Field>
+				<Field>
+					<Name>Steroids Total number courses</Name>
+					<DataItemCode>IBD502</DataItemCode>
+					<Version>2022_L</Version>
+					<Group>
+						REVIEW
+					</Group>
+				</Field>
+				<Field>
+					<Name>Steroids Total duration</Name>
+					<DataItemCode>IBD503</DataItemCode>
+					<Version>2022_L</Version>
+					<Group>
+						REVIEW
+					</Group>
+				</Field>
+				<Field>
+					<Name>Lipids</Name>
+					<DataItemCode>IBD505</DataItemCode>
+					<Version>2022_L</Version>
+					<Group>
+						OUTCOME:
+						Pretreatment screening
+					</Group>
+				</Field>
       </Fields>
       <IsRegistryFile>true</IsRegistryFile>
     </File>
@@ -1441,6 +1486,15 @@ Medication</Group>
           <Group>INTERVENTION:
 Medication</Group>
         </Field>
+				<Field>
+					<Name>Drug start date qualifier</Name>
+					<DataItemCode>IBD504</DataItemCode>
+					<Version>2022_L</Version>
+					<Group>
+						INTERVENTION:
+						Medication
+					</Group>
+				</Field>
       </Fields>
       <IsRegistryFile>true</IsRegistryFile>
     </File>
