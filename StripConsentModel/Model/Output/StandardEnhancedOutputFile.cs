@@ -70,7 +70,8 @@ namespace StripConsentModel.Model.Output
 
 			for (int i=0; i < record.DataRecord.Length; i++)
             {
-				if (DataItemCodes.DateFields.Contains(specificationFields[i].DataItemCode))
+				var CurrentDataItemCode = specificationFields[i].DataItemCode;
+				if (DataItemCodes.DateFields.Contains(CurrentDataItemCode))
                 {
 					string possibleDateValue = record[i];
 
@@ -87,20 +88,20 @@ namespace StripConsentModel.Model.Output
 
 		protected override Record EnhanceRecord(RecordWithOriginalSet combinedRecord)
 		{
-			var record = combinedRecord.Record;
-			var ProcessedRecord = ProcessDateFields(record);
+			var originalRecord = combinedRecord.Record;
+			var processedRecord = ProcessDateFields(originalRecord);
 
 			string[] ToAppend = new string[] { 
-				IBDR_CreatedDateTime(record), 
+				IBDR_CreatedDateTime(processedRecord), 
 				IBDR_CreatedByIBDAuditCode(combinedRecord.OriginalSet), 
-				IBDR_UpdatedDateTime(record), 
+				IBDR_UpdatedDateTime(processedRecord), 
 				IBDR_UpdatedByIBDAuditCode(combinedRecord.OriginalSet), 
-				IBDR_Hash(record), 
+				IBDR_Hash(processedRecord), 
 				IBDR_Source, 
-				IBDR_Submission(record) 
+				IBDR_Submission(processedRecord) 
 			};
 
-			return new Record(record.DataRecord.AppendArray(ToAppend), combinedRecord.Record.OriginalFile);
+			return new Record(processedRecord.DataRecord.AppendArray(ToAppend), combinedRecord.Record.OriginalFile);
 		}
 
 
