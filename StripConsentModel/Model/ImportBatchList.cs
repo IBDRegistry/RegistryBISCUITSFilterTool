@@ -50,7 +50,7 @@ namespace StripV3Consent.Model
                     var newImportBatch = new ImportBatch(batchFolder);
                     newImportBatch.Add(newImportFile);
                     newImportFile.Batch = newImportBatch;
-                    Add(new ImportBatch(batchFolder));
+                    Add(newImportBatch);
                 }
             }
         }
