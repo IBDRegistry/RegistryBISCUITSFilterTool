@@ -44,11 +44,11 @@ namespace StripV3Consent.View
             this.DisplayRemovedPatientsCheckbox = new System.Windows.Forms.CheckBox();
             this.DisplayKeptPatientsCheckbox = new System.Windows.Forms.CheckBox();
             this.LeftControlPanel = new System.Windows.Forms.Panel();
+            this.CheckConsent = new System.Windows.Forms.CheckBox();
             this.GetManualLabel = new System.Windows.Forms.LinkLabel();
             this.CheckOptOutMessage = new System.Windows.Forms.Label();
             this.CheckOptOutFile = new System.Windows.Forms.CheckBox();
             this.autoResizingLabel1 = new StripV3Consent.View.AutoResizingLabel();
-            this.CheckConsent = new System.Windows.Forms.CheckBox();
             this.TableLayoutPanel.SuspendLayout();
             this.ProcessingControlPanel.SuspendLayout();
             this.LeftControlPanel.SuspendLayout();
@@ -239,6 +239,17 @@ namespace StripV3Consent.View
             this.LeftControlPanel.Size = new System.Drawing.Size(352, 135);
             this.LeftControlPanel.TabIndex = 9;
             // 
+            // CheckConsent
+            // 
+            this.CheckConsent.AutoSize = true;
+            this.CheckConsent.Location = new System.Drawing.Point(7, 86);
+            this.CheckConsent.Name = "CheckConsent";
+            this.CheckConsent.Size = new System.Drawing.Size(133, 21);
+            this.CheckConsent.TabIndex = 5;
+            this.CheckConsent.Text = "Enforce consent";
+            this.CheckConsent.UseVisualStyleBackColor = true;
+            this.CheckConsent.CheckedChanged += new System.EventHandler(this.CheckConsent_CheckedChanged);
+            // 
             // GetManualLabel
             // 
             this.GetManualLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -289,19 +300,6 @@ namespace StripV3Consent.View
             this.autoResizingLabel1.TabIndex = 0;
             this.autoResizingLabel1.Text = "Drop files here";
             this.autoResizingLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // CheckConsentCheckbox
-            // 
-            this.CheckConsent.AutoSize = true;
-            this.CheckConsent.Checked = true;
-            this.CheckConsent.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.CheckConsent.Location = new System.Drawing.Point(7, 86);
-            this.CheckConsent.Name = "CheckConsentCheckbox";
-            this.CheckConsent.Size = new System.Drawing.Size(133, 21);
-            this.CheckConsent.TabIndex = 5;
-            this.CheckConsent.Text = "Enforce consent";
-            this.CheckConsent.UseVisualStyleBackColor = true;
-            this.CheckConsent.CheckedChanged += new System.EventHandler(this.CheckConsent_CheckedChanged);
             // 
             // MainWindow
             // 
